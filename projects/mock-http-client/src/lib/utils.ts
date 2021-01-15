@@ -16,6 +16,10 @@ export function hash(sourceString: string): number {
   return hashCode;
 }
 
+export const randomNumber = (range = 1000) => {
+  return Math.floor(Math.random() * range);
+};
+
 /**
  * 转换为loading字样
  * @param target 目标字符串

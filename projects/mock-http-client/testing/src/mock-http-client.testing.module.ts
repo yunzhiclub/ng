@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {MockObservableTesting} from '../../../testing/src/mock-observable.testing';
-import {MockObservable} from './mock-observable';
-import {MockHttpClientModule} from './mock-http-client.module';
+import {MockObservableTesting} from './mock-observable.testing';
+import {MockHttpClientModule} from '@yunzhi/ng-mock-http-client';
+import {MockObservable} from '@yunzhi/ng-mock-http-client';
 
 /**
  * 模拟后台接口模块

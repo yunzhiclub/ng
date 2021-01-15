@@ -11,6 +11,27 @@ const decodeUnicode = (str): string => {
   return str;
 };
 
+/**
+ * 是否不为null或undefined
+ * undefined -> false
+ * null -> false
+ * other -> true
+ * @param value 值
+ */
+export function isNotNullOrUndefined<T>(value: T | undefined | null): value is T {
+  return value as T !== undefined && value as T !== null;
+}
+
+/**
+ * 为null或undefined
+ * @param value 值
+ */
+export function isNullOrUndefined<T>(value: T | undefined | null): value is T {
+  return !isNotNullOrUndefined(value);
+}
+
+
+
 export class Random {
   /**
    * 获取随机数据
