@@ -5,67 +5,69 @@
 # 使用方法
 `npm i @yunzhi/ng-mock-http-client`
 
+更详细的使用请参考项目github中的示例代码。
+
 假设前台依赖于更新用户的`put user`接口：
 ``` typescript
-pubilc updateUser(id: number, user: User): Observable<User> {
-  this.httpClient.put<User>(`user/${id}`, user);
-}
+  public updateUser(id: number, user: User): Observable<User> {
+    return this.httpClient.put<User>(`user/${id}`, user);
+  }
 ```
 
 则可以建立模拟后台接口文件user.api.ts
 ```typescript
-import {MockHttpClientService, MockHttpClientModule} from '@yunzhi/ng-mock-http-client';
-
 export class UserApi implements MockApiInterface {
-  injectMockHttpService(mockHttpService: MockHttpClientService): void { 
-     let subject = null as Subject<HttpResponse<User>>;
-     mockHttpService.registerMockApi(
-       'PUT',
-       `^user/(\d+)$`,
-       () => {
-         subject = new Subject<HttpResponse<User>>();
-         return subject.asObservable();
-       },
-       (urlMatches, options, next) => {
-         console.log(urlMatches);
-         console.log(options);
-         console.log(next);
-         
-         // 获取参数
-         const id = urlMatches[1];
-         
-         // 获取body
-         const body = options.body as User;
-         
-         // 回传user
-         const user = {id, name: 'admin'} as User;
-         next(user, subject);
-       }
-     );
+  injectMockHttpService(mockHttpService: MockHttpClientService): void {
+    let subject = null as Subject<HttpResponse<User>>;
+    mockHttpService.registerMockApi(
+      'PUT',
+      `^user/(\\d+)$`,
+      () => {
+        subject = new Subject<HttpResponse<User>>();
+        return subject.asObservable();
+      },
+      (urlMatches, options, next) => {
+        console.log(urlMatches);
+        console.log(options);
+        console.log(next);
+
+        // 获取参数
+        const id = +urlMatches[1];
+
+        // 获取body
+        const body = options.body as User;
+
+        // 回传user
+        const user = {id, name: 'admin'} as User;
+        next(user, subject);
+      }
+    );
   }
+}
 ```
 
 ## 集成开发测试
 集成开发测试中，使用`MockHttpClientModule`来替换angular的`HttpClientModule`，并同时手动注册接口。
 ```typescript
-import {MockHttpClientService, MockHttpClientModule} from '@yunzhi/ng-mock-http-client';
+import {MockHttpClientModule, MockHttpClientService} from '@yunzhi/ng-mock-http-client';
 
-@NgModule( {
+@NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PartModule,
-    MockHttpClientModule,
+    // 使用MockHttpClientModule，替换HttpClientModule
+    MockHttpClientModule
   ],
+  providers: [],
   bootstrap: [AppComponent]
-} )
+})
 export class AppModule {
 }
 
-// 注册模拟接口
+// 注册模拟api
 MockHttpClientService.registerMockApi(UserApi);
 ```
 
@@ -78,21 +80,42 @@ MockHttpClientService.registerMockApi(UserApi);
 
 
 ```typescript
+import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client';
+
+
  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AnswerSheetComponent],
       imports: [
-        MockHttpClientTestingModule,
-        RouterTestingModule
+        MockHttpClientTestingModule
       ]
     })
       .compileComponents();
   });
-
 ```
 
 ## 返回状态码非200的值
 
+
+## 使用建议
+推荐建立单独的MockApiModule用于注册API：
+
+```typescript
+@NgModule({
+  imports: [
+    MockHttpClientModule
+  ]
+})
+export class MockApiModule {
+}
+
+MockHttpClientService.registerMockApi(AnswerSheetApi);
+MockHttpClientService.registerMockApi(UserApi);
+MockHttpClientService.registerMockApi(QuestionApi);
+MockHttpClientService.registerMockApi(QuestionnaireApi);
+```
+
+然后在集成测试及单元测试中分别引入MockApiModule。
 
 
 # 其它
@@ -107,6 +130,13 @@ Run `ng generate component component-name --project mock-http-client` to generat
 ## Build
 
 Run `ng build mock-http-client` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+
+## Before Publish
+You should test the project before publish。
+After building your library with `ng build mock-http-client --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test。
+
+Then go to test project add `@yunzhi/mock-http-client@version` to package.json，and run `npm link @yunzhi/mock-http-client`。
 
 ## Publishing
 
