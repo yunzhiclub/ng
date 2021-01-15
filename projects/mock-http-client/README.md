@@ -109,10 +109,7 @@ import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client';
 export class MockApiModule {
 }
 
-MockHttpClientService.registerMockApi(AnswerSheetApi);
 MockHttpClientService.registerMockApi(UserApi);
-MockHttpClientService.registerMockApi(QuestionApi);
-MockHttpClientService.registerMockApi(QuestionnaireApi);
 ```
 
 然后在集成测试及单元测试中分别引入MockApiModule。
