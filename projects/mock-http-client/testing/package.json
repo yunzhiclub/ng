@@ -1,3 +1,6 @@
 {
-  "ngPackage": {}
+  "ngPackage": {},
+  "peerDependencies": {
+    "@yunzhi/ng-mock-http-client": "latest"
+  }
 }

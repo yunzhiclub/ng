@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {of, Subject} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
-import {MockObservableInterface} from 'dist/mock-http-client/yunzhi-ng-mock-http-client';
+import {MockObservableInterface} from '@yunzhi/ng-mock-http-client';
 import {HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
 

@@ -15,7 +15,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.updateUser(12, {id: 234, name: 'test'})
-      .subscribe(user => this.title = `${user.id}:${user.name}`);
+      .subscribe(user => {
+        console.log(user);
+        this.title = `${user.id}:${user.name}`;
+      });
   }
 
 }
