@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {RouterStub} from './router.stub';
 import {ActivatedRouteSnapshot, ActivationEnd, ParamMap, Router} from '@angular/router';
-import {isDefined} from '../../../mock-http-client/src/lib/utils';
 
 /**
  * 路由测试桩
@@ -60,7 +59,7 @@ export class ParamMapImpl implements ParamMap {
     this.keys = [];
     this.values = {};
     for (const key in values) {
-      if (isDefined(values[key])) {
+      if (values[key] !== undefined) {
         const value = values[key];
         this.keys.push(key);
         this.values[key] = value;

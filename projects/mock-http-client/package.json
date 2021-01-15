@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/ng-mock-http-client",
-  "version": "0.0.3-snapshot",
+  "version": "0.0.4-snapshot",
   "peerDependencies": {
     "@angular/common": "^10.1.6",
     "@angular/core": "^10.1.6",
@@ -8,5 +8,7 @@
   },
   "dependencies": {
     "tslib": "^2.0.0"
-  }
+  },
+  "repository": "https://github.com/yunzhiclub/ng/tree/main/projects/mock-http-client",
+  "license": "MIT"
 }

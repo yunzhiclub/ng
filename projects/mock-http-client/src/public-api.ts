@@ -5,5 +5,6 @@ export * from './lib/utils';
 export * from './lib/mock-api.interface';
 export * from './lib/mock-http-client.module';
 export * from './lib/mock-http-client.service';
+export * from './lib/mock-loading.interface';
 export * from './lib/mock-observable.interface';
 export * from './lib/mock-observable';
