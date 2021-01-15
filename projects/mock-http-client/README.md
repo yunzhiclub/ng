@@ -80,18 +80,41 @@ MockHttpClientService.registerMockApi(UserApi);
 
 
 ```typescript
-import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client';
+import {MockHttpClientService} from '@yunzhi/ng-mock-http-client';
+import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client/testing';
 
+MockHttpClientService.registerMockApi(UserApi);
 
- beforeEach(async () => {
+describe('AppComponent', () => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AnswerSheetComponent],
       imports: [
+        RouterTestingModule,
         MockHttpClientTestingModule
-      ]
-    })
-      .compileComponents();
+      ],
+      declarations: [
+        AppComponent
+      ],
+    }).compileComponents();
   });
+
+  fit('should render title', () => {
+    // 初始化组件，并手动调用ngOnInit()方法
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.componentInstance.ngOnInit();
+
+    console.log('手动触发数据发送');
+    getTestScheduler().flush();
+
+    console.log('变更检测');
+    fixture.detectChanges();
+
+    console.log('断言');
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.content span').textContent).toContain('12:admin app is running!');
+  });
+});
+
 ```
 
 ## 返回状态码非200的值
