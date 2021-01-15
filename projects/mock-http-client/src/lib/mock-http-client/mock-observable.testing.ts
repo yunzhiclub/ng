@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {of, Subject} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
-import {randomNumber} from 'core';
 import {MockObservableInterface} from './mock-observable.interface';
 import {HttpResponse} from '@angular/common/http';
 import {isNullOrUndefined} from '../utils';
+import {randomNumber} from '../utils-test';
 
 @Injectable()
 export class MockObservableTesting implements MockObservableInterface {
