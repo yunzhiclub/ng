@@ -2,5 +2,8 @@
  * Public API Surface of mock-http-client
  */
 export * from './lib/utils';
-export * from './lib/router-testing/public-api';
-export * from './lib/mock-http-client/public-api';
+export * from './lib/mock-api.interface';
+export * from './lib/mock-http-client.module';
+export * from './lib/mock-http-client.service';
+export * from './lib/mock-observable.interface';
+export * from './lib/mock-observable';

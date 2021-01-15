@@ -10,7 +10,7 @@ import {MockApiInterface} from './mock-api.interface';
 import {MockObservable} from './mock-observable';
 import {finalize, map} from 'rxjs/operators';
 import {MockLoadingService} from './mock-loading.service';
-import {isDefined, isNotNullOrUndefined} from '../utils';
+import {isDefined, isNotNullOrUndefined} from './utils';
 
 /**
  * 模拟API

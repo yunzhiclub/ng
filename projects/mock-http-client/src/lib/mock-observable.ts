@@ -3,7 +3,7 @@ import {of, Subject} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {MockObservableInterface} from './mock-observable.interface';
-import {isNullOrUndefined, randomNumber} from '../utils';
+import {isNullOrUndefined, randomNumber} from './utils';
 
 @Injectable()
 export class MockObservable implements MockObservableInterface {

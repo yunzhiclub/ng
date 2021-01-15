@@ -2,9 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
-import {MockHttpClientTestingModule} from '../../../mock-http-client/src/lib/mock-http-client/mock-http-client.testing.module';
 import {UserApi} from './user.api';
-import {MockHttpClientService} from '';
+import {MockHttpClientService} from '@yunzhi/ng-mock-http-client/public-api';
+import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client/testing';
+
 
 describe('AppComponent', () => {
   beforeEach(async () => {

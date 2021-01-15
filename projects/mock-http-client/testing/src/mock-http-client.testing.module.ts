@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {MockObservableTesting} from './mock-observable.testing';
+import {MockObservableTesting} from './lib/mock-observable.testing';
 import {MockHttpClientModule} from '@yunzhi/ng-mock-http-client';
 import {MockObservable} from '@yunzhi/ng-mock-http-client';
 

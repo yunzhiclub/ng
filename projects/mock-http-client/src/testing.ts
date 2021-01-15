@@ -1,1 +1,1 @@
-export * from './lib/mock-http-client/mock-http-client.testing.module';
+export * from './lib/mock-http-client.testing.module';

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {RouterStub} from './router.stub';
 import {ActivatedRouteSnapshot, ActivationEnd, ParamMap, Router} from '@angular/router';
-import {isDefined} from '../utils';
+import {isDefined} from '../../../mock-http-client/src/lib/utils';
 
 /**
  * 路由测试桩

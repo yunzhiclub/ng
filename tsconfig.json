@@ -19,6 +19,10 @@
       "mock-http-client": [
         "dist/mock-http-client/mock-http-client",
         "dist/mock-http-client"
+      ],
+      "router-testing": [
+        "dist/router-testing/router-testing",
+        "dist/router-testing"
       ]
     }
   }
