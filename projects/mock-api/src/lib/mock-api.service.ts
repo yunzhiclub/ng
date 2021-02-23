@@ -8,7 +8,7 @@ import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
 import {MockObservableInterface} from './mock-observable.interface';
-import {MockRequest, RequestMethodType} from './mock-api.types';
+import {RequestHandler, RequestMethodType} from './mock-api.types';
 
 /**
  * 模拟API
@@ -25,7 +25,7 @@ export class MockApiService {
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
    */
-  routers = {} as Record<RequestMethodType, Record<any, MockRequest<any>>>;
+  routers = {} as Record<RequestMethodType, Record<any, RequestHandler<any>>>;
 
   public static getMockApiService(mockObservable: MockObservableInterface): MockApiService {
     return new MockApiService(mockObservable);
@@ -55,20 +55,20 @@ export class MockApiService {
    * 注册模拟接口
    * @param method 请求方法
    * @param url 请求地址
-   * @param getObservable 获取数据源方法
+   * @param handler 获取数据源方法
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
-                     getObservable: MockRequest<T>): void {
+                     handler: RequestHandler<T>): void {
     if (undefined === this.routers[method] || null === this.routers[method]) {
-      this.routers[method] = {} as Record<string, MockRequest<T>>;
+      this.routers[method] = {} as Record<string, RequestHandler<T>>;
     }
 
     if (isNotNullOrUndefined(this.routers[method][url])) {
       throw Error(`在地址${url}已存在${method}的路由记录`);
     }
 
-    this.routers[method][url] = getObservable;
+    this.routers[method][url] = handler;
   }
 
   delete<T>(url: string, options = {} as {
@@ -278,16 +278,16 @@ export class MockApiService {
     }
 
     const keys = [];
-    let requestCallback = null as MockRequest<R>;
+    let requestHandler = null as RequestHandler<R>;
     let urlMatches = undefined as Array<string>;
-    const urlRecord = this.routers[method] as Record<string, MockRequest<any>>;
+    const urlRecord = this.routers[method] as Record<string, RequestHandler<R>>;
 
     for (const key in urlRecord) {
       if (urlRecord.hasOwnProperty(key)) {
         const reg = new RegExp(key);
         if (reg.test(url)) {
           urlMatches = url.match(reg);
-          requestCallback = urlRecord[key];
+          requestHandler = urlRecord[key];
           keys.push(key);
           if (keys.length > 1) {
             const message = '匹配到了多个URL信息，请检定注入服务的URL信息，URL信息中存在匹配冲突';
@@ -303,6 +303,6 @@ export class MockApiService {
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    return requestCallback.getObservable(this.mockObservable.next, urlMatches, options);
+    return requestHandler(this.mockObservable.next, urlMatches, options);
   }
 }
