@@ -23,11 +23,11 @@
 
 1. 将`import {xxx} from '../../xxx/xxx'`变更为`import {xxx} from '@yunzhi/ng-xxxx'`
 2. `ng build mock-api --prod`及`ng build router-testing --prod`
-3. 进入根目录生成的dist文件夹的 mock-http-client 文件夹
+3. 进入根目录生成的dist文件夹的 mock-api 文件夹
 4. 执行 `npm link`
 5. 进入根目录生成的dist文件夹的 router-testing 文件夹
 6. 执行 `npm link`
-7. 回到项目根据目录，执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
+7. 项目任意位置执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
 8. 进入`project/smploe`，完成集成测试。
 
 
