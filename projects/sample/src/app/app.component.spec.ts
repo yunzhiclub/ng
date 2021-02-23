@@ -5,7 +5,7 @@ import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
 import {MockApiService} from '@yunzhi/ng-mock-api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MockApiInterceptorTesting} from '@yunzhi/ng-mock-api/testing';
+import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
 MockApiService.registerMockApi(UserApi);
 
@@ -20,7 +20,7 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptorTesting, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
       ]
     }).compileComponents();
   });
