@@ -2,7 +2,7 @@
 import {MockApiService} from './mock-api.service';
 import {MockObservable} from './mock-observable';
 
-describe('MockHttpService', () => {
+describe('MockApiService', () => {
   let service: MockApiService;
 
   beforeEach(() => {
