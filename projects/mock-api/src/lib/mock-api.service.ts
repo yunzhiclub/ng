@@ -19,7 +19,7 @@ export class MockApiService {
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
    */
-  routers = {} as Record<RequestMethodType, Record<any, RequestHandler<any>>>;
+  routers = {} as Record<RequestMethodType, Record<any, any | RequestHandler<any>>>;
 
   public static getMockApiService(mockObservable: MockObservableInterface): MockApiService {
     return new MockApiService(mockObservable);
@@ -33,7 +33,16 @@ export class MockApiService {
   registerMockApis(classes: Type<MockApiInterface>[]): void {
     classes.forEach(clazz => {
       const instance = new clazz();
-      instance.injectMockHttpService(this);
+      const injectors = instance.getInjectors();
+      injectors.forEach(injector => {
+        let handlerOrResult = null;
+        if (isDefined(injector.result)) {
+          handlerOrResult = injector.result;
+        } else if (isDefined(injector.handler)) {
+          handlerOrResult = injector.handler;
+        }
+        this.registerMockApi(injector.method, injector.url, handlerOrResult);
+      });
     });
   }
 
@@ -51,7 +60,7 @@ export class MockApiService {
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
-                     handler: RequestHandler<T>): void {
+                     handlerOrResult: T | RequestHandler<T>): void {
     if (undefined === this.routers[method] || null === this.routers[method]) {
       this.routers[method] = {} as Record<string, RequestHandler<T>>;
     }
@@ -60,154 +69,8 @@ export class MockApiService {
       throw Error(`在地址${url}已存在${method}的路由记录`);
     }
 
-    this.routers[method][url] = handler;
+    this.routers[method][url] = handlerOrResult;
   }
-
-  delete<T>(url: string, options = {} as {
-    headers?: HttpHeaders | { [p: string]: string | string[] };
-    observe?: 'body';
-    params?: HttpParams | { [p: string]: string | string[] };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean
-  }): Observable<T> {
-    return this.request<T>('DELETE', url, {
-      observe: 'body',
-      responseType: 'json',
-      headers: options.headers,
-      params: options.params
-    });
-  }
-
-  /**
-   * get方法
-   * @param url 请求地址
-   * @param options 选项
-   */
-  get<T>(url: string, options = {} as {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-  }): Observable<T> {
-    return this.request<T>('GET', url, {
-      observe: 'body',
-      responseType: 'json',
-      headers: options.headers,
-      params: options.params
-    });
-  }
-
-  /**
-   * PATCH方法
-   * @param url 请求地址
-   * @param body 请求主体
-   * @param options 请求选项
-   */
-  patch<T>(url: string, body: any | null, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
-    if (!isNotNullOrUndefined(options)) {
-      options = {};
-    }
-
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-    return this.request<T>('PATCH', url, nextOptions);
-  }
-
-  post<T>(url: string, body: any, options: {
-    headers?: HttpHeaders | { [p: string]: string | string[] };
-    observe?: 'body';
-    params?: HttpParams | { [p: string]: string | string[] };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean
-  }): Observable<T> {
-    options = isDefined(options) ? options : {};
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-
-    return this.request<T>('POST', url, nextOptions);
-  }
-
-  /**
-   * PUT方法
-   * @param url 请求地址
-   * @param body 请求主体
-   * @param options 请求选项
-   */
-  put<T>(url: string, body: any | null, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
-    if (!isNotNullOrUndefined(options)) {
-      options = {};
-    }
-
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-    return this.request<T>('PUT', url, nextOptions);
-  }
-
 
   request<R>(request: HttpRequest<any>): Observable<HttpEvent<R>>;
   /**
@@ -270,7 +133,7 @@ export class MockApiService {
     }
 
     const keys = [];
-    let requestHandler = null as RequestHandler<R>;
+    let requestHandler = null as RequestHandler<R> | R;
     let urlMatches = undefined as Array<string>;
     const urlRecord = this.routers[method] as Record<string, RequestHandler<R>>;
 
@@ -295,7 +158,17 @@ export class MockApiService {
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    const result = requestHandler(this.mockObservable.next, urlMatches, options);
+    // requestHandler可能是回调,也可能是返回值.在此做类型的判断.
+    let result = null as Observable<HttpEvent<R>> | R;
+    if (typeof requestHandler === 'function') {
+      requestHandler = requestHandler as RequestHandler<R>;
+      result = requestHandler(this.mockObservable.next, urlMatches, options);
+    } else {
+      requestHandler = requestHandler as R;
+      result = requestHandler;
+    }
+
+    // 按最终结果的类型分别返回
     if (result instanceof Observable) {
       return result;
     } else {

@@ -14,4 +14,8 @@ export class UserService {
   public updateUser(id: number, user: User): Observable<User> {
     return this.httpClient.put<User>(`user/${id}`, user);
   }
+
+  getCurrentUsername(): Observable<string> {
+    return this.httpClient.get<string>(`user/getCurrentUsername`);
+  }
 }

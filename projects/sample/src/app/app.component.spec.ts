@@ -19,11 +19,12 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        {provide: HTTP_INTERCEPTORS,
-          useClass: MockApiTestingInterceptor.forRoot([
-            UserApi
-          ]),
-          multi: true},
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: MockApiTestingInterceptor
+            .forRoot([UserApi]),
+          multi: true
+        },
       ]
     }).compileComponents().then(() => done());
   });
@@ -37,7 +38,7 @@ describe('AppComponent', () => {
   it(`should have as title 'sample'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Error');
+    expect(app.title).toEqual('Loading');
   });
 
   it('should render title', () => {

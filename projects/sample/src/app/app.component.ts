@@ -7,7 +7,8 @@ import {UserService} from './user.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Error';
+  username = '';
+  title = 'Loading';
 
   constructor(private userService: UserService) {
   }
@@ -21,6 +22,8 @@ export class AppComponent implements OnInit {
     }, () => {
       console.log('complete');
     });
-  }
 
+    this.userService.getCurrentUsername()
+      .subscribe(d => this.username = d);
+  }
 }
