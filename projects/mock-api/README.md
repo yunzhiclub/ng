@@ -2,6 +2,8 @@
 
 > 在angular10.1.5上应用测试通过，其它版本未测试。
 
+更多帮助文档请点击[github]()
+
 # 使用方法
 `npm i @yunzhi/ng-mock-api`
 
@@ -133,12 +135,12 @@ describe('AppComponent', () => {
 
 
 ## 使用建议
-推荐建立单独的MockApiModule用于注册API：
+推荐建立单独的MockApiModule统一注册API：
 
 ```typescript
 @NgModule({
-  imports: [
-    MockHttpClientModule
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
   ]
 })
 export class MockApiModule {

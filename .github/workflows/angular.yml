@@ -1,0 +1,53 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Ng Test and Build
+
+on:
+  pull_request:
+
+jobs:
+  angular:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.8
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.8
+      - name: set PR_NUMBER
+        run: |
+          echo PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') >> $GITHUB_ENV
+          echo PR_TITLE=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH") >> $GITHUB_ENV
+          echo PR_URL=$(jq --raw-output .pull_request._links.html.href "$GITHUB_EVENT_PATH") >> $GITHUB_ENV
+          echo PR_USER=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH") >> $GITHUB_ENV
+          echo YZ_DESCRIPTION=$(jq --raw-output .repository.description "$GITHUB_EVENT_PATH") >> $GITHUB_ENV
+          echo YZ_HTML_URL=$(jq --raw-output .repository.html_url "$GITHUB_EVENT_PATH") >> $GITHUB_ENV
+      - name: print env
+        run: printenv
+      - name: npm install
+        run: |
+          npm install --no-optional  --no-package-lock
+          node_modules/@angular/cli/bin/ng --version
+      - name: ng lint
+        run: node_modules/@angular/cli/bin/ng lint
+      - name: ng build mock-api
+        run: node_modules/@angular/cli/bin/ng build mock-api --prod
+      - name: ng build router-testing
+        run: node_modules/@angular/cli/bin/ng build router-testing --prod
+      - name: npm link
+        run: cd dist/mock-api && npm link
+      - name: npm link
+        run: cd dist/router-testing && npm link
+      - name: npm link
+        run: npm link @yunzhi/ng-mock-api && npm link @yunzhi/ng-router-testing
+      - name: ng test
+        run: node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless --sourceMap=false
+      - name: ng build
+        run: node_modules/@angular/cli/bin/ng build --prod

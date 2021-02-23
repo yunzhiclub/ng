@@ -2,14 +2,19 @@
 
 | 名称 | 基本功能 | 适用场景 | 
 | ------ | ------ | ------ | 
-| MockApiInterceptor | 对Http请求进行拦截，返回自定义API数据 | 使用文件统一前后台API、开发组件时抛弃测试桩而用生产环境的服务、避免一些因测试生产数据格式返回不统一造成的问题 |
-| MockApiTestingInterceptor | 用于单元测试中对http请求拦截、手动控制数据返回时机 | 适用于单元测试 |
+| [MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api) | 对Http请求进行拦截，返回自定义API数据 | 使用文件统一前后台API、开发组件时抛弃测试桩而用生产环境的服务、避免一些因测试生产数据格式返回不统一造成的问题 |
+| [MockApiTestingInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api) | 用于单元测试中对http请求拦截、手动控制数据返回时机 | 适用于单元测试 |
 | RouterTestingModule | 替换Angular内置AngularRouterTestingModule | 更方便的发送模拟数据、更低的测试成本 |
+
+
+更多帮助文档请点击[github](https://github.com/yunzhiclub/ng)
 
 # 安装
 `npm i @yunzhi/ng-mock-api`
 
 `npm i @yunzhi/ng-router-testing`
+
+使用文档请参考：[MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
 
 # 开发步骤
 1. `npm install`
