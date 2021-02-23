@@ -295,6 +295,13 @@ export class MockApiService {
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    return requestHandler(this.mockObservable.next, urlMatches, options);
+    const result = requestHandler(this.mockObservable.next, urlMatches, options);
+    if (result instanceof Observable) {
+      return result;
+    } else {
+      return new Observable<HttpEvent<R>>(observable => {
+        this.mockObservable.next(result, observable);
+      });
+    }
   }
 }

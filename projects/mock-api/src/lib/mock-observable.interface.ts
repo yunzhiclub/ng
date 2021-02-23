@@ -1,6 +1,6 @@
-import {HttpResponse} from '@angular/common/http';
-import {Subject} from 'rxjs';
+import {HttpEvent} from '@angular/common/http';
+import {Subscriber} from 'rxjs/internal/Subscriber';
 
 export interface MockObservableInterface {
-  next<T>(data: T, subject: Subject<HttpResponse<T>>): void;
+  next<T>(data: T, subject: Subscriber<HttpEvent<T>>): void;
 }

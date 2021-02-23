@@ -1,8 +1,9 @@
 /**
  * 请求的5种类型
  */
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpEvent, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Subscriber} from 'rxjs/internal/Subscriber';
 
 export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
@@ -13,7 +14,7 @@ export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
  * @param options 其它请求选项
  */
 export type RequestHandler<T>
-  = (delayNext: (data: T, subject: Subject<HttpEvent<T>>) => void,
+  = (delayNext: (data: T, subject: Subscriber<HttpEvent<T>>) => void,
      urlMatches: Array<string>,
      options: {
        body?: any;
@@ -27,5 +28,5 @@ export type RequestHandler<T>
        };
        responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
        withCredentials?: boolean;
-     }) => Observable<HttpEvent<T>>;
+     }) => Observable<HttpEvent<T>> | T;
 

@@ -5,6 +5,7 @@ import {HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
 // 集成测试请启用如下代码
 import {MockObservableInterface} from '@yunzhi/ng-mock-api';
+import {Subscriber} from 'rxjs/internal/Subscriber';
 // 开发时请启用如下代码
 // import {MockObservableInterface} from '../../../src/lib/mock-observable.interface';
 
@@ -21,7 +22,7 @@ export class MockTestingObservable implements MockObservableInterface {
    * @param data 返回的数据
    * @param subject 可供继续发送数据的数据源
    */
-  next<T>(data: T, subject: Subject<HttpResponse<T>>): void {
+  next<T>(data: T, subject: Subscriber<HttpResponse<T>>): void {
     const delayCount = randomNumber() % 6;
     try {
       let interval = '';
