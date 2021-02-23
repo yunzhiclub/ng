@@ -2,8 +2,10 @@
 
 > 在angular10.1.5上应用测试通过，其它版本未测试。
 
+更多帮助文档请点击[github]()
+
 # 使用方法
-`npm i @yunzhi/ng-mock-http-client`
+`npm i @yunzhi/ng-mock-api`
 
 更详细的使用请参考项目github中的示例代码。
 
@@ -16,32 +18,46 @@
 
 则可以建立模拟后台接口文件user.api.ts
 ```typescript
+/**
+ * user模拟接口.
+ * 必须实现MockApiInterface接口
+ */
 export class UserApi implements MockApiInterface {
-  injectMockHttpService(mockHttpService: MockHttpClientService): void {
-    let subject = null as Subject<HttpResponse<User>>;
-    mockHttpService.registerMockApi(
-      'PUT',
-      `^user/(\\d+)$`,
-      () => {
-        subject = new Subject<HttpResponse<User>>();
-        return subject.asObservable();
-      },
-      (urlMatches, options, next) => {
-        console.log(urlMatches);
-        console.log(options);
-        console.log(next);
 
-        // 获取参数
-        const id = +urlMatches[1];
+  /**
+   * 实现接口MockApiInterface中的injectMockHttpService方法
+   * @param mockApiService 模拟API服务
+   */
+  injectMockHttpService(mockApiService: MockApiService): void {
 
-        // 获取body
-        const body = options.body as User;
+    /**
+     * 开始注册更新用户接口.
+     * 请求方法为:put
+     * url为: user/123
+     */
+    mockApiService.registerMockApi<User>('PUT', `^user/(\\d+)$`,
+      // handler为该接口对应返回的模块数据
+      (delayNext, urlMatches, options) => {
+        return new Observable<HttpResponse<User>>(observable => {
+          // 用于延迟发送数据的delayNext
+          console.log(delayNext);
+          // 获取到的URL信息
+          console.log(urlMatches);
+          // 其它请求选项
+          console.log(options);
 
-        // 回传user
-        const user = {id, name: 'admin'} as User;
-        next(user, subject);
-      }
-    );
+          // 获取参数
+          const id = +urlMatches[1];
+
+          // 获取body
+          const body = options.body as User;
+          body.id = id;
+
+          // 响应请求
+          observable.next(new HttpResponse({body}));
+          observable.complete();
+        });
+      });
   }
 }
 ```
@@ -49,56 +65,55 @@ export class UserApi implements MockApiInterface {
 ## 集成开发测试
 集成开发测试中，使用`MockHttpClientModule`来替换angular的`HttpClientModule`，并同时手动注册接口。
 ```typescript
-import {MockHttpClientModule, MockHttpClientService} from '@yunzhi/ng-mock-http-client';
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    // 使用MockHttpClientModule，替换HttpClientModule
-    MockHttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule {
-}
-
-// 注册模拟api
-MockHttpClientService.registerMockApi(UserApi);
+   declarations: [
+     AppComponent
+   ],
+   imports: [
+     BrowserModule,
+     AppRoutingModule,
+     HttpClientModule
+   ],
+   providers: [
+     {provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptor, multi: true},
+   ],
+   bootstrap: [AppComponent]
+ })
+ export class AppModule {
+ }
+ 
+ MockApiService.registerMockApi(UserApi);
 ```
 
 此时调用更新方法时UserApi中的模拟返回值将生效。
 
-当后台开发完毕后，将`MockHttpClientModule`移除并替换为`HttpClientModule`（注册的模拟接口的代码可以全部删除掉），则将进行正常的请求。
+当后台开发完毕后，移除MockApiInterceptor拦截器，则将进行正常的请求。
 
 ## 单元测试
-在单元测试中，我们需要引用`MockHttpClientTestingModule`来替换原`HttpClientModule`
+在单元测试中的使用方法与上述方法基本相同，区别在于需要引用测试专用的拦截器
 
 
 ```typescript
-import {MockHttpClientService} from '@yunzhi/ng-mock-http-client';
-import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client/testing';
 
-MockHttpClientService.registerMockApi(UserApi);
+MockApiService.registerMockApi(UserApi);
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MockHttpClientTestingModule
+        HttpClientModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
+      ]
     }).compileComponents();
   });
-
-  fit('should render title', () => {
+  
+  it('should render title', () => {
     // 初始化组件，并手动调用ngOnInit()方法
     const fixture = TestBed.createComponent(AppComponent);
     fixture.componentInstance.ngOnInit();
@@ -111,22 +126,21 @@ describe('AppComponent', () => {
 
     console.log('断言');
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('12:admin app is running!');
+    expect(compiled.querySelector('h1').textContent).toContain('12:test app is running!');
   });
 });
-
 ```
 
 ## 返回状态码非200的值
 
 
 ## 使用建议
-推荐建立单独的MockApiModule用于注册API：
+推荐建立单独的MockApiModule统一注册API：
 
 ```typescript
 @NgModule({
-  imports: [
-    MockHttpClientModule
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
   ]
 })
 export class MockApiModule {

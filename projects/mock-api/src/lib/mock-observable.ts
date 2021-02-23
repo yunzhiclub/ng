@@ -1,11 +1,9 @@
-import {Injectable} from '@angular/core';
 import {of, Subject} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {MockObservableInterface} from './mock-observable.interface';
 import {isNullOrUndefined, randomNumber} from './utils';
 
-@Injectable()
 export class MockObservable implements MockObservableInterface {
 
   constructor() {
@@ -17,9 +15,12 @@ export class MockObservable implements MockObservableInterface {
    */
   next<T>(data: T, subject: Subject<HttpResponse<T>>): void {
     const delayCount = randomNumber() % 6;
-    of(new HttpResponse({body: data})).pipe(delay(delayCount * delayCount * 100))
+    of(new HttpResponse({body: data}))
+      .pipe(delay(delayCount * delayCount * 100))
       .subscribe(t => {
-        isNullOrUndefined(t) ? subject.next() : subject.next(t);
+        isNullOrUndefined(t)
+          ? subject.next()
+          : subject.next(t);
         subject.complete();
       });
   }

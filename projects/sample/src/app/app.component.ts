@@ -7,18 +7,20 @@ import {UserService} from './user.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'sample';
-
+  title = 'Error';
 
   constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
-    this.userService.updateUser(12, {id: 234, name: 'test'})
-      .subscribe(user => {
-        console.log(user);
-        this.title = `${user.id}:${user.name}`;
-      });
+    const observer = this.userService.updateUser(12, {id: 234, name: 'test'});
+    observer.subscribe(user => {
+      this.title = `${user.id}:${user.name}`;
+    }, (error) => {
+      console.log(error);
+    }, () => {
+      console.log('complete');
+    });
   }
 
 }

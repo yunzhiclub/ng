@@ -1,23 +1,27 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import {TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
-import {MockHttpClientService} from '@yunzhi/ng-mock-http-client';
-import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client/testing';
+import {MockApiService} from '@yunzhi/ng-mock-api';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
-MockHttpClientService.registerMockApi(UserApi);
+MockApiService.registerMockApi(UserApi);
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MockHttpClientTestingModule
+        HttpClientModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
+      ]
     }).compileComponents();
   });
 
@@ -30,10 +34,10 @@ describe('AppComponent', () => {
   it(`should have as title 'sample'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sample');
+    expect(app.title).toEqual('Error');
   });
 
-  fit('should render title', () => {
+  it('should render title', () => {
     // 初始化组件，并手动调用ngOnInit()方法
     const fixture = TestBed.createComponent(AppComponent);
     fixture.componentInstance.ngOnInit();
@@ -46,7 +50,7 @@ describe('AppComponent', () => {
 
     console.log('断言');
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('12:admin app is running!');
+    expect(compiled.querySelector('h1').textContent).toContain('12:test app is running!');
   });
 });
 
