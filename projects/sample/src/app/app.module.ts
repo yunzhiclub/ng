@@ -5,8 +5,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {UserApi} from './user.api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MockApiInterceptor} from '../../../mock-http-client/src/lib/mock-api.interceptor';
-import {MockApiService} from '../../../mock-http-client/src/lib/mock-api.service';
+import {MockApiInterceptor} from '../../../mock-api/src/lib/mock-api.interceptor';
+import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
 
 @NgModule({
   declarations: [

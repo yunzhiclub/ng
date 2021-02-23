@@ -1,8 +1,8 @@
 import {Observable} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {User} from './user';
-import {MockApiInterface} from '../../../mock-http-client/src/lib/mock-api.interface';
-import {MockApiService} from '../../../mock-http-client/src/lib/mock-api.service';
+import {MockApiInterface} from '../../../mock-api/src/lib/mock-api.interface';
+import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
 
 export class UserApi implements MockApiInterface {
   injectMockHttpService(mockHttpService: MockApiService): void {
