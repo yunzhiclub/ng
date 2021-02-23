@@ -203,7 +203,10 @@
           }
         }
       }
-    },
+    }
   },
-  "defaultProject": "sample"
+  "defaultProject": "sample",
+  "cli": {
+    "analytics": "9a267a0a-e652-4be6-af37-d5899261c184"
+  }
 }

@@ -7,7 +7,9 @@ import {UserService} from './user.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Error';
+  username = '';
+  title = 'Loading';
+  loginResult = '';
 
   constructor(private userService: UserService) {
   }
@@ -21,6 +23,19 @@ export class AppComponent implements OnInit {
     }, () => {
       console.log('complete');
     });
-  }
 
+    this.userService.getCurrentUsername()
+      .subscribe(d => this.username = d);
+
+    this.userService.login()
+      .subscribe(() => {
+        this.loginResult = 'success';
+      }, (error) => {
+        console.log('成功接收到登录失败信息');
+        console.log(error);
+        this.loginResult = 'fail';
+      });
+
+    this.userService.delete(1);
+  }
 }

@@ -1,7 +1,9 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {MockObservable} from './mock-observable';
+import {DelayHandler} from './delay-handler';
 import {MockApiService} from './mock-api.service';
+import {Type} from '@angular/core';
+import {MockApiInterface} from './mock-api.interface';
 
 /**
  * 模拟拦截器.
@@ -15,15 +17,18 @@ export class MockApiInterceptor implements HttpInterceptor {
    */
   private static mockApiService = null as MockApiService;
 
-  constructor() {
-    if (null === MockApiInterceptor.mockApiService) {
-      /**
-       * 注意非测试环境下的MockObservable(不支持cold hot等测试专用方法).
-       */
-      MockApiInterceptor.mockApiService = MockApiService.getMockApiService(
-        new MockObservable()
-      );
-    }
+  /**
+   * 启动时注册API
+   * @param mockApis 模拟API
+   */
+  static forRoot(mockApis: Type<MockApiInterface>[]): Type<HttpInterceptor> {
+    const mockApiService = MockApiService.getMockApiService(
+      new DelayHandler()
+    );
+
+    mockApiService.registerMockApis(mockApis);
+    MockApiInterceptor.mockApiService = mockApiService;
+    return MockApiInterceptor;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

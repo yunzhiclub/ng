@@ -1,67 +1,55 @@
 import {
   HttpEvent,
   HttpHeaders,
-  HttpParams, HttpRequest
+  HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {observable, Observable, of} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
-import {MockObservableInterface} from './mock-observable.interface';
+import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
+import {DelayHandler} from './delay-handler';
 
 /**
  * 模拟API
  */
 export class MockApiService {
-
-  /**
-   * 模拟接口注册者
-   * 在程序正式启动以前，所以的模拟接口都将注册到本属性中，供在构造函数中循环调用从而完成接口注册
-   */
-  static mockApiRegisters = [] as Array<Type<MockApiInterface>>;
-  static instance = null as MockApiService;
-
   /**
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
    */
-  routers = {} as Record<RequestMethodType, Record<any, RequestHandler<any>>>;
+  routers = {} as Record<RequestMethodType, Record<any, any | RequestHandler<any>>>;
 
-  public static getMockApiService(mockObservable: MockObservableInterface): MockApiService {
+  public static getMockApiService(mockObservable: DelayHandlerInterface): MockApiService {
     return new MockApiService(mockObservable);
   }
 
 
   /**
    * 注册模拟接口
-   * @param clazz 接口类型
+   * @param classes 接口类型
    */
-  static registerMockApi(clazz: Type<MockApiInterface>): void {
-    if (null === MockApiService.instance) {
-      this.mockApiRegisters.push(clazz);
-    } else {
-      MockApiService.inject(clazz);
-    }
-  }
-
-  /**
-   * 注入本服务实例.
-   * @param clazz 需要注入的模拟API
-   */
-  private static inject(clazz: Type<MockApiInterface>): void {
-    const instance = new clazz();
-    instance.injectMockHttpService(MockApiService.instance);
+  registerMockApis(classes: Type<MockApiInterface>[]): void {
+    classes.forEach(clazz => {
+      const instance = new clazz();
+      const injectors = instance.getInjectors();
+      injectors.forEach(injector => {
+        let handlerOrResult = null;
+        if (isDefined(injector.result)) {
+          handlerOrResult = injector.result;
+        } else if (isDefined(injector.handler)) {
+          handlerOrResult = injector.handler;
+        }
+        this.registerMockApi(injector.method, injector.url, handlerOrResult);
+      });
+    });
   }
 
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: MockObservableInterface) {
-    MockApiService.instance = this;
-    MockApiService.mockApiRegisters.forEach(mockApiClazz => {
-      MockApiService.inject(mockApiClazz);
-    });
+  private constructor(private mockObservable: DelayHandler) {
   }
 
   /**
@@ -72,7 +60,7 @@ export class MockApiService {
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
-                     handler: RequestHandler<T>): void {
+                     handlerOrResult: T | RequestHandler<T>): void {
     if (undefined === this.routers[method] || null === this.routers[method]) {
       this.routers[method] = {} as Record<string, RequestHandler<T>>;
     }
@@ -81,154 +69,8 @@ export class MockApiService {
       throw Error(`在地址${url}已存在${method}的路由记录`);
     }
 
-    this.routers[method][url] = handler;
+    this.routers[method][url] = handlerOrResult;
   }
-
-  delete<T>(url: string, options = {} as {
-    headers?: HttpHeaders | { [p: string]: string | string[] };
-    observe?: 'body';
-    params?: HttpParams | { [p: string]: string | string[] };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean
-  }): Observable<T> {
-    return this.request<T>('DELETE', url, {
-      observe: 'body',
-      responseType: 'json',
-      headers: options.headers,
-      params: options.params
-    });
-  }
-
-  /**
-   * get方法
-   * @param url 请求地址
-   * @param options 选项
-   */
-  get<T>(url: string, options = {} as {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-  }): Observable<T> {
-    return this.request<T>('GET', url, {
-      observe: 'body',
-      responseType: 'json',
-      headers: options.headers,
-      params: options.params
-    });
-  }
-
-  /**
-   * PATCH方法
-   * @param url 请求地址
-   * @param body 请求主体
-   * @param options 请求选项
-   */
-  patch<T>(url: string, body: any | null, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
-    if (!isNotNullOrUndefined(options)) {
-      options = {};
-    }
-
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-    return this.request<T>('PATCH', url, nextOptions);
-  }
-
-  post<T>(url: string, body: any, options: {
-    headers?: HttpHeaders | { [p: string]: string | string[] };
-    observe?: 'body';
-    params?: HttpParams | { [p: string]: string | string[] };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean
-  }): Observable<T> {
-    options = isDefined(options) ? options : {};
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-
-    return this.request<T>('POST', url, nextOptions);
-  }
-
-  /**
-   * PUT方法
-   * @param url 请求地址
-   * @param body 请求主体
-   * @param options 请求选项
-   */
-  put<T>(url: string, body: any | null, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
-    if (!isNotNullOrUndefined(options)) {
-      options = {};
-    }
-
-    const nextOptions = options as {
-      body?: any;
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      observe: 'body';
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      responseType?: 'json';
-      withCredentials?: boolean;
-    };
-
-    nextOptions.body = body;
-    return this.request<T>('PUT', url, nextOptions);
-  }
-
 
   request<R>(request: HttpRequest<any>): Observable<HttpEvent<R>>;
   /**
@@ -256,6 +98,7 @@ export class MockApiService {
     withCredentials?: boolean;
   }): Observable<R>;
   request<R>(arg0: any, ...args: any[]): any {
+    // 初化始信息
     let url: string;
     let options: {
       body?: any;
@@ -272,6 +115,7 @@ export class MockApiService {
     };
     let method: string;
 
+    // 根据请求参数类型,初始化请求基本信息
     if (arg0 instanceof HttpRequest) {
       method = arg0.method.toUpperCase();
       url = arg0.url;
@@ -290,14 +134,15 @@ export class MockApiService {
       options = args[1];
     }
 
+    // 根据请求数据,查找注册的API
     const keys = [];
-    let requestHandler = null as RequestHandler<R>;
+    let requestHandler = null as RequestHandler<R> | R;
     let urlMatches = undefined as Array<string>;
     const urlRecord = this.routers[method] as Record<string, RequestHandler<R>>;
 
     for (const key in urlRecord) {
       if (urlRecord.hasOwnProperty(key)) {
-        const reg = new RegExp(key);
+        const reg = new RegExp(`^${key}$`);
         if (reg.test(url)) {
           urlMatches = url.match(reg);
           requestHandler = urlRecord[key];
@@ -311,11 +156,35 @@ export class MockApiService {
       }
     }
 
+    // 未找到API则报错
     if (keys.length === 0) {
       throw Error(`未找到对应的模拟返回数据：1. 请检查url、method是否正确 ${method}, ${url}；
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    return requestHandler(this.mockObservable.next, urlMatches, options);
+    // requestHandler可能是回调,也可能是返回值.在此做类型的判断.
+    let result = null as Observable<HttpEvent<R>> | R;
+    if (typeof requestHandler === 'function') {
+      requestHandler = requestHandler as RequestHandler<R>;
+      result = requestHandler(urlMatches, options);
+    } else {
+      requestHandler = requestHandler as R;
+      result = requestHandler;
+    }
+
+    // 按最终结果的类型分别返回
+    if (result instanceof Observable) {
+      return result;
+    } else if (result instanceof HttpResponseBase) {
+      return new Observable(ob => {
+        ob.next(result);
+        ob.complete();
+      });
+    } else {
+      // 一般数据时加入延时
+      return new Observable<HttpEvent<R>>(observable1 => {
+        this.mockObservable.next(result, observable1);
+      });
+    }
   }
 }

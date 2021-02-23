@@ -1,8 +1,8 @@
-import {MockApiService} from './mock-api.service';
+import {ApiInjector} from './mock-api.types';
 
 /**
  * 所有模拟接口都应该实现该接口
  */
 export interface MockApiInterface {
-  injectMockHttpService(mockHttpClientService: MockApiService): void;
+  getInjectors(): ApiInjector<any>[];
 }

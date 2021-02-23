@@ -3,11 +3,10 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
-import {MockApiService} from '@yunzhi/ng-mock-api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+// import {MockApiTestingInterceptor} from '../../../mock-api/testing/src/lib/mock-api.testing.interceptor';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
-MockApiService.registerMockApi(UserApi);
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -20,7 +19,12 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: MockApiTestingInterceptor
+            .forRoot([UserApi]),
+          multi: true
+        },
       ]
     }).compileComponents();
   });
@@ -34,7 +38,7 @@ describe('AppComponent', () => {
   it(`should have as title 'sample'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Error');
+    expect(app.title).toEqual('Loading');
   });
 
   it('should render title', () => {
@@ -51,6 +55,8 @@ describe('AppComponent', () => {
     console.log('断言');
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('12:test app is running!');
+    expect(compiled.querySelector('h2').textContent).toContain('yunzhi');
+    expect(compiled.querySelector('h3').textContent).toContain('fail');
   });
 });
 

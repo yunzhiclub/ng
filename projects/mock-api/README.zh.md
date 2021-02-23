@@ -145,7 +145,7 @@ You can use MockApiTestingInterceptor instead of MockApiInterceptor, for example
   });
 ```
 
-Please not we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly.
+Please not we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly. 
 
 Then you can use  `getTestScheduler().flush();` tick the time.
 
@@ -168,7 +168,7 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 ## Code scaffolding
 
 Run `ng generate component component-name --project mock-http-client` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project mock-http-client`.
-> Note: Don't forget to add `--project mock-http-client` or else it will be added to the default project in your `angular.json` file.
+> Note: Don't forget to add `--project mock-http-client` or else it will be added to the default project in your `angular.json` file. 
 
 ## Build
 
