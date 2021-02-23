@@ -20,6 +20,7 @@ export class MockApiService {
    * 在程序正式启动以前，所以的模拟接口都将注册到本属性中，供在构造函数中循环调用从而完成接口注册
    */
   static mockApiRegisters = [] as Array<Type<MockApiInterface>>;
+  static instance = null as MockApiService;
 
   /**
    * 路由信息
@@ -37,17 +38,29 @@ export class MockApiService {
    * @param clazz 接口类型
    */
   static registerMockApi(clazz: Type<MockApiInterface>): void {
-    this.mockApiRegisters.push(clazz);
+    if (null === MockApiService.instance) {
+      this.mockApiRegisters.push(clazz);
+    } else {
+      MockApiService.inject(clazz);
+    }
   }
 
+  /**
+   * 注入本服务实例.
+   * @param clazz 需要注入的模拟API
+   */
+  private static inject(clazz: Type<MockApiInterface>): void {
+    const instance = new clazz();
+    instance.injectMockHttpService(MockApiService.instance);
+  }
 
   /**
    * 循环调用从而完成所有的接口注册
    */
   private constructor(private mockObservable: MockObservableInterface) {
-    MockApiService.mockApiRegisters.forEach(api => {
-      const instance = new api();
-      instance.injectMockHttpService(this);
+    MockApiService.instance = this;
+    MockApiService.mockApiRegisters.forEach(mockApiClazz => {
+      MockApiService.inject(mockApiClazz);
     });
   }
 

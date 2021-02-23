@@ -5,8 +5,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {UserApi} from './user.api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MockApiInterceptor} from '../../../mock-api/src/lib/mock-api.interceptor';
-import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
+// 开发时请移除以下两行注释
+// import {MockApiInterceptor} from '../../../mock-api/src/lib/mock-api.interceptor';
+// import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
+// 开发时请将下行注释掉
+import {MockApiService, MockApiInterceptor} from '@yunzhi/ng-mock-api';
 
 @NgModule({
   declarations: [
