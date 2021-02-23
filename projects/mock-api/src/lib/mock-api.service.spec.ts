@@ -1,12 +1,12 @@
 
 import {MockApiService} from './mock-api.service';
-import {MockObservable} from './mock-observable';
+import {DelayHandler} from './delay-handler';
 
 describe('MockApiService', () => {
   let service: MockApiService;
 
   beforeEach(() => {
-    service = MockApiService.getMockApiService(new MockObservable());
+    service = MockApiService.getMockApiService(new DelayHandler());
   });
 
   it('should be created', () => {

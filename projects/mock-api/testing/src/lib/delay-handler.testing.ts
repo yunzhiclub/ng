@@ -1,16 +1,18 @@
-import {of, Subject} from 'rxjs';
+import {of} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
 // 集成测试请启用如下代码
-import {MockObservableInterface} from '@yunzhi/ng-mock-api';
 import {Subscriber} from 'rxjs/internal/Subscriber';
+import {DelayHandlerInterface} from '@yunzhi/ng-mock-api';
 // 开发时请启用如下代码
-// import {MockObservableInterface} from '../../../src/lib/mock-observable.interface';
+// import {DelayHandlerInterface} from '../../../src/lib/delay-handler.interface';
 
-
-export class MockTestingObservable implements MockObservableInterface {
+/**
+ * 测试时用于模拟delay.
+ */
+export class DelayHandlerTesting implements DelayHandlerInterface {
 
   constructor() {
   }

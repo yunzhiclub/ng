@@ -3,7 +3,6 @@
  */
 import {Observable} from 'rxjs';
 import {HttpEvent, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Subscriber} from 'rxjs/internal/Subscriber';
 
 export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
@@ -36,7 +35,13 @@ export type RequestHandler<T>
 export class ApiInjector<T> {
   method: RequestMethodType;
   url: string;
+  /**
+   * 返回结果,优先获取
+   */
   result?: T;
+  /**
+   * 在未获取到返回结果时,调用本函数.
+   */
   handler?: RequestHandler<T>;
 
   constructor(obj: ApiInjector<T> = {} as ApiInjector<T>) {

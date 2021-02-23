@@ -7,9 +7,9 @@ import {observable, Observable, of} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
-import {MockObservableInterface} from './mock-observable.interface';
+import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
-import {MockObservable} from './mock-observable';
+import {DelayHandler} from './delay-handler';
 
 /**
  * 模拟API
@@ -21,7 +21,7 @@ export class MockApiService {
    */
   routers = {} as Record<RequestMethodType, Record<any, any | RequestHandler<any>>>;
 
-  public static getMockApiService(mockObservable: MockObservableInterface): MockApiService {
+  public static getMockApiService(mockObservable: DelayHandlerInterface): MockApiService {
     return new MockApiService(mockObservable);
   }
 
@@ -49,7 +49,7 @@ export class MockApiService {
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: MockObservable) {
+  private constructor(private mockObservable: DelayHandler) {
   }
 
   /**
@@ -98,6 +98,7 @@ export class MockApiService {
     withCredentials?: boolean;
   }): Observable<R>;
   request<R>(arg0: any, ...args: any[]): any {
+    // 初化始信息
     let url: string;
     let options: {
       body?: any;
@@ -114,6 +115,7 @@ export class MockApiService {
     };
     let method: string;
 
+    // 根据请求参数类型,初始化请求基本信息
     if (arg0 instanceof HttpRequest) {
       method = arg0.method.toUpperCase();
       url = arg0.url;
@@ -132,6 +134,7 @@ export class MockApiService {
       options = args[1];
     }
 
+    // 根据请求数据,查找注册的API
     const keys = [];
     let requestHandler = null as RequestHandler<R> | R;
     let urlMatches = undefined as Array<string>;
@@ -153,6 +156,7 @@ export class MockApiService {
       }
     }
 
+    // 未找到API则报错
     if (keys.length === 0) {
       throw Error(`未找到对应的模拟返回数据：1. 请检查url、method是否正确 ${method}, ${url}；
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
@@ -177,6 +181,7 @@ export class MockApiService {
         ob.complete();
       });
     } else {
+      // 一般数据时加入延时
       return new Observable<HttpEvent<R>>(observable1 => {
         this.mockObservable.next(result, observable1);
       });
