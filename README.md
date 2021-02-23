@@ -35,6 +35,12 @@
 7. 项目任意位置执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
 8. 进入`project/smploe`，完成集成测试。
 
+## 发布
+发布前先登录：`npm login`
+
+然后进入相关文件夹完成发布：
+`cd dist/mock-api && npm publish --access=public`
+
 
 ## 测试开发中的注意点
 每次修改一点都按上述开发步骤执行一次不太现实，在实际的开发过程中往往是边开发边测试。开发中应该多用单元测试，以代码测代码以保证代码的质量。在进行集成测试时，每次代码变更后都需要重新执行`ng build xxx --prod`。
