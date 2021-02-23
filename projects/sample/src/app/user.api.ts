@@ -4,8 +4,8 @@
 import {MockApiInterface} from '@yunzhi/ng-mock-api';
 import {ApiInjector} from '../../../mock-api/src/lib/mock-api.types';
 import {User} from './user';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+import {observable, Observable} from 'rxjs';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
 /**
  * user模拟接口.
@@ -22,13 +22,23 @@ export class UserApi implements MockApiInterface {
     return [
       new ApiInjector<string>({
         method: 'GET',
-        url: `^user/getCurrentUsername$`,
+        url: `user/getCurrentUsername`,
         result: 'yunzhi'
+      }),
+      new ApiInjector<Observable<HttpErrorResponse>>({
+        method: 'GET',
+        url: 'user/login',
+        handler: ((delayNext, urlMatches, options) => {
+          return new Observable<HttpErrorResponse>(ob => {
+            ob.error(new HttpErrorResponse({status: 401}));
+            ob.complete();
+          });
+        })
       }),
       new ApiInjector<User>(
         {
           method: 'PUT',
-          url: `^user/(\\d+)$`,
+          url: `user/(\\d+)`,
           handler: // handler为该接口对应返回的模块数据
             (delayNext, urlMatches, options) => {
               return new Observable<HttpResponse<User>>(observable => {

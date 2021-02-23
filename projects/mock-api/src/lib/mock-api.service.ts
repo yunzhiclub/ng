@@ -1,9 +1,9 @@
 import {
   HttpEvent,
   HttpHeaders,
-  HttpParams, HttpRequest
+  HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {observable, Observable} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
@@ -139,7 +139,7 @@ export class MockApiService {
 
     for (const key in urlRecord) {
       if (urlRecord.hasOwnProperty(key)) {
-        const reg = new RegExp(key);
+        const reg = new RegExp(`^${key}$`);
         if (reg.test(url)) {
           urlMatches = url.match(reg);
           requestHandler = urlRecord[key];
@@ -172,8 +172,8 @@ export class MockApiService {
     if (result instanceof Observable) {
       return result;
     } else {
-      return new Observable<HttpEvent<R>>(observable => {
-        this.mockObservable.next(result, observable);
+      return new Observable<HttpEvent<R>>(observable1 => {
+        this.mockObservable.next(result, observable1);
       });
     }
   }
