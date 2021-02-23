@@ -1,10 +1,10 @@
 import {Observable} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {User} from './user';
-// 开发时请移除以下两行注释
+// 开发时请启用如下代码
 // import {MockApiInterface} from '../../../mock-api/src/lib/mock-api.interface';
 // import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
-// 开发时请将下行注释掉
+// 集成测试请启用如下代码
 import {MockApiService, MockApiInterface} from '@yunzhi/ng-mock-api';
 
 export class UserApi implements MockApiInterface {

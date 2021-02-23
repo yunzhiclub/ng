@@ -3,13 +3,13 @@ import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
-// 开发时请移除以下行注释
-// import {MockObservableInterface} from '@yunzhi/ng-mock-api';
-// 开发时请将下行注释掉
-import {MockObservableInterface} from '../../../src/lib/mock-observable.interface';
+// 集成测试请启用如下代码
+import {MockObservableInterface} from '@yunzhi/ng-mock-api';
+// 开发时请启用如下代码
+// import {MockObservableInterface} from '../../../src/lib/mock-observable.interface';
 
 
-export class MockObservableTesting implements MockObservableInterface {
+export class MockTestingObservable implements MockObservableInterface {
 
   constructor() {
   }
