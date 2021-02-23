@@ -6,7 +6,6 @@ import {HttpEvent, HttpHeaders, HttpParams} from '@angular/common/http';
 
 export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
-
 /**
  * 请求处理器.
  * @param delayNext 用于发送模拟延迟的数据
