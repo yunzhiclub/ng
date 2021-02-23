@@ -9,20 +9,15 @@ import {UserService} from './user.service';
 export class AppComponent implements OnInit {
   title = 'Error';
 
-
   constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
     const observer = this.userService.updateUser(12, {id: 234, name: 'test'});
-    console.log(observer);
     observer.subscribe(user => {
-      console.log('success');
-      console.log(user);
       this.title = `${user.id}:${user.name}`;
     }, (error) => {
       console.log(error);
-      console.log('error');
     }, () => {
       console.log('complete');
     });

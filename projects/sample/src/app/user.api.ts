@@ -6,10 +6,8 @@ import {MockApiService} from '../../../mock-api/src/lib/mock-api.service';
 
 export class UserApi implements MockApiInterface {
   injectMockHttpService(mockHttpService: MockApiService): void {
-    mockHttpService.registerMockApi(
-      'PUT',
-      `^user/(\\d+)$`,
-      (urlMatches, options, next) => {
+    mockHttpService.registerMockApi<User>('PUT', `^user/(\\d+)$`,
+      (next, urlMatches, options) => {
         return new Observable<HttpResponse<User>>(observable1 => {
           console.log(urlMatches);
           console.log(options);
@@ -26,7 +24,6 @@ export class UserApi implements MockApiInterface {
           observable1.next(new HttpResponse({body: user}));
           observable1.complete();
         });
-      }
-    );
+      });
   }
 }

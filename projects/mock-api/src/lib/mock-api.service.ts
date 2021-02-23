@@ -3,11 +3,12 @@ import {
   HttpHeaders,
   HttpParams, HttpRequest
 } from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
 import {MockObservableInterface} from './mock-observable.interface';
+import {MockRequest, RequestMethodType} from './mock-api.types';
 
 /**
  * 模拟API
@@ -52,15 +53,13 @@ export class MockApiService {
 
   /**
    * 注册模拟接口
-   * @param url 请求地址
    * @param method 请求方法
-   * @param getObservable 可观察者，用于接收数据
-   * @param callback 回调
+   * @param url 请求地址
+   * @param getObservable 获取数据源方法
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
-                     getObservable: (urlMatches: any, options: any, next: any) => Observable<HttpEvent<T>>,
-                     callback?: RequestCallback<T>): void {
+                     getObservable: MockRequest<T>): void {
     if (undefined === this.routers[method] || null === this.routers[method]) {
       this.routers[method] = {} as Record<string, MockRequest<T>>;
     }
@@ -69,7 +68,7 @@ export class MockApiService {
       throw Error(`在地址${url}已存在${method}的路由记录`);
     }
 
-    this.routers[method][url] = {getObservable, callback};
+    this.routers[method][url] = getObservable;
   }
 
   delete<T>(url: string, options = {} as {
@@ -304,45 +303,6 @@ export class MockApiService {
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    return requestCallback.getObservable(urlMatches, options, this.mockObservable.next);
+    return requestCallback.getObservable(this.mockObservable.next, urlMatches, options);
   }
 }
-
-/**
- * 请求的5种类型
- */
-type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
-
-/**
- * 1. 按使用正则match后的请求地址、方法匹配
- * 2. 匹配成功后，执行next发送数据
- * @param urlMatches 根据正则表达式格式化的url信息
- * @param options http请求选项
- * @param next 用于发送数据，在这本可以直接调用subject.next，多包裹一层的原因是由于考虑单元测试中使用cold()来模拟数据延迟
- */
-type RequestCallback<T> = (urlMatches: Array<string>,
-                           options: {
-                             body?: any;
-                             headers?: HttpHeaders | {
-                               [header: string]: string | string[];
-                             };
-                             reportProgress?: boolean;
-                             observe: 'body';
-                             params?: HttpParams | {
-                               [param: string]: string | string[];
-                             };
-                             responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
-                             withCredentials?: boolean;
-                           },
-                           next: (data: T, subject: Subject<HttpEvent<T>>) => void)
-  => void;
-
-/**
- * 模拟请求
- * getObservable: 可观察数据源，观察其来得到响应数据
- * callback: 当检测到请求时，调用该回调函数来触发数据源发送数据
- */
-type MockRequest<T> = {
-  getObservable: (a: any, b: any, c: any) => Observable<HttpEvent<T>>,
-  callback: RequestCallback<T>
-};
