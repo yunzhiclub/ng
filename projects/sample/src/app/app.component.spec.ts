@@ -3,14 +3,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
-import {MockApiService} from '@yunzhi/ng-mock-api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+// import {MockApiTestingInterceptor} from '../../../mock-api/testing/src/lib/mock-api.testing.interceptor';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
-MockApiService.registerMockApi(UserApi);
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
+  beforeEach(async (done) => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -20,9 +19,13 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: MockApiTestingInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS,
+          useClass: MockApiTestingInterceptor.forRoot([
+            UserApi
+          ]),
+          multi: true},
       ]
-    }).compileComponents();
+    }).compileComponents().then(() => done());
   });
 
   it('should create the app', () => {

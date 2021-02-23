@@ -9,19 +9,12 @@ import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
 import {MockObservableInterface} from './mock-observable.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
+import {MockObservable} from './mock-observable';
 
 /**
  * 模拟API
  */
 export class MockApiService {
-
-  /**
-   * 模拟接口注册者
-   * 在程序正式启动以前，所以的模拟接口都将注册到本属性中，供在构造函数中循环调用从而完成接口注册
-   */
-  static mockApiRegisters = [] as Array<Type<MockApiInterface>>;
-  static instance = null as MockApiService;
-
   /**
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
@@ -35,33 +28,19 @@ export class MockApiService {
 
   /**
    * 注册模拟接口
-   * @param clazz 接口类型
+   * @param classes 接口类型
    */
-  static registerMockApi(clazz: Type<MockApiInterface>): void {
-    if (null === MockApiService.instance) {
-      this.mockApiRegisters.push(clazz);
-    } else {
-      MockApiService.inject(clazz);
-    }
-  }
-
-  /**
-   * 注入本服务实例.
-   * @param clazz 需要注入的模拟API
-   */
-  private static inject(clazz: Type<MockApiInterface>): void {
-    const instance = new clazz();
-    instance.injectMockHttpService(MockApiService.instance);
+  registerMockApis(classes: Type<MockApiInterface>[]): void {
+    classes.forEach(clazz => {
+      const instance = new clazz();
+      instance.injectMockHttpService(this);
+    });
   }
 
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: MockObservableInterface) {
-    MockApiService.instance = this;
-    MockApiService.mockApiRegisters.forEach(mockApiClazz => {
-      MockApiService.inject(mockApiClazz);
-    });
+  private constructor(private mockObservable: MockObservable) {
   }
 
   /**
