@@ -3,7 +3,7 @@ import {
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {observable, Observable} from 'rxjs';
+import {observable, Observable, of} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
@@ -162,7 +162,7 @@ export class MockApiService {
     let result = null as Observable<HttpEvent<R>> | R;
     if (typeof requestHandler === 'function') {
       requestHandler = requestHandler as RequestHandler<R>;
-      result = requestHandler(this.mockObservable.next, urlMatches, options);
+      result = requestHandler(urlMatches, options);
     } else {
       requestHandler = requestHandler as R;
       result = requestHandler;
@@ -171,6 +171,11 @@ export class MockApiService {
     // 按最终结果的类型分别返回
     if (result instanceof Observable) {
       return result;
+    } else if (result instanceof HttpResponseBase) {
+      return new Observable(ob => {
+        ob.next(result);
+        ob.complete();
+      });
     } else {
       return new Observable<HttpEvent<R>>(observable1 => {
         this.mockObservable.next(result, observable1);

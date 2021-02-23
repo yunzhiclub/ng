@@ -35,5 +35,7 @@ export class AppComponent implements OnInit {
         console.log(error);
         this.loginResult = 'fail';
       });
+
+    this.userService.delete(1);
   }
 }

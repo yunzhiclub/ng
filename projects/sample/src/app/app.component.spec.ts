@@ -9,7 +9,7 @@ import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
 
 describe('AppComponent', () => {
-  beforeEach(async (done) => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -26,7 +26,7 @@ describe('AppComponent', () => {
           multi: true
         },
       ]
-    }).compileComponents().then(() => done());
+    }).compileComponents();
   });
 
   it('should create the app', () => {

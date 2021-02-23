@@ -14,8 +14,7 @@ export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
  * @param options 其它请求选项
  */
 export type RequestHandler<T>
-  = (delayNext?: (data: T, subject: Subscriber<HttpEvent<T>>) => void,
-     urlMatches?: Array<string>,
+  = (urlMatches?: Array<string>,
      options?: {
        body?: any;
        headers?: HttpHeaders | {
