@@ -1,22 +1,19 @@
 import {
   HttpEvent,
   HttpHeaders,
-  HttpParams, HttpRequest,
-  HttpResponse
+  HttpParams, HttpRequest
 } from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
-import {Injectable, Type} from '@angular/core';
+import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
-import {MockObservable} from './mock-observable';
-import {finalize, map} from 'rxjs/operators';
-import {MockLoadingService} from './mock-loading.service';
 import {isDefined, isNotNullOrUndefined} from './utils';
+import {MockObservableInterface} from './mock-observable.interface';
 
 /**
  * 模拟API
  */
-@Injectable()
-export class MockHttpClientService {
+export class MockApiService {
+
   /**
    * 模拟接口注册者
    * 在程序正式启动以前，所以的模拟接口都将注册到本属性中，供在构造函数中循环调用从而完成接口注册
@@ -27,7 +24,12 @@ export class MockHttpClientService {
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
    */
-  routers = {} as Record<RequestMethodType, Record<string, MockRequest<any>>>;
+  routers = {} as Record<RequestMethodType, Record<any, MockRequest<any>>>;
+
+  public static getMockApiService(mockObservable: MockObservableInterface): MockApiService {
+    return new MockApiService(mockObservable);
+  }
+
 
   /**
    * 注册模拟接口
@@ -37,14 +39,12 @@ export class MockHttpClientService {
     this.mockApiRegisters.push(clazz);
   }
 
+
   /**
    * 循环调用从而完成所有的接口注册
    */
-  constructor(private mockObservable: MockObservable,
-              private mockLoadingService: MockLoadingService,
-              // @Inject(HTTP_INTERCEPTORS) private httpInterceptors: HttpInterceptor[]
-  ) {
-    MockHttpClientService.mockApiRegisters.forEach(api => {
+  private constructor(private mockObservable: MockObservableInterface) {
+    MockApiService.mockApiRegisters.forEach(api => {
       const instance = new api();
       instance.injectMockHttpService(this);
     });
@@ -59,8 +59,8 @@ export class MockHttpClientService {
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
-                     getObservable: () => Observable<HttpEvent<T>>,
-                     callback: RequestCallback<T>): void {
+                     getObservable: (urlMatches: any, options: any, next: any) => Observable<HttpEvent<T>>,
+                     callback?: RequestCallback<T>): void {
     if (undefined === this.routers[method] || null === this.routers[method]) {
       this.routers[method] = {} as Record<string, MockRequest<T>>;
     }
@@ -304,23 +304,7 @@ export class MockHttpClientService {
     2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
-    const observable = requestCallback.getObservable();
-    requestCallback.callback(urlMatches, options, this.mockObservable.next);
-
-    // 返回数据前设置loading，以根据请求时间显示loading组件
-    // this.mockLoadingService.sendLoading(true);
-    return observable.pipe(map(data => {
-      // 如果reportProgress，则为文件上传。否则暂时按HttpResponse处理
-      // 否则将data原封不动的回传
-      if (options.reportProgress === true) {
-        return data;
-      } else {
-        data = data as HttpResponse<R>;
-        return data.body;
-      }
-    }), finalize(() => {
-
-    }));
+    return requestCallback.getObservable(urlMatches, options, this.mockObservable.next);
   }
 }
 
@@ -359,6 +343,6 @@ type RequestCallback<T> = (urlMatches: Array<string>,
  * callback: 当检测到请求时，调用该回调函数来触发数据源发送数据
  */
 type MockRequest<T> = {
-  getObservable: () => Observable<HttpEvent<T>>,
+  getObservable: (a: any, b: any, c: any) => Observable<HttpEvent<T>>,
   callback: RequestCallback<T>
 };

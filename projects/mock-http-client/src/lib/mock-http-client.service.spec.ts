@@ -1,18 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 
-import {MockHttpClientService} from './mock-http-client.service';
-import {MockHttpClientTestingModule} from './mock-http-client.testing.module';
+import {MockApiService} from './mock-api.service';
+import {MockObservable} from './mock-observable';
 
 describe('MockHttpService', () => {
-  let service: MockHttpClientService;
+  let service: MockApiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MockHttpClientTestingModule
-      ]
-    });
-    service = TestBed.inject(MockHttpClientService);
+    service = MockApiService.getMockApiService(new MockObservable());
   });
 
   it('should be created', () => {

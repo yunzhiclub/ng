@@ -3,21 +3,26 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
-import {MockHttpClientService} from '@yunzhi/ng-mock-http-client';
-import {MockHttpClientTestingModule} from '@yunzhi/ng-mock-http-client/testing';
+import {MockApiService} from '../../../mock-http-client/src/lib/mock-api.service';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {MockApiInterceptorTesting} from '../../../mock-http-client/testing/src/lib/mock-api.interceptor.testing';
 
-MockHttpClientService.registerMockApi(UserApi);
+MockApiService.registerMockApi(UserApi);
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MockHttpClientTestingModule
+        HttpClientModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptorTesting, multi: true},
+
+      ]
     }).compileComponents();
   });
 
@@ -46,7 +51,7 @@ describe('AppComponent', () => {
 
     console.log('断言');
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('12:admin app is running!');
+    expect(compiled.querySelector('h1').textContent).toContain('12:admin app is running!');
   });
 });
 

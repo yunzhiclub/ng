@@ -17,7 +17,7 @@
 4. 执行 `npm link`
 5. 进入根目录生成的dist文件夹的 router-testing 文件夹
 6. 执行 `npm link`
-7. 回到项目根据目录，执行`npm link @yunzhi/ng-mock-http-client`， `npm link @yunzhi@ng-router-testing`
+7. 回到项目根据目录，执行`npm link @yunzhi/ng-mock-http-client`， `npm link @yunzhi/ng-router-testing`
 8. 进入`project/sample`，完成集成测试。
 
 
