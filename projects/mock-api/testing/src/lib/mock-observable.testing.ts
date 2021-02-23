@@ -3,7 +3,7 @@ import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
-import {MockObservableInterface} from '../../../src/lib/mock-observable.interface';
+import {MockObservableInterface} from '@yunzhi/ng-mock-api';
 
 export class MockObservableTesting implements MockObservableInterface {
 

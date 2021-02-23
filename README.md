@@ -12,18 +12,18 @@
 
 # 开发步骤
 1. `npm install`
-2. 开发功能，并于sample模块验证
+2. 开发功能，并进入`sample`子项目验证功能
 
 # 打包测试
 开发完成后需要进一步的验证生产环境。
 
 1. `npm install`
-2. `ng build mock-http-client --prod`及`ng build router-testing --prod`
+2. `ng build mock-api --prod`及`ng build router-testing --prod`
 3. 进入根目录生成的dist文件夹的 mock-http-client 文件夹
 4. 执行 `npm link`
 5. 进入根目录生成的dist文件夹的 router-testing 文件夹
 6. 执行 `npm link`
-7. 回到项目根据目录，执行`npm link @yunzhi/ng-mock-http-client`， `npm link @yunzhi/ng-router-testing`
+7. 回到项目根据目录，执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
 8. 进入`project/prod`，完成集成测试。
 
 

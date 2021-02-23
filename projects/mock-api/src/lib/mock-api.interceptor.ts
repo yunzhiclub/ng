@@ -13,10 +13,10 @@ export class MockApiInterceptor implements HttpInterceptor {
    * 1. 属性初始化：其它文件import本文件时执行
    * 2. 构造函数：实例化时执行
    */
-  private static mockApiService: MockApiService;
+  private static mockApiService = null as MockApiService;
 
   constructor() {
-    if (!MockApiInterceptor.mockApiService) {
+    if (null === MockApiInterceptor.mockApiService) {
       /**
        * 注意非测试环境下的MockObservable(不支持cold hot等测试专用方法).
        */
