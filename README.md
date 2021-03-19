@@ -1,70 +1,199 @@
-梦云智开发团队angular开源库。
+# Mock Api for Angular
+Help you build example application without apis. Mock API calls while development, testing or building an example application. Define results based on url pattern and if needed http methods, and the mock of network delay is also provided. You can return HttpResponseBase or Observable or any data as you like.
 
-| 名称 | 基本功能 | 适用场景 | 
-| ------ | ------ | ------ | 
-| [MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api) | 对Http请求进行拦截，返回自定义API数据 | 使用文件统一前后台API、开发组件时抛弃测试桩而用生产环境的服务、避免一些因测试生产数据格式返回不统一造成的问题 |
-| [MockApiTestingInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api) | 用于单元测试中对http请求拦截、手动控制数据返回时机 | 适用于单元测试 |
-| RouterTestingModule | 替换Angular内置AngularRouterTestingModule | 更方便的发送模拟数据、更低的测试成本 |
+> test passed for angular10.1.5, other versions not test yet.
 
-更多帮助文档请点击[github](https://github.com/yunzhiclub/ng)
+more help please visit [https://github.com/yunzhiclub/ng/tree/main/projects/mock-api](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
 
-# 安装
+# Installation
+```bash
+npm install -s @yunzhi/ng-mock-api
+```
 
-`npm i @yunzhi/ng-mock-api`
+### Install Specific Version (Example: 0.0.3)
+```bash
+npm install -s @yunzhi/ng-mock-api@0.0.3
+```
 
-`npm i @yunzhi/ng-router-testing`
+# Usage
+You can mock return any data, HttpEvent or Observable as you like.
+0. for example, you have a delete method as blew:
+```typescript
+public delete(id: number): void {
+  this.httpClient.delete<void>('user/' + id.toString())
+    .subscribe(() => console.log('success'));
+}
+```
+And then, you can mock the delete method step by step:
 
-使用文档请参考：[MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
+1. create New MockApi class which implements the MockApiInterface interface.
+```typescript
+export class UserApi implements MockApiInterface {
+  getInjectors(): ApiInjector<any>[] {
+      return [];
+  }
+}
+```
 
-# 开发步骤
+2. Register injectors in UserApi's getInjectors() function.
+```typescript
+export class UserApi implements MockApiInterface {
+  getInjectors(): ApiInjector<any>[] {
+    return [
+      new ApiInjector<void>(
+        {
+          method: 'DELETE',
+          url: 'user/(\\d+)'
+        }
+      )];
+  }
+}
+```
 
-## 简单方法
+3. Add MockApiTestingInterceptor.forRoot to module and pass MockApi to forRoot function. Do not forget imports HttpClientModule.
+```typescript
+@NgModule({
+  imports: [
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MockApiInterceptor.forRoot([UserApi]),
+      multi: true
+    },
+  ]
+})
+export class AppModule {}
+```
+If you need make a demo with MockApi, replace MockApiTestingInterceptor.forRoot with MockApiInterceptor.forRoot().
 
-该方法操作简单,节省资源,但不智能
+* `method` support: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH'
+* `url` is a string regular expression.
 
-1. `npm install`
-2. 注释掉`import {xxx} from '@yunzhi/ng-xxxx'`
-3. 改为直接文件的相对路径 `import {xxx} from '../../xxx/xxx'`
-4. 在mock-api或router-testing文件夹开发相关功能
-5. 在`sample`子项目验证功能
+## return general data
+The blow code will return HttpResponse<number> with 100.
+```typescript
+    return [
+      new ApiInjector<number>(
+        {
+          method: 'GET',
+          url: 'user/count',
+          result: 100
+        }
+      )];
+```
 
-## 智能方法
+## return HttpResponseBase
+You can return the HttpResponse too.
+```typescript
+new ApiInjector<HttpResponse<User>>(
+        {
+          method: 'PUT',
+          url: `user/(\\d+)`,
+          handler:
+            (urlMatches, options) => {
+              const id = +urlMatches[1];
+              const body = options.body as User;
+              body.id = id;
+              return new HttpResponse<User>({body});
+            }
+        })
+```
+> note: you must mock delay time by your-self.
 
-1. 进入项目根路径
-2. `ng build mock-api --prod`及`ng build router-testing --prod`
-3. 进入根目录生成的dist文件夹的 mock-api 文件夹
-4. 执行 `npm link`
-5. 进入根目录生成的dist文件夹的 router-testing 文件夹
-6. 执行 `npm link`
-7. 分别进入`projects/sample`,`projects/mock-api
-   `执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
-8. 按情况选择执行 `ng build mock-api --watch=true --prod`或`ng build router-testing --watch=true --prod`
-9. 编写代码,并同步在`project/sample`中完成相关集成测试, 。
+## return Observable
+You also can return Observable with any data, such as call error() when login fail.
+```typescript
+new ApiInjector<Observable<HttpErrorResponse>>({
+  method: 'GET',
+  url: 'user/login',
+  handler: (() => {
+    return new Observable<HttpErrorResponse>(ob => {
+      ob.error(new HttpErrorResponse({status: 401}));
+      ob.complete();
+    });
+  })
+})
+```
 
-# 打包测试
+> note: you must mock delay time by your-self.
 
-开发完成后需要进一步的验证生产环境。
+## Get request info
+You can get urlMatches with is the results of urlReg matching, and get full http request data in options. The urlMatches and options with pass to `handler`:
+```typescript
+        handler:
+            (urlMatches, options) => {
+              console.log(urlMatches);
+              console.log(options);
+            }
+```
 
-1. 将`import {xxx} from '../../xxx/xxx'`变更为`import {xxx} from '@yunzhi/ng-xxxx'`
-2. `ng build mock-api --prod`及`ng build router-testing --prod`
-3. 进入根目录生成的dist文件夹的 mock-api 文件夹
-4. 执行 `npm link`
-5. 进入根目录生成的dist文件夹的 router-testing 文件夹
-6. 执行 `npm link`
-7. 分别进入`projects/sample`,`projects/mock-api
-   `执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
-8. 进入`project/smploe`，完成集成测试。
+## Unit Testing
+You can use MockApiTestingInterceptor instead of MockApiInterceptor, for example:
+```typescript
+ beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule
+      ],
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: MockApiTestingInterceptor
+            .forRoot([UserApi]),
+          multi: true
+        },
+      ]
+    }).compileComponents();
+  });
+```
 
-## 发布
-发布前先登录：`npm login`
+Please not we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly.
 
-然后进入相关文件夹完成发布：
-`cd dist/mock-api && npm publish --access=public`
+Then you can use  `getTestScheduler().flush();` tick the time.
 
-## 测试开发中的注意点
+```typescript
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.componentInstance.ngOnInit();
+  
+    console.log('tick the time: flush data now');
+    getTestScheduler().flush();
+  
+    fixture.detectChanges();
+  });
+```
 
-每次修改一点都按上述开发步骤执行一次不太现实，在实际的开发过程中往往是边开发边测试。开发中应该多用单元测试，以代码测代码以保证代码的质量。在进行集成测试时，每次代码变更后都需要重新执行`ng build xxx --prod`。
+# Others
 
-# 参考资源
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.6.
 
-[在angular模块中建立子模块](https://github.com/ng-packagr/ng-packagr/blob/master/docs/secondary-entrypoints.md)
+## Code scaffolding
+
+Run `ng generate component component-name --project mock-http-client` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project mock-http-client`.
+> Note: Don't forget to add `--project mock-http-client` or else it will be added to the default project in your `angular.json` file.
+
+## Build
+
+Run `ng build mock-http-client` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+
+## Before Publish
+You should test the project before publish。
+After building your library with `ng build mock-api --prod`, go to the project root folder run `cd dist/mock-api` and then run `npm link` for test。
+
+Then go to test project add `@yunzhi/ng-mock-api@version` to package.json，and run `npm link @yunzhi/ng-mock-api`。
+
+## Publishing
+
+After building your library with `ng build ng-mock-api --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test , at last run `npm publish`.
+
+## Running unit tests
+
+Run `ng test mock-http-client` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Further help
+
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
