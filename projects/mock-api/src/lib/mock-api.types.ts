@@ -14,19 +14,23 @@ export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
  */
 export type RequestHandler<T>
   = (urlMatches?: Array<string>,
-     options?: {
-       body?: any;
-       headers?: HttpHeaders | {
-         [header: string]: string | string[];
-       };
-       reportProgress?: boolean;
-       observe: 'body' | 'events' | 'response';
-       params?: HttpParams | {
-         [param: string]: string | string[];
-       };
-       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
-       withCredentials?: boolean;
-     }) => Observable<HttpEvent<T>> | T;
+     options?: RequestOptions) => Observable<HttpEvent<T>> | T;
+/**
+ * 请求选项
+ */
+export type RequestOptions = {
+  body?: any;
+  headers?: HttpHeaders | {
+    [header: string]: string | string[];
+  };
+  reportProgress?: boolean;
+  observe: 'body' | 'events' | 'response';
+  params?: HttpParams | {
+    [param: string]: string | string[];
+  };
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+};
 
 /**
  * 此文中Benson对构造函数的重载回答的真好!
