@@ -7,18 +7,26 @@ more help please visit [https://github.com/yunzhiclub/ng/tree/main/projects/mock
 
 # Installation
 ```bash
-npm install -s @yunzhi/ng-mock-api`
+npm install -s @yunzhi/ng-mock-api
 ```
 
-### Install Specific Version (Example: 0.0.1)
+### Install Specific Version (Example: 0.0.3)
 ```bash
-npm install -s @yunzhi/ng-mock-api@0.0.1`
+npm install -s @yunzhi/ng-mock-api@0.0.3
 ```
 
 # Usage
 You can mock return any data, HttpEvent or Observable as you like.
+0. for example, you have a delete method as blew:
+```typescript
+public delete(id: number): void {
+  this.httpClient.delete<void>('user/' + id.toString())
+    .subscribe(() => console.log('success'));
+}
+```
+And then, you can mock the delete method step by step:
 
-1. New MockApi class with implements MockApiInterface
+1. create New MockApi class which implements the MockApiInterface interface.
 ```typescript
 export class UserApi implements MockApiInterface {
   getInjectors(): ApiInjector<any>[] {
@@ -26,7 +34,23 @@ export class UserApi implements MockApiInterface {
   }
 }
 ```
-2. Add MockApiInterceptor.forRoot() or MockApiTestingInterceptor.forRoot to module and pass MockApi to forRoot function. Do not forget imports HttpClientModule.
+
+2. Register injectors in UserApi's getInjectors() function.
+```typescript
+export class UserApi implements MockApiInterface {
+  getInjectors(): ApiInjector<any>[] {
+    return [
+      new ApiInjector<void>(
+        {
+          method: 'DELETE',
+          url: 'user/(\\d+)'
+        }
+      )];
+  }
+}
+```
+
+3. Add MockApiTestingInterceptor.forRoot to module and pass MockApi to forRoot function. Do not forget imports HttpClientModule.
 ```typescript
 @NgModule({
   imports: [
@@ -42,27 +66,7 @@ export class UserApi implements MockApiInterface {
 })
 export class AppModule {}
 ```
-3. Invoke httpClient for http request.
-```typescript
-public delete(id: number): void {
-  this.httpClient.delete<void>('user/' + id.toString())
-    .subscribe(() => console.log('success'));
-}
-```
-4. Register injectores in MockApi's getInjectors() function.
-```typescript
-export class UserApi implements MockApiInterface {
-  getInjectors(): ApiInjector<any>[] {
-    return [
-      new ApiInjector<void>(
-        {
-          method: 'DELETE',
-          url: 'user/(\\d+)'
-        }
-      )];
-  }
-}
-```
+If you need make a demo with MockApi, replace MockApiTestingInterceptor.forRoot with MockApiInterceptor.forRoot().
 
 * `method` support: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH'
 * `url` is a string regular expression.
@@ -81,7 +85,7 @@ The blow code will return HttpResponse<number> with 100.
 ```
 
 ## return HttpResponseBase
-You can return the HttpResponse.
+You can return the HttpResponse too.
 ```typescript
 new ApiInjector<HttpResponse<User>>(
         {
@@ -101,7 +105,7 @@ new ApiInjector<HttpResponse<User>>(
 ## return Observable
 You also can return Observable with any data, such as call error() when login fail.
 ```typescript
-    new ApiInjector<Observable<HttpErrorResponse>>({
+new ApiInjector<Observable<HttpErrorResponse>>({
   method: 'GET',
   url: 'user/login',
   handler: (() => {
@@ -177,13 +181,13 @@ Run `ng build mock-http-client` to build the project. The build artifacts will b
 
 ## Before Publish
 You should test the project before publish。
-After building your library with `ng build mock-http-client --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test。
+After building your library with `ng build mock-api --prod`, go to the project root folder run `cd dist/mock-api` and then run `npm link` for test。
 
-Then go to test project add `@yunzhi/mock-http-client@version` to package.json，and run `npm link @yunzhi/mock-http-client`。
+Then go to test project add `@yunzhi/ng-mock-api@version` to package.json，and run `npm link @yunzhi/ng-mock-api`。
 
 ## Publishing
 
-After building your library with `ng build mock-http-client --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test , at last run `npm publish`.
+After building your library with `ng build ng-mock-api --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test , at last run `npm publish`.
 
 ## Running unit tests
 
