@@ -91,7 +91,7 @@ new ApiInjector<HttpResponse<User>>(
         {
           method: 'PUT',
           url: `user/(\\d+)`,
-          handler:
+          result:
             (urlMatches, options) => {
               const id = +urlMatches[1];
               const body = options.body as User;
@@ -187,7 +187,7 @@ Then go to test project add `@yunzhi/ng-mock-api@version` to package.json，and 
 
 ## Publishing
 
-After building your library with `ng build ng-mock-api --prod`, go to the dist folder `cd dist/mock-http-client` and run `npm link` for test , at last run `npm publish`.
+After building your library with `ng build mock-api --prod`, go to the dist folder `cd dist/mock-api` and run `npm link` for test , at last run `npm publish`.
 
 ## Running unit tests
 

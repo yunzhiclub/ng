@@ -1,6 +1,3 @@
-// 开发时请启用如下代码
-// import {MockApiInterface} from '../../../mock-api/src/lib/mock-api.interface';
-// 集成测试请启用如下代码
 import {MockApiInterface} from '@yunzhi/ng-mock-api';
 import {ApiInjector} from '../../../mock-api/src/lib/mock-api.types';
 import {User} from './user';
@@ -35,7 +32,7 @@ export class UserApi implements MockApiInterface {
       new ApiInjector<Observable<HttpErrorResponse>>({
         method: 'GET',
         url: 'user/login',
-        handler: ((urlMatches, options) => {
+        result: ((urlMatches, options) => {
           return new Observable<HttpErrorResponse>(ob => {
             ob.error(new HttpErrorResponse({status: 401}));
             ob.complete();
@@ -46,7 +43,7 @@ export class UserApi implements MockApiInterface {
         {
           method: 'PUT',
           url: `user/(\\d+)`,
-          handler:
+          result:
             (urlMatches, options) => {
               const id = +urlMatches[1];
               const body = options.body as User;

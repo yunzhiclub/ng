@@ -3,10 +3,10 @@ import {
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {observable, Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
-import {isDefined, isNotNullOrUndefined} from './utils';
+import {isNotNullOrUndefined} from './utils';
 import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
 import {DelayHandler} from './delay-handler';
@@ -35,13 +35,7 @@ export class MockApiService {
       const instance = new clazz();
       const injectors = instance.getInjectors();
       injectors.forEach(injector => {
-        let handlerOrResult = null;
-        if (isDefined(injector.result)) {
-          handlerOrResult = injector.result;
-        } else if (isDefined(injector.handler)) {
-          handlerOrResult = injector.handler;
-        }
-        this.registerMockApi(injector.method, injector.url, handlerOrResult);
+        this.registerMockApi(injector.method, injector.url, injector.result);
       });
     });
   }

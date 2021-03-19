@@ -38,16 +38,11 @@ export class ApiInjector<T> {
   /**
    * 返回结果,优先获取
    */
-  result?: T;
-  /**
-   * 在未获取到返回结果时,调用本函数.
-   */
-  handler?: RequestHandler<T>;
+  result?: T | RequestHandler<T>;
 
   constructor(obj: ApiInjector<T> = {} as ApiInjector<T>) {
     this.method = obj.method;
     this.url = obj.url;
     this.result = obj.result;
-    this.handler = obj.handler;
   }
 }
