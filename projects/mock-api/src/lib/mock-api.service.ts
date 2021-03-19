@@ -158,8 +158,11 @@ export class MockApiService {
 
     // 未找到API则报错
     if (keys.length === 0) {
-      throw Error(`未找到对应的模拟返回数据：1. 请检查url、method是否正确 ${method}, ${url}；
-    2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
+      throw Error(`can't find mock result data:` +
+        `1. pls make sure the request's 'url' and 'method' is right:  ${method}, ${url}.` +
+        `2. pls make sure you MockHttpClientService.registerMockApi(MockApiClass) has been called.` +
+        `未找到对应的模拟返回数据：1. 请检查url、method是否正确 ${method}, ${url}；` +
+        `2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
     }
 
     // requestHandler可能是回调,也可能是返回值.在此做类型的判断.
