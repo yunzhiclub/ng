@@ -162,7 +162,7 @@ export class MockApiService {
     if (keys.length === 0) {
       return new Observable<HttpErrorResponse>(subscriber => {
         const message = `yzMockApi Error: can't find mock result data:` +
-          `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
+          `1. pls make sure the request's url '${url}' and method '${method}' is right.` +
           `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
         console.error(message);
         console.log('hello');
