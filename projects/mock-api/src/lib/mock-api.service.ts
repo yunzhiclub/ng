@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
@@ -150,7 +151,10 @@ export class MockApiService {
           if (keys.length > 1) {
             const message = 'conflict, matched multiple routes';
             console.error(message, method, url, keys);
-            throw Error(message);
+            return new Observable<HttpErrorResponse>(subscriber => {
+              subscriber.error(message);
+              subscriber.complete();
+            });
           }
         }
       }
@@ -158,9 +162,13 @@ export class MockApiService {
 
     // 未找到API则报错
     if (keys.length === 0) {
-      throw Error(`can't find mock result data:` +
-        `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
-        `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`);
+      return new Observable<HttpErrorResponse>(subscriber => {
+        const message = `can't find mock result data:` +
+          `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
+          `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
+        subscriber.error(message);
+        subscriber.complete();
+      });
     }
 
     // requestHandler可能是回调,也可能是返回值.在此做类型的判断.
