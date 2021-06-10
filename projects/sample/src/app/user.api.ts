@@ -24,6 +24,7 @@ export class UserApi implements MockApiInterface {
         {
           method: 'DELETE',
           url: 'user/(\\d+)',
+          description: '删除用户',
           result: new HttpResponse<void>()
         }
       ),
@@ -35,6 +36,7 @@ export class UserApi implements MockApiInterface {
       new ApiInjector<Observable<HttpErrorResponse>>({
         method: 'GET',
         url: 'user/login',
+        description: '用户登录',
         handler: ((urlMatches, options) => {
           return new Observable<HttpErrorResponse>(ob => {
             ob.error(new HttpErrorResponse({status: 401}));
