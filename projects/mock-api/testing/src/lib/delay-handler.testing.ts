@@ -1,7 +1,7 @@
 import {of} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
-import {HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
 // 集成测试请启用如下代码
 import {Subscriber} from 'rxjs/internal/Subscriber';
@@ -17,6 +17,13 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
   constructor() {
   }
 
+  error(message: any, subscriber: Subscriber<HttpErrorResponse>): void {
+    this.randomDelayCallback(() => {
+      subscriber.error(message);
+      subscriber.complete();
+    });
+  }
+
   /**
    * 返回供测试用的观察者
    * 如果当前为测试过程中，则调用cold方法返回观察者将不出抛出异常。
@@ -25,23 +32,32 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
    * @param subject 可供继续发送数据的数据源
    */
   next<T>(data: T, subject: Subscriber<HttpResponse<T>>): void {
+    this.randomDelayCallback(() => {
+      isNullOrUndefined(data) ? subject.next(new HttpResponse()) : subject.next(new HttpResponse({body: data}));
+      subject.complete();
+    });
+  }
+
+  /**
+   * 随机延迟回调
+   * @param callbackFn 回调函数
+   */
+  private randomDelayCallback(callbackFn: () => void): void {
     const delayCount = randomNumber() % 6;
     try {
       let interval = '';
       for (let i = 0; i < delayCount; i++) {
         interval += '---';
       }
-      cold(interval + '(x|)', {x: data === undefined ? new HttpResponse() : new HttpResponse({body: data})})
-        .subscribe(t => {
-          subject.next(t);
-          subject.complete();
+      cold(interval + '(x|)', {x: undefined})
+        .subscribe(() => {
+          callbackFn();
         });
     } catch (e) {
       if (e.message === 'No test scheduler initialized') {
-        of(data).pipe(delay(delayCount * delayCount * 100))
-          .subscribe(t => {
-            isNullOrUndefined(t) ? subject.next(new HttpResponse()) : subject.next(new HttpResponse({body: t}));
-            subject.complete();
+        of().pipe(delay(delayCount * delayCount * 100))
+          .subscribe(() => {
+            callbackFn();
           });
       } else {
         throw e;

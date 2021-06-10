@@ -149,7 +149,7 @@ export class MockApiService {
           requestHandler = urlRecord[key];
           keys.push(key);
           if (keys.length > 1) {
-            const message = 'conflict, matched multiple routes';
+            const message = 'yzMockApi Error: conflict, matched multiple routes';
             console.error(message, method, url, keys);
             return new Observable<HttpErrorResponse>(subscriber => {
               subscriber.error(message);
@@ -163,7 +163,7 @@ export class MockApiService {
     // 未找到API则报错
     if (keys.length === 0) {
       return new Observable<HttpErrorResponse>(subscriber => {
-        const message = `can't find mock result data:` +
+        const message = `yzMockApi Error: can't find mock result data:` +
           `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
           `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
         console.error(message);
