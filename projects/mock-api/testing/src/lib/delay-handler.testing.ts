@@ -17,9 +17,18 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
   constructor() {
   }
 
+  /**
+   * 发生网络错误
+   * @param message 错误消息
+   * @param subscriber 消息推送者
+   */
   error(message: any, subscriber: Subscriber<HttpErrorResponse>): void {
     this.randomDelayCallback(() => {
-      subscriber.error(message);
+      subscriber.error(new HttpErrorResponse({
+        status: 0,
+        error: message,
+        statusText: 'network error'
+      }));
       subscriber.complete();
     });
   }

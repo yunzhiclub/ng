@@ -20,7 +20,11 @@ export class DelayHandler implements DelayHandlerInterface {
    */
   error(message: any, subscriber: Subscriber<HttpErrorResponse>): void {
     this.randomDelayCallback(() => {
-      subscriber.error(message);
+      subscriber.error(new HttpErrorResponse({
+        status: 0,
+        error: message,
+        statusText: 'network error'
+      }));
       subscriber.complete();
     });
   }
