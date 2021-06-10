@@ -28,6 +28,7 @@ describe('UserService', () => {
   });
 
   fit('error', () => {
+    getTestScheduler().flush();
     let called = false;
     service.error().subscribe(() => {}, (error) => {
       called = true;
