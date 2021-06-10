@@ -56,7 +56,7 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('12:test app is running!');
     expect(compiled.querySelector('h2').textContent).toContain('yunzhi');
-    expect(compiled.querySelector('h3').textContent).toContain('fail');
+    expect(compiled.querySelector('h3').textContent).toContain('通过');
   });
 });
 
