@@ -30,7 +30,7 @@ describe('UserService', () => {
   /**
    * 测试网络错误时延时返回异常
    */
-  fit('error', () => {
+  it('error', () => {
     getTestScheduler().flush();
     let called = false;
     service.error().subscribe(() => {}, (error) => {
