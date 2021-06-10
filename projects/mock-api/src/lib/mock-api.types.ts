@@ -33,8 +33,18 @@ export type RequestHandler<T>
  * https://www.itranslater.com/qa/details/2109909368035607552
  */
 export class ApiInjector<T> {
+  /**
+   * 请求方法
+   */
   method: RequestMethodType;
+  /**
+   * 请求地址
+   */
   url: string;
+  /**
+   * 对当前接口的描述
+   */
+  description?: string;
   /**
    * 返回结果,优先获取
    */
@@ -47,6 +57,7 @@ export class ApiInjector<T> {
   constructor(obj: ApiInjector<T> = {} as ApiInjector<T>) {
     this.method = obj.method;
     this.url = obj.url;
+    this.description = obj.description;
     this.result = obj.result;
     this.handler = obj.handler;
   }
