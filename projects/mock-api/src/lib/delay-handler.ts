@@ -41,7 +41,7 @@ export class DelayHandler implements DelayHandlerInterface {
   }
 
   private randomDelayCallback(callbackFn: () => void): void {
-    of().pipe(delay(randomNumber() % 6 * 100)).subscribe(() => {
+    of(null).pipe(delay(randomNumber() % 6 * 100)).subscribe(() => {
       callbackFn();
     });
   }

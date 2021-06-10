@@ -64,7 +64,7 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
         });
     } catch (e) {
       if (e.message === 'No test scheduler initialized') {
-        of().pipe(delay(delayCount * delayCount * 100))
+        of(null).pipe(delay(delayCount * delayCount * 100))
           .subscribe(() => {
             callbackFn();
           });
