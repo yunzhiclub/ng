@@ -1,5 +1,8 @@
 <div style="text-align: center">
   <h1>{{ title }} app is running!</h1>
   <h2>current login in username is {{ username }}</h2>
-  <h3>login {{ loginResult }}</h3>
+  <h3>返回401测试<span *ngIf="loginResult === 'fail'">通过</span></h3>
+
+  <h3 *ngIf="networkErrorPass">模拟网络请求错误通过</h3>
+  <h3 *ngIf="!networkErrorPass">模拟网络请求错误测试</h3>
 </div>

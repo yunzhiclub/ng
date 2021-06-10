@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   username = '';
   title = 'Loading';
   loginResult = '';
+  networkErrorPass = false;
 
   constructor(private userService: UserService) {
   }
@@ -37,5 +38,13 @@ export class AppComponent implements OnInit {
       });
 
     this.userService.delete(1);
+
+    this.userService.error().subscribe(() => {
+      },
+      (error) => {
+        this.networkErrorPass = true;
+        console.log('网络错误', error);
+      },
+      () => console.log('complete error'));
   }
 }
