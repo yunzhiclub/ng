@@ -4,13 +4,12 @@ import {
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {observable, Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
 import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
-import {DelayHandler} from './delay-handler';
 
 /**
  * 模拟API
@@ -50,7 +49,7 @@ export class MockApiService {
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: DelayHandler) {
+  private constructor(private mockObservable: DelayHandlerInterface) {
   }
 
   /**
@@ -152,8 +151,7 @@ export class MockApiService {
             const message = 'yzMockApi Error: conflict, matched multiple routes';
             console.error(message, method, url, keys);
             return new Observable<HttpErrorResponse>(subscriber => {
-              subscriber.error(message);
-              subscriber.complete();
+              this.mockObservable.error(message, subscriber);
             });
           }
         }
@@ -167,8 +165,7 @@ export class MockApiService {
           `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
           `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
         console.error(message);
-        subscriber.error(message);
-        subscriber.complete();
+        this.mockObservable.error(message, subscriber);
       });
     }
 
