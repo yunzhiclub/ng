@@ -1,15 +1,15 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
 } from '@angular/common/http';
-import {observable, Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
 import {MockApiInterface} from './mock-api.interface';
 import {isDefined, isNotNullOrUndefined} from './utils';
 import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
-import {DelayHandler} from './delay-handler';
 
 /**
  * 模拟API
@@ -49,7 +49,7 @@ export class MockApiService {
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: DelayHandler) {
+  private constructor(private mockObservable: DelayHandlerInterface) {
   }
 
   /**
@@ -148,9 +148,11 @@ export class MockApiService {
           requestHandler = urlRecord[key];
           keys.push(key);
           if (keys.length > 1) {
-            const message = 'conflict, matched multiple routes';
+            const message = 'yzMockApi Error: conflict, matched multiple routes';
             console.error(message, method, url, keys);
-            throw Error(message);
+            return new Observable<HttpErrorResponse>(subscriber => {
+              this.mockObservable.error(message, subscriber);
+            });
           }
         }
       }
@@ -158,9 +160,14 @@ export class MockApiService {
 
     // 未找到API则报错
     if (keys.length === 0) {
-      throw Error(`can't find mock result data:` +
-        `1. pls make sure the request's 'url'(${url}) and 'method'(${method}) is right.` +
-        `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`);
+      return new Observable<HttpErrorResponse>(subscriber => {
+        const message = `yzMockApi Error: can't find mock result data:` +
+          `1. pls make sure the request's url '${url}' and method '${method}' is right.` +
+          `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
+        console.error(message);
+        console.log('hello');
+        this.mockObservable.error(message, subscriber);
+      });
     }
 
     // requestHandler可能是回调,也可能是返回值.在此做类型的判断.

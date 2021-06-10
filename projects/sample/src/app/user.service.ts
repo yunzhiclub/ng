@@ -30,4 +30,11 @@ export class UserService {
     this.httpClient.delete<void>(`user/${id}`)
       .subscribe(() => console.log('success'));
   }
+
+  /**
+   * 测试MOCKAPI没有找到对应请求的情况
+   */
+  public error(): Observable<void> {
+    return this.httpClient.get<void>('error/error/error/notfound');
+  }
 }
