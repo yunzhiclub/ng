@@ -2,9 +2,9 @@ import {TestBed} from '@angular/core/testing';
 
 import {UserService} from './user.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {UserApi} from './user.api';
 import {getTestScheduler} from 'jasmine-marbles';
+import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 
 describe('UserService', () => {
   let service: UserService;
@@ -16,7 +16,7 @@ describe('UserService', () => {
         {
           provide: HTTP_INTERCEPTORS,
           multi: true,
-          useClass: MockApiInterceptor.forRoot([UserApi]),
+          useClass: MockApiTestingInterceptor.forRoot([UserApi]),
         }
       ]
     });
