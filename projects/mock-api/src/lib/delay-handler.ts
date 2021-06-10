@@ -1,8 +1,8 @@
 import {of} from 'rxjs';
-import {delay, subscribeOn} from 'rxjs/operators';
+import {delay} from 'rxjs/operators';
 import {HttpErrorResponse, HttpEvent, HttpResponse} from '@angular/common/http';
 import {DelayHandlerInterface} from './delay-handler.interface';
-import {isNullOrUndefined, randomNumber} from './utils';
+import {randomNumber} from './utils';
 import {Subscriber} from 'rxjs/internal/Subscriber';
 
 /**
