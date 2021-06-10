@@ -27,6 +27,9 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
+  /**
+   * 测试网络错误时延时返回异常
+   */
   fit('error', () => {
     getTestScheduler().flush();
     let called = false;
