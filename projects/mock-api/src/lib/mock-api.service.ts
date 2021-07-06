@@ -49,7 +49,7 @@ export class MockApiService {
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: DelayHandlerInterface) {
+  private constructor(private delayHandler: DelayHandlerInterface) {
   }
 
   /**
@@ -151,7 +151,7 @@ export class MockApiService {
             const message = 'yzMockApi Error: conflict, matched multiple routes';
             console.error(message, method, url, keys);
             return new Observable<HttpErrorResponse>(subscriber => {
-              this.mockObservable.error(message, subscriber);
+              this.delayHandler.error(message, subscriber);
             });
           }
         }
@@ -166,7 +166,7 @@ export class MockApiService {
           `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
         console.error(message);
         console.log('hello');
-        this.mockObservable.error(message, subscriber);
+        this.delayHandler.error(message, subscriber);
       });
     }
 
@@ -191,7 +191,7 @@ export class MockApiService {
     } else {
       // 一般数据时加入延时
       return new Observable<HttpEvent<R>>(observable1 => {
-        this.mockObservable.next(result, observable1);
+        this.delayHandler.next(result, observable1);
       });
     }
   }
