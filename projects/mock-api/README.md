@@ -17,7 +17,7 @@ npm install -s @yunzhi/ng-mock-api@0.0.3
 
 # Usage
 You can mock return any data, HttpEvent or Observable as you like.
-0. for example, you have a delete method as blew:
+1. for example, you have a delete method as blew:
 ```typescript
 public delete(id: number): void {
   this.httpClient.delete<void>('user/' + id.toString())
@@ -26,31 +26,47 @@ public delete(id: number): void {
 ```
 And then, you can mock the delete method step by step:
 
-1. create New MockApi class which implements the MockApiInterface interface.
+2. create New MockApi class which implements the MockApiInterface interface, and add result of api by method and url pattern.
 ```typescript
 export class UserApi implements MockApiInterface {
   getInjectors(): ApiInjector<any>[] {
-      return [];
+      return [
+        new ApiInjector<void>(
+                {
+                  method: 'DELETE',
+                  url: 'user/(\\d+)'
+                }
+              )
+      ];
   }
 }
 ```
 
-2. Register injectors in UserApi's getInjectors() function.
-```typescript
-export class UserApi implements MockApiInterface {
-  getInjectors(): ApiInjector<any>[] {
-    return [
-      new ApiInjector<void>(
-        {
-          method: 'DELETE',
-          url: 'user/(\\d+)'
-        }
-      )];
-  }
-}
-```
 
-3. Add MockApiTestingInterceptor.forRoot to module and pass MockApi to forRoot function. Do not forget imports HttpClientModule.
+3. Add MockApiTestingInterceptor.forRoot() to testing module and pass UserApi to forRoot function. Do not forget imports HttpClientModule.
+```typescript
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule
+      ],
+      declarations: [
+        AppComponent
+      ],
+      providers: [
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MockApiTestingInterceptor.forRoot([UserApi]),
+            multi: true
+          },
+        ]
+    }).compileComponents();
+  });
+```
+And now the delete method which is declared on step 1 can be called successful.
+
+If you need make a demo with MockApi, replace MockApiTestingInterceptor.forRoot() with MockApiInterceptor.forRoot() and move the provider to RootModule's (for example: AppModule) @NgModule.
+
 ```typescript
 @NgModule({
   imports: [
@@ -59,14 +75,14 @@ export class UserApi implements MockApiInterface {
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MockApiInterceptor.forRoot([UserApi]),
+      useClass: MockApiTestingInterceptor.forRoot([UserApi]),
       multi: true
     },
   ]
 })
 export class AppModule {}
 ```
-If you need make a demo with MockApi, replace MockApiTestingInterceptor.forRoot with MockApiInterceptor.forRoot().
+
 
 * `method` support: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH'
 * `url` is a string regular expression.
@@ -84,6 +100,21 @@ The blow code will return HttpResponse<number> with 100.
       )];
 ```
 
+You can also return any object as you like:
+
+```typescript
+    return [
+      new ApiInjector<number>(
+        {
+          method: 'GET',
+          url: 'user/1',
+          result: {id: 1, name: 'foo'}
+        }
+      )];
+```
+
+And then the httpClient with request successful with a random delay time.
+
 ## return HttpResponseBase
 You can return the HttpResponse too.
 ```typescript
@@ -91,7 +122,7 @@ new ApiInjector<HttpResponse<User>>(
         {
           method: 'PUT',
           url: `user/(\\d+)`,
-          result:
+          handler:
             (urlMatches, options) => {
               const id = +urlMatches[1];
               const body = options.body as User;
@@ -100,7 +131,8 @@ new ApiInjector<HttpResponse<User>>(
             }
         })
 ```
-> note: you must mock delay time by your-self.
+
+> note: The random delay will invalid when return HttpResponse, so you must mock delay time by your-self if you need.
 
 ## return Observable
 You also can return Observable with any data, such as call error() when login fail.
@@ -117,20 +149,20 @@ new ApiInjector<Observable<HttpErrorResponse>>({
 })
 ```
 
-> note: you must mock delay time by your-self.
+> note: The random delay will invalid when return HttpErrorResponse, so you must mock delay time by your-self if you need.
 
 ## Get request info
 You can get urlMatches with is the results of urlReg matching, and get full http request data in options. The urlMatches and options with pass to `handler`:
 ```typescript
         handler:
-            (urlMatches, options) => {
+            (urlMatches: string[], options) => {
               console.log(urlMatches);
               console.log(options);
             }
 ```
 
 ## Unit Testing
-You can use MockApiTestingInterceptor instead of MockApiInterceptor, for example:
+You can use MockApiTestingInterceptor or MockApiInterceptor in Unit test:
 ```typescript
  beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -151,7 +183,7 @@ You can use MockApiTestingInterceptor instead of MockApiInterceptor, for example
 
 Please not we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly.
 
-Then you can use  `getTestScheduler().flush();` tick the time.
+If MockApiTestingInterceptor be used, then you can use  `getTestScheduler().flush();` to tick the time.
 
 ```typescript
   it('should render title', () => {
@@ -188,12 +220,8 @@ Then go to test project add `@yunzhi/ng-mock-api@version` to package.json，and 
 ## Publishing
 
 After building your library with `ng build mock-api --prod`, go to the dist folder `cd dist/mock-api` and run `npm link` for test , at last run `npm publish`.
+If MockApiInterceptor be used, you can't tick the time anymore.
 
-## Running unit tests
-
-Run `ng test mock-http-client` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+summary:
+1. You should use MockApiTestingInterceptor for unit testing. 
+2. You should use MockApiInterceptor for a dome with Mock Apis.

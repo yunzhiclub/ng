@@ -36,7 +36,7 @@
 4. 执行 `npm link`
 5. 进入根目录生成的dist文件夹的 router-testing 文件夹
 6. 执行 `npm link`
-7. 分别进入`projects/sample`,`projects/mock-api
+7. 分别进入`projects/sample`,`projects/mock-api/testing`,`projects/mock-api
    `执行`npm link @yunzhi/ng-mock-api`， `npm link @yunzhi/ng-router-testing`
 8. 按情况选择执行 `ng build mock-api --watch=true --prod`或`ng build router-testing --watch=true --prod`
 9. 编写代码,并同步在`project/sample`中完成相关集成测试, 。
