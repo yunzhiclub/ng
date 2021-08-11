@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {UserApi} from './user.api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
+import {AppInterceptor} from './app.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,9 +20,14 @@ import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MockApiInterceptor.forRoot([UserApi]),
+      useClass: AppInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MockApiInterceptor.forRoot([UserApi]),
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

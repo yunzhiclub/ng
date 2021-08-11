@@ -1,3 +1,6 @@
+// 开发时请启用如下代码
+// import {MockApiInterface} from '../../../mock-api/src/lib/mock-api.interface';
+// 集成测试请启用如下代码
 import {MockApiInterface} from '@yunzhi/ng-mock-api';
 import {ApiInjector} from '../../../mock-api/src/lib/mock-api.types';
 import {User} from './user';
@@ -12,34 +15,34 @@ export class UserApi implements MockApiInterface {
 
   /**
    * 实现接口MockApiInterface中的injectMockHttpService方法
-   * @param mockApiService 模拟API服务
-   *
    */
-  getInjectors(): ApiInjector<any>[] {
+  getInjectors(): ApiInjector[] {
     return [
-      new ApiInjector<HttpResponse<void>>(
+      new ApiInjector(
         {
           method: 'DELETE',
           url: 'user/(\\d+)',
+          description: '删除用户',
           result: new HttpResponse<void>()
         }
       ),
-      new ApiInjector<string>({
+      new ApiInjector({
         method: 'GET',
         url: `user/getCurrentUsername`,
         result: 'yunzhi'
       }),
-      new ApiInjector<Observable<HttpErrorResponse>>({
+      new ApiInjector({
         method: 'GET',
         url: 'user/login',
-        result: ((urlMatches, options) => {
+        description: '用户登录',
+        result: () => {
           return new Observable<HttpErrorResponse>(ob => {
             ob.error(new HttpErrorResponse({status: 401}));
             ob.complete();
           });
-        })
+        }
       }),
-      new ApiInjector<HttpResponse<User>>(
+      new ApiInjector (
         {
           method: 'PUT',
           url: `user/(\\d+)`,

@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHeaders,
   HttpParams, HttpRequest, HttpResponseBase
@@ -9,7 +10,6 @@ import {MockApiInterface} from './mock-api.interface';
 import {isNotNullOrUndefined} from './utils';
 import {DelayHandlerInterface} from './delay-handler.interface';
 import {RequestHandler, RequestMethodType} from './mock-api.types';
-import {DelayHandler} from './delay-handler';
 
 /**
  * 模拟API
@@ -43,14 +43,14 @@ export class MockApiService {
   /**
    * 循环调用从而完成所有的接口注册
    */
-  private constructor(private mockObservable: DelayHandler) {
+  private constructor(private delayHandler: DelayHandlerInterface) {
   }
 
   /**
    * 注册模拟接口
    * @param method 请求方法
    * @param url 请求地址
-   * @param handler 获取数据源方法
+   * @param handlerOrResult 获取数据源方法
    */
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
@@ -142,9 +142,11 @@ export class MockApiService {
           requestHandler = urlRecord[key];
           keys.push(key);
           if (keys.length > 1) {
-            const message = '匹配到了多个URL信息，请检定注入服务的URL信息，URL信息中存在匹配冲突';
+            const message = 'yzMockApi Error: conflict, matched multiple routes';
             console.error(message, method, url, keys);
-            throw Error(message);
+            return new Observable<HttpErrorResponse>(subscriber => {
+              this.delayHandler.error(message, subscriber);
+            });
           }
         }
       }
@@ -152,11 +154,14 @@ export class MockApiService {
 
     // 未找到API则报错
     if (keys.length === 0) {
-      throw Error(`can't find mock result data:` +
-        `1. pls make sure the request's 'url' and 'method' is right:  ${method}, ${url}.` +
-        `2. pls make sure you MockHttpClientService.registerMockApi(MockApiClass) has been called.` +
-        `未找到对应的模拟返回数据：1. 请检查url、method是否正确 ${method}, ${url}；` +
-        `2. 请确认调用了MockHttpClientService.registerMockApi(你的mockApi文件)`);
+      return new Observable<HttpErrorResponse>(subscriber => {
+        const message = `yzMockApi Error: can't find mock result data:` +
+          `1. pls make sure the request's url '${url}' and method '${method}' is right.` +
+          `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
+        console.error(message);
+        console.log('hello');
+        this.delayHandler.error(message, subscriber);
+      });
     }
 
     // requestHandler可能是回调,也可能是返回值.在此做类型的判断.
@@ -180,7 +185,7 @@ export class MockApiService {
     } else {
       // 一般数据时加入延时
       return new Observable<HttpEvent<R>>(observable1 => {
-        this.mockObservable.next(result, observable1);
+        this.delayHandler.next(result, observable1);
       });
     }
   }
