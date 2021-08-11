@@ -1,7 +1,7 @@
 # Mock Api for Angular
 Help you build example application without apis. Mock API calls while development, testing or building an example application. Define results based on url pattern and if needed http methods, and the mock of network delay is also provided. You can return HttpResponseBase or Observable or any data as you like.
 
-> test passed for angular10.1.5, other versions not test yet.
+> test passed for angular10.1.5, 10.1.6, 11.1, 12.1, 12.2.
 
 | ng-mock-api version | angular version | 
 
