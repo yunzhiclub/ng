@@ -13,8 +13,8 @@ export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
  * @param options 其它请求选项
  */
 export type RequestHandler<T>
-  = (urlMatches?: Array<string>,
-     options?: RequestOptions) => Observable<HttpEvent<T>> | T;
+  = (urlMatches: Array<string>,
+     options: RequestOptions) => Observable<HttpEvent<T>> | T;
 /**
  * 请求选项
  */
@@ -36,15 +36,15 @@ export type RequestOptions = {
  * 此文中Benson对构造函数的重载回答的真好!
  * https://www.itranslater.com/qa/details/2109909368035607552
  */
-export class ApiInjector<T> {
+export class ApiInjector {
   method: RequestMethodType;
   url: string;
   /**
    * 返回结果,优先获取
    */
-  result?: T | RequestHandler<T>;
+  result: any | RequestHandler<any>;
 
-  constructor(obj: ApiInjector<T> = {} as ApiInjector<T>) {
+  constructor(obj: ApiInjector = {} as ApiInjector) {
     this.method = obj.method;
     this.url = obj.url;
     this.result = obj.result;
