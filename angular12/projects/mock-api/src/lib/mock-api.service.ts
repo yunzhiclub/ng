@@ -55,6 +55,9 @@ export class MockApiService {
   registerMockApi<T>(method: RequestMethodType,
                      url: string,
                      handlerOrResult: T | RequestHandler<T>): void {
+    if (method === null || method === undefined) {
+      method = 'GET';
+    }
     if (undefined === this.routers[method] || null === this.routers[method]) {
       this.routers[method] = {} as Record<string, RequestHandler<T>>;
     }

@@ -37,7 +37,7 @@ export type RequestOptions = {
  * https://www.itranslater.com/qa/details/2109909368035607552
  */
 export class ApiInjector {
-  method: RequestMethodType;
+  method?: RequestMethodType;
   /**
    * 请求地址
    */
