@@ -1,6 +1,6 @@
 {
-  "name": "mock-api",
-  "version": "0.0.1",
+  "name": "@yunzhi/ng-mock-api",
+  "version": "0.0.6",
   "peerDependencies": {
     "@angular/common": "^12.1.0",
     "@angular/core": "^12.1.0"

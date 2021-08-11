@@ -28,7 +28,7 @@
 ## 智能方法
 
 1. 进入项目根路径
-2. `ng build mock-api --prod`
+2. `ng build mock-api`
 3. 进入根目录生成的dist文件夹的 mock-api 文件夹
 4. 执行 `npm link`
 7. 分别进入`projects/sample`,`projects/mock-api/testing`,`projects/mock-api
