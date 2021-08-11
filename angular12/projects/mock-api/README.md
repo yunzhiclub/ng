@@ -12,9 +12,9 @@ more help please visit [https://github.com/yunzhiclub/ng/tree/main/projects/mock
 npm install -s @yunzhi/ng-mock-api
 ```
 
-### Install Specific Version (Example: 0.0.3)
+### Install Specific Version (Example: 0.0.7)
 ```bash
-npm install -s @yunzhi/ng-mock-api@0.0.3
+npm install -s @yunzhi/ng-mock-api@0.0.7
 ```
 
 # Usage
