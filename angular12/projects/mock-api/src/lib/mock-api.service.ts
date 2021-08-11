@@ -107,11 +107,11 @@ export class MockApiService {
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     };
-    let method: string;
+    let method: RequestMethodType;
 
     // 根据请求参数类型,初始化请求基本信息
     if (arg0 instanceof HttpRequest) {
-      method = arg0.method.toUpperCase();
+      method = arg0.method.toUpperCase() as RequestMethodType;
       url = arg0.url;
       options = {
         body: arg0.body,
@@ -132,14 +132,14 @@ export class MockApiService {
     const keys = [];
     let requestHandler = null as RequestHandler<R> | R;
     let urlMatches = undefined as Array<string>;
-    const urlRecord = this.routers[method] as Record<string, RequestHandler<R>>;
+    const urlRecord = this.routers[method] as Record<RequestMethodType, RequestHandler<R> | R>;
 
     for (const key in urlRecord) {
       if (urlRecord.hasOwnProperty(key)) {
         const reg = new RegExp(`^${key}$`);
         if (reg.test(url)) {
           urlMatches = url.match(reg);
-          requestHandler = urlRecord[key];
+          requestHandler = urlRecord[key as RequestMethodType];
           keys.push(key);
           if (keys.length > 1) {
             const message = 'yzMockApi Error: conflict, matched multiple routes';
