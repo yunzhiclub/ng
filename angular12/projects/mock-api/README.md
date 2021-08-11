@@ -3,6 +3,8 @@ Help you build example application without apis. Mock API calls while developmen
 
 > test passed for angular10.1.5, other versions not test yet.
 
+| ng-mock-api version | angular version | 
+
 more help please visit [https://github.com/yunzhiclub/ng/tree/main/projects/mock-api](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
 
 # Installation

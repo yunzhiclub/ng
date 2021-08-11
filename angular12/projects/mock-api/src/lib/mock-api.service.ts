@@ -158,11 +158,10 @@ export class MockApiService {
     // 未找到API则报错
     if (keys.length === 0) {
       return new Observable<HttpErrorResponse>(subscriber => {
-        const message = `yzMockApi Error: can't find mock result data:` +
-          `1. pls make sure the request's url '${url}' and method '${method}' is right.` +
+        const message = `yzMockApi Error: can't find mock result data: \n` +
+          `1. pls make sure the request's url '${url}' and method '${method}' is right. \n` +
           `2. pls make sure your mockApi file has been added to the module HttpInterceptor.`;
         console.error(message);
-        console.log('hello');
         this.delayHandler.error(message, subscriber);
       });
     }

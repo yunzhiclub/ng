@@ -49,7 +49,7 @@ export class ApiInjector {
   /**
    * 返回结果,优先获取
    */
-  result: any | RequestHandler<any>;
+  result?: any | RequestHandler<any>;
 
   constructor(obj: ApiInjector = {} as ApiInjector) {
     this.method = obj.method;

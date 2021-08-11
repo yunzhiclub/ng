@@ -3,11 +3,8 @@ import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {randomNumber, isNullOrUndefined} from '../utils-test';
-// 集成测试请启用如下代码
 import {Subscriber} from 'rxjs/internal/Subscriber';
 import {DelayHandlerInterface} from '@yunzhi/ng-mock-api';
-// 开发时请启用如下代码
-// import {DelayHandlerInterface} from '../../../src/lib/delay-handler.interface';
 
 /**
  * 测试时用于模拟delay.
