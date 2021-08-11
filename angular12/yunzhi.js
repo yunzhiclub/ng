@@ -50,7 +50,7 @@ function init() {
 init();
 
 // 监听mock-api中的文件是否发生变化，发生变化则重新构建
-watch(['projects/mock-api'], {recursive: true}, () => {
+watch(['projects/mock-api/src', 'projects/mock-api/testing/src'], {recursive: true}, () => {
   init();
 });
 
