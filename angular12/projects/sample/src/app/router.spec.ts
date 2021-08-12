@@ -10,7 +10,7 @@ describe('Router route测试', () => {
     });
   });
 
-  fit('router 与 route的配合', () => {
+  it('router 与 route的配合', () => {
     let params: Params;
     const router = TestBed.inject(Router);
     const route = TestBed.inject(ActivatedRoute);
