@@ -7,7 +7,9 @@ import {
   QueryParamsHandling,
   UrlTree
 } from '@angular/router';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class RouterStub {
   /**
    * An event stream for routing events in this NgModule.
@@ -60,6 +62,7 @@ export class RouterStub {
    * @param extras 扩展属性
    */
   navigate(commands: any[], extras?: NavigationExtras): Promise<boolean> {
+    this.navigateCallbackFns.forEach(callback => callback(extras.queryParams));
     return Promise.resolve(true);
   }
 

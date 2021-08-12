@@ -2,18 +2,23 @@ import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {RouterStub} from './router.stub';
 import {ActivatedRouteSnapshot, ActivationEnd, ParamMap, Params, Router} from '@angular/router';
+import {Injectable} from '@angular/core';
 
 /**
  * 路由测试桩
  */
+@Injectable()
 export class ActivatedRouteStub {
   router: RouterStub;
   paramsSubject = new Subject<Params>();
   params: Observable<Params>;
-  paramMapSubject = new Subject<Params>();
-  paramMap: Observable<Params>;
+  paramMapSubject = new Subject<ParamMap>();
+  paramMap: Observable<ParamMap>;
   queryParamsSubject = new Subject<Params>();
   queryParams: Observable<Params>;
+  queryParamMapSubject = new Subject<ParamMap>();
+  queryParamsMap: Observable<ParamMap>
+
   snapshot = {
     paramMap: {
       get: () => {

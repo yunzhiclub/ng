@@ -4,8 +4,8 @@ import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-// import {MockApiTestingInterceptor} from '../../../mock-api/testing/src/lib/mock-api.testing.interceptor';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 
 describe('AppComponent', () => {
