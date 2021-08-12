@@ -1,6 +1,7 @@
 /**
  * 对字符串进行简单的加密
- * @param string 加密后的字符串
+ * @param sourceString 字符串
+ * @return hash值
  */
 export function hash(sourceString: string): number {
   let hashCode = 0;
@@ -117,8 +118,7 @@ export class Assert {
       throw new Error('最后一个参数必须为字符串');
     }
 
-    const message = args.pop();
-    return message;
+    return args.pop();
   }
 
   static isUndefined(param: any): void {
@@ -203,3 +203,95 @@ export function uniqueId(): string {
 export interface UnknownProperty {
   [k: string]: unknown;
 }
+
+
+// 解码
+const decodeUnicode = (str: string): string => {
+  str = '\\u' + str;
+  str = str.replace(/\\/g, '%');
+
+  str = unescape(str);
+  str = str.replace(/%/g, '\\');
+  return str;
+};
+
+export class Random {
+  /**
+   * 获取随机数据
+   * @param width 位宽
+   */
+  static nextNumber(width = 32): number {
+    let range = 1;
+    while (width > 0) {
+      range = range * 2;
+      width--;
+    }
+
+    return Math.floor(Math.random() * range);
+  }
+
+  /**
+   * 获取随机字符串
+   * @param prefix 返回字符串的前缀
+   * @param length 字符串长度
+   */
+  static nextString(prefix = '', length = 4): string {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return prefix + result;
+  }
+}
+
+/*
+* 获取取机的中文字符串
+*/
+export const randomChineseString = (preString = '', length = 3): string => {
+  let name = '';
+  for (let i = 0; i < length; i++) {
+    let unicodeNum = '';
+    unicodeNum = randomNumberByRange(0x4e00, 0x9fa5).toString(16);
+    name += decodeUnicode(unicodeNum);
+  }
+  return preString + name;
+};
+
+/**
+ * 获取指定范围内的随机数
+ * @param min 最小值
+ * @param max 最大值
+ */
+const randomNumberByRange = (min = 0, max = 1000): number => {
+  return Math.floor(Math.random() * (min - max) + max);
+};
+
+/**
+ * 随机时间戳
+ * @param day 随机生成的时间范围（天）
+ * @param baseDate 生成时间范围基于某天
+ * @sample
+ * randomTimestamp(10, new Date(2020, 7, 12))
+ * 返回：2020年7月12日前后10天的随机一天
+ */
+export const randomTimestamp = (day = 7, baseDate = new Date()) => {
+  const range = 1000 * 60 * 60 * 24 * day * 2;
+  return baseDate.getTime() + randomNumber(range) - range / 2;
+};
+
+
+export const randomBoolean = () => {
+  return randomNumber(10) % 2 === 0;
+};
+
+export const randomString = (prefix = '', length = 4) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return prefix + result;
+};

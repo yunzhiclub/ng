@@ -34,6 +34,7 @@ function init() {
         console.log(`stdout: ${stdout}`);
         process.chdir('../mock-api/testing');
         exec('npm link @yunzhi/ng-mock-api', (error, stdout) => {
+          console.log('link mock-api in mock-api/testing');
           if (error) {
             console.error(error.message);
             return;
@@ -49,7 +50,7 @@ function init() {
 
 init();
 
-// 监听mock-api中的文件是否发生变化，发生变化则重新构建
+console.log('监听mock-api中的文件是否发生变化，发生变化则重新构建');
 watch(['projects/mock-api/src', 'projects/mock-api/testing/src'], {recursive: true}, () => {
   init();
 });

@@ -2,9 +2,8 @@ import {of} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {randomNumber, isNullOrUndefined} from '../utils-test';
 import {Subscriber} from 'rxjs/internal/Subscriber';
-import {DelayHandlerInterface} from '@yunzhi/ng-mock-api';
+import {DelayHandlerInterface, isNullOrUndefined, randomNumber} from '@yunzhi/ng-mock-api';
 
 /**
  * 测试时用于模拟delay.
