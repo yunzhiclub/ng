@@ -17,7 +17,7 @@
 
 1. 进入项目根路径
 2. `npm install`
-3. 'node yunzhi.js'
+3. 'node mock-api.js'
 4. 编写代码,并同步在`project/sample`中完成相关集成测试。
 
 ## 发布
@@ -27,7 +27,7 @@
 `cd dist/mock-api && npm publish --access=public`
 
 ## 测试开发中的注意点
-yunzhi.js 监听的还不完美，可能在开发中有一些 BUG。
+mock-api.js 监听的还不完美，可能在开发中有一些 BUG。
 
 # 参考资源
 [在angular模块中建立子模块](https://github.com/ng-packagr/ng-packagr/blob/master/docs/secondary-entrypoints.md)
