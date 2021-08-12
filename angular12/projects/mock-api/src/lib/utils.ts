@@ -42,6 +42,18 @@ export function convertToLoadingFormat(target: string, suffix = '.', length = 3)
   return target;
 }
 
+/**
+ * 当值为undefined或null时返回默认值
+ * @param value 传入值
+ * @param defaultValue 默认值
+ */
+export function getDefaultValueWhenUndefinedOrNull<T>(value: T, defaultValue: T): T {
+  if (value === undefined || value === null) {
+    return defaultValue;
+  }
+
+  return value;
+}
 
 export class Assert {
 
