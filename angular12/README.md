@@ -9,15 +9,15 @@
 
 # 安装
 `npm i @yunzhi/ng-mock-api`
+`npm i @yunzhi/ng-router-testing`
 
 
 使用文档请参考：[MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
 
 # 开发步骤
-
 1. 进入项目根路径
 2. `npm install`
-3. 'node mock-api.js'
+3. 'node mock-api.js' 或 `node router-testing.js`
 4. 编写代码,并同步在`project/sample`中完成相关集成测试。
 
 ## 发布
@@ -25,9 +25,11 @@
 
 然后进入相关文件夹完成发布：
 `cd dist/mock-api && npm publish --access=public`
+或
+`cd dist/router-testing && npm publish --access=public`
 
 ## 测试开发中的注意点
-mock-api.js 监听的还不完美，可能在开发中有一些 BUG。
+mock-api(router-testing).js 监听的还不完美，可能在开发中有一些 BUG。
 
 # 参考资源
 [在angular模块中建立子模块](https://github.com/ng-packagr/ng-packagr/blob/master/docs/secondary-entrypoints.md)
