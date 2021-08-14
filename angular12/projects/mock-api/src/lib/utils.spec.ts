@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {convertToLoadingFormat} from './utils';
+import {convertToLoadingFormat, getDefaultWhenValueIsInValid} from './utils';
 
 
 describe('utils', () => {
@@ -13,5 +13,11 @@ describe('utils', () => {
     expect(convertToLoadingFormat('请稍候.')).toEqual('请稍候..');
     expect(convertToLoadingFormat('请稍候..')).toEqual('请稍候...');
     expect(convertToLoadingFormat('请稍候...')).toEqual('请稍候');
+  });
+
+  it('getDefaultWhenValueIsInValid', () => {
+    const a = undefined as number;
+    // NaN
+    expect(getDefaultWhenValueIsInValid(+a, 0)).toBe(0);
   });
 });
