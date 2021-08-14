@@ -47,8 +47,8 @@ export function convertToLoadingFormat(target: string, suffix = '.', length = 3)
  * @param value 传入值
  * @param defaultValue 默认值
  */
-export function getDefaultValueWhenUndefinedOrNull<T>(value: T, defaultValue: T): T {
-  if (value === undefined || value === null) {
+export function getDefaultWhenValueIsInValid<T>(value: T, defaultValue: T): T {
+  if (value === undefined || value === null || Number.isNaN(value) ) {
     return defaultValue;
   }
 
