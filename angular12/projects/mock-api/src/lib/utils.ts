@@ -55,8 +55,9 @@ export function getDefaultWhenValueIsInValid<T>(value: T, defaultValue: T): T {
   return value;
 }
 
-export class Assert {
 
+
+export class Assert {
   /**
    * 断言是数组
    * @param value 断言的值
@@ -67,7 +68,6 @@ export class Assert {
       throw new Error(message);
     }
   }
-
   /**
    * 断言被定义
    * undefined 异常
@@ -79,6 +79,19 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach(value => {
       if (!isDefined(value)) {
+        throw new Error(message);
+      }
+    });
+  }
+
+  /**
+   * 断言有整型（不包含NaN)
+   * @param args
+   */
+  static isInteger(...args: any[]): void {
+    const message = this.validateArgs(args);
+    args.forEach(value => {
+      if (!Number.isInteger(value)) {
         throw new Error(message);
       }
     });
