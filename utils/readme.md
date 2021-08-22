@@ -1,7 +1,15 @@
+## Utils for yunzhi
+
+## Installation
+`npm install @yunzhi/utils`
+
+## Usage
+
+
 ## how to publish
 1. `tsc && npm pack`
 2. `npm login`
-3. `npm publish`
+3. `npm publish --access=public`
 
 thanks for : 
 1. https://github.com/google/gts

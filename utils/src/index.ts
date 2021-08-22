@@ -87,18 +87,9 @@ export class Random {
 }
 
 export class Assert {
-  private static swal = {} as {
-    fire: (options: {
-      titleText: string;
-      text: string;
-      icon: string;
-      background: string;
-      allowOutsideClick: boolean;
-      confirmButtonText: string;
-      confirmButtonColor: string;
-      showCancelButton: boolean;
-    }) => Promise<void>;
-  };
+  public static showError(message: string) {
+    console.warn('请重写当前方法以自定义错误提示信息');
+  }
 
   /**
    * 断言是数组
@@ -275,20 +266,7 @@ export class Assert {
    * @param message 消息
    */
   private static throwError(message: string): void {
-    if (this.swal.fire) {
-      this.swal
-        .fire({
-          titleText: '发生了一个错误',
-          text: message,
-          icon: 'error',
-          background: '#F7F8FA',
-          allowOutsideClick: false,
-          confirmButtonText: '确定',
-          confirmButtonColor: '#007BFF',
-          showCancelButton: false
-        })
-        .then();
-    }
+    this.showError(message);
     throw new Error(message);
   }
 }
