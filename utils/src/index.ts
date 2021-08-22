@@ -99,8 +99,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach((value, index) => {
       if (!Array.isArray(value)) {
-        Assert.throwError(message);
-        throw new Error(`${message}:${index}`);
+        this.showError(`${message}:${index}`);
       }
     });
   }
@@ -116,7 +115,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach((value, index) => {
       if (!isDefined(value)) {
-        throw new Error(`${message}:${index}`);
+        this.showError(`${message}:${index}`);
       }
     });
   }
@@ -125,7 +124,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach(arg => {
       if (!(arg instanceof Date)) {
-        throw new Error(message);
+        this.showError(message);
       }
     });
   }
@@ -136,7 +135,7 @@ export class Assert {
       const type = typeof arg;
       const isObject = type === 'function' || (type === 'object' && !!arg);
       if (!isObject) {
-        throw new Error(message);
+        this.showError(message);
       }
     });
   }
@@ -149,7 +148,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach(value => {
       if (!(typeof value === 'string')) {
-        Assert.throwError(message);
+        this.showError(message);
       }
     });
   }
@@ -158,7 +157,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach(value => {
       if (!isNotNullOrUndefined(value)) {
-        throw new Error(message);
+        this.showError(message);
       }
     });
   }
@@ -169,11 +168,11 @@ export class Assert {
    */
   private static validateArgs(args: any[]): string {
     if (args.length < 2) {
-      throw new Error('最少输入两个参数');
+      this.showError('最少输入两个参数');
     }
 
     if (!(typeof args[args.length - 1] === 'string')) {
-      throw new Error('最后一个参数必须为字符串');
+      this.showError('最后一个参数必须为字符串');
     }
 
     return args.pop();
@@ -181,7 +180,8 @@ export class Assert {
 
   static isUndefined(param: any): void {
     if (typeof param !== 'undefined') {
-      throw new Error('变量已定义');
+      const message = '变量已定义';
+      this.showError(message);
     }
   }
 
@@ -194,7 +194,8 @@ export class Assert {
    */
   static isNull(param: any): void {
     if (typeof param === 'undefined' || param !== null) {
-      throw new Error('变量非空');
+      const message = '变量非空';
+      this.showError(message);
     }
   }
 
@@ -204,9 +205,9 @@ export class Assert {
    */
   static isNumber(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach(value => {
+    args.forEach((value, index) => {
       if (!(typeof value === 'number')) {
-        throw new Error(message);
+        this.showError(`${message}:${index}`);
       }
     });
   }
@@ -217,9 +218,9 @@ export class Assert {
    */
   static isInteger(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach(value => {
+    args.forEach((value, index) => {
       if (!Number.isInteger(value)) {
-        throw new Error(message);
+        this.showError(`${message}:${index}`);
       }
     });
   }
@@ -228,7 +229,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach((value, index) => {
       if (!isNotNullOrUndefined(value)) {
-        Assert.throwError(`${message}:${index}`);
+        this.showError(`${message}:${index}`);
       }
     });
   }
@@ -241,7 +242,7 @@ export class Assert {
     const message = this.validateArgs(args);
     args.forEach((value, index) => {
       if (typeof value !== 'boolean' || !value) {
-        throw new Error(`${message}:${index}`);
+        this.showError(`${message}:${index}`);
       }
     });
   }
