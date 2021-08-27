@@ -1,0 +1,11 @@
+<ul class="menu">
+  <li *ngFor="let menu of menus" class="border-bottom">
+    <a routerLink={{menu.url}} routerLinkActive="active">
+      <div class="inner">
+        <i [className]="menu.icon"></i>
+        <span>{{ menu.name }}</span>
+      </div>
+    </a>
+  </li>
+</ul>
+

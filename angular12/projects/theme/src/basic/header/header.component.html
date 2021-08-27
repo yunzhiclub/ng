@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark shadow header">
+  <a class="navbar-brand pl-5" href="/dashboard">
+  </a>
+  <div class="title">
+    {{ environment.title }}
+  </div>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="/personal-center">
+          <span class="font-weight-light"> 欢迎您  </span>
+          <i class="fas fa-user-circle"></i>
+          {{currentUser?.username}}
+        </a>
+      </li>
+      <li class="nav-item small">
+        <a class="nav-link" href="javascript:void(0);" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          退出登录
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="color-line"></div>
+

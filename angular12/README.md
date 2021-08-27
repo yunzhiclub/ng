@@ -7,17 +7,22 @@
 
 更多帮助文档请点击[github](https://github.com/yunzhiclub/ng)
 
+
 # 安装
 `npm i @yunzhi/ng-mock-api`
 `npm i @yunzhi/ng-router-testing`
+`npm i @yunzhi/ng-theme-basic`
+`npm i @yunzhi/ng-common`
 
 
 使用文档请参考：[MockApiInterceptor](https://github.com/yunzhiclub/ng/tree/main/projects/mock-api)
 
 # 开发步骤
+创建新库`ng g library my-lib`
+
 1. 进入项目根路径
 2. `npm install`
-3. 'node mock-api.js' 或 `node router-testing.js`
+3. 'node mock-api.js' 或 `node router-testing.js` 或 `node common.js` 或 `node theme.js`
 4. 编写代码,并同步在`project/sample`中完成相关集成测试。
 
 ## 发布

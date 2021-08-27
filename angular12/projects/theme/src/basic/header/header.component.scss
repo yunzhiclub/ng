@@ -1,0 +1,28 @@
+@import "../variable";
+.header {
+  height: $header-height;
+  background-image: url("/assets/basic/image/header.png");
+  background-repeat: no-repeat;
+  background-position-y: -2.5rem;
+}
+
+.color-line {
+  height: $color-line-height;
+  background-size: 100% 6px;
+  background: #f7f9fa linear-gradient(to right, #ffb606, #e67e22, #e74c3c, #9b59b6, #34495e) no-repeat 50% 100%;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #333;
+}
+
+.title {
+  font-weight: bold;
+  color: #90111A;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin:auto;
+  width: 13em;
+  font-size: 1.8rem;
+}
