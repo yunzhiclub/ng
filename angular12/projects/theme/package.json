@@ -5,6 +5,7 @@
     "email": "3792535@qq.com",
     "name": "panjie"
   },
+  "private": false,
   "description": "the theme with bs4 for angular10+",
   "peerDependencies": {
     "@angular/common": "^12.1.0",

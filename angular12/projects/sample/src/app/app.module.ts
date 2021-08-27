@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppInterceptor} from './app.interceptor';
 import {ApiModule} from './api/api.module';
-import {BasicModule} from 'theme';
+import {BasicModule} from '@yunzhi/ng-theme';
 import {ThemeComponent} from './theme/theme.component';
 
 @Component({

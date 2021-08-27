@@ -12,6 +12,7 @@ import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
 export class HeaderComponent implements OnInit, OnDestroy {
   // 当前用户
   currentUser: { name: string };
+  title: string;
 
   private subscription: Subscription | undefined;
 
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.title = this.basicService.getTitle();
     this.subscription = this.basicService.getCurrentLoginUser$()
       .subscribe(user => this.currentUser = user);
   }
@@ -30,10 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
      * complete 时跳转
      */
     this.basicService.logout();
-  }
-
-  getTitle(): string {
-    return '模板标题';
   }
 
   ngOnDestroy(): void {

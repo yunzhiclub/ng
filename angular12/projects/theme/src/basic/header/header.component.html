@@ -2,7 +2,7 @@
   <a class="navbar-brand pl-5" href="/dashboard">
   </a>
   <div class="title">
-    {{ getTitle() }}
+    {{ title }}
   </div>
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -14,7 +14,7 @@
         </a>
       </li>
       <li class="nav-item small">
-        <span class="nav-link" href="javascript:void(0);" (click)="onLogout()">
+        <span class="nav-link" (click)="onLogout()">
           <i class="fas fa-sign-out-alt"></i>
           退出登录
         </span>
