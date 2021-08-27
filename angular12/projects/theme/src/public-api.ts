@@ -3,3 +3,4 @@
  */
 
 export * from './basic/basic.module';
+export * from './basic/basic.component';

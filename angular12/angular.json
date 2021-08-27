@@ -65,6 +65,7 @@
               "projects/sample/src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
               "projects/sample/src/styles.sass"
             ],
             "scripts": []

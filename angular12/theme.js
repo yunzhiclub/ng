@@ -43,6 +43,7 @@ init();
 
 console.log('监听theme中的文件是否发生变化，发生变化则重新构建');
 watch(['projects/theme/src'], {recursive: true}, () => {
+  console.log(new Date().toTimeString());
   init();
 });
 
