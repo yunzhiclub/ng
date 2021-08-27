@@ -5,7 +5,7 @@ import {RouterModule} from '@angular/router';
 import {HeaderModule} from './header/header.module';
 import {MenuModule} from './menu/menu.module';
 import {NavModule} from './nav/nav.module';
-import {BasicMenuService} from './service/basic-menu.service';
+import {BasicService} from './service/basic.service';
 
 /**
  * 基本主题
@@ -22,7 +22,7 @@ import {BasicMenuService} from './service/basic-menu.service';
   ],
   exports: [BasicComponent],
   providers: [
-    BasicMenuService
+    BasicService
   ]
 })
 export class BasicModule {

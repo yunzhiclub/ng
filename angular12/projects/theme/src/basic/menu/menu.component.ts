@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {BasicMenuService} from '../service/basic-menu.service';
+import {BasicService} from '../service/basic.service';
 import {Menu} from '../entity/menu';
 
 @Component({
@@ -13,7 +13,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   menus = new Array<Menu>();
   private subscription: Subscription | undefined;
 
-  constructor(private basicMenuService: BasicMenuService,
+  constructor(private basicMenuService: BasicService,
               private router: Router) {
   }
 

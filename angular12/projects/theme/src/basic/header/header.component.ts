@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../../../entity/user';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {UserService} from '../../../../service/user.service';
-import {environment} from '../../../../environments/environment';
-import {isNotNullOrUndefined} from '../../../../common/utils';
+import {BasicService} from '../service/basic.service';
+import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
 
 @Component({
   selector: 'app-header',
@@ -13,19 +11,17 @@ import {isNotNullOrUndefined} from '../../../../common/utils';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   // 当前用户
-  currentUser: User | undefined;
-
-  environment = environment;
+  currentUser: { name: string };
 
   private subscription: Subscription | undefined;
 
   constructor(private router: Router,
-              private userService: UserService
+              private basicService: BasicService
   ) {
   }
 
   ngOnInit(): void {
-    this.subscription = this.userService.getCurrentLoginUser$()
+    this.subscription = this.basicService.getCurrentLoginUser$()
       .subscribe(user => this.currentUser = user);
   }
 
@@ -33,15 +29,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     /**
      * complete 时跳转
      */
-    this.userService.logout()
-      .subscribe(() => {
-        }, (error) => {
-          console.error('error', error);
-        },
-        () => {
-          this.router.navigateByUrl('login').then();
-        }
-      );
+    this.basicService.logout();
+  }
+
+  getTitle(): string {
+    return '模板标题';
   }
 
   ngOnDestroy(): void {

@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MenuComponent} from './menu.component';
-import {ApiTestingModule} from '../../../../api/api.testing.module';
 import {RouterTestingModule} from '@angular/router/testing';
-import {BasicMenuService} from '../service/basic-menu.service';
+import {BasicService} from '../service/basic.service';
+import {ApiModule} from '../api/api.module';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -13,10 +13,10 @@ describe('MenuComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [MenuComponent],
       imports: [
-        ApiTestingModule,
+        ApiModule,
         RouterTestingModule
       ],providers: [
-        BasicMenuService
+        BasicService
       ]
     })
       .compileComponents();

@@ -12,5 +12,9 @@
   },
   "dependencies": {
     "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@yunzhi/ng-mock-api": "0.0.9",
+    "@yunzhi/ng-router-testing": "0.0.2"
   }
 }

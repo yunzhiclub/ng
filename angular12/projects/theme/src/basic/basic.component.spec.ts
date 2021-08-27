@@ -7,7 +7,7 @@ import {MenuModule} from './menu/menu.module';
 import {NavModule} from './nav/nav.module';
 import {Router} from '@angular/router';
 import {of} from 'rxjs';
-import {BasicMenuService} from './service/basic-menu.service';
+import {BasicService} from './service/basic.service';
 
 describe('BasicComponent', () => {
   let component: BasicComponent;
@@ -23,7 +23,7 @@ describe('BasicComponent', () => {
         NavModule
       ],
       providers: [
-        BasicMenuService
+        BasicService
       ]
     })
       .compileComponents();

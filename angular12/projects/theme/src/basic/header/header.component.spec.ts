@@ -4,7 +4,7 @@ import {HeaderComponent} from './header.component';
 import {RouterTestingModule} from '@yunzhi/ng-router-testing';
 import {Router} from '@angular/router';
 import {of} from 'rxjs';
-import {ApiTestingModule} from '../../../../api/api.testing.module';
+import {ApiModule} from '../api/api.module';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -14,7 +14,7 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       imports: [
-        ApiTestingModule,
+        ApiModule,
         RouterTestingModule
       ]
     })
