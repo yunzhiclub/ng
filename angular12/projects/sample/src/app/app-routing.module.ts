@@ -11,10 +11,9 @@ const routes: Routes = [
     component: BasicComponent,
     children: [
       {
-        path: '',
+        path: 'dashboard',
         component: AppComponent
       },
-
       {
         path: 'theme',
         component: ThemeComponent

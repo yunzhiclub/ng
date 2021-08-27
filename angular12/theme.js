@@ -3,6 +3,7 @@ const {exec} = require('child_process');
 // 调用 node-watch 监听模块，该模块在package.json中被定义
 const watch = require('node-watch');
 let running = false;
+let linked = false;
 
 // 初始化方法
 function init() {
@@ -12,30 +13,41 @@ function init() {
   }
   running = true;
 
-  // build mock-api
+  // build theme
   exec('ng build theme', (error, stdout) => {
     if (error) {
       console.log(`stdout: ${error.message}`)
+      running = false;
       return;
     }
     console.log(`stdout: ${stdout}`);
     process.chdir('dist/theme');
 
-    // link mock-api to node modules
-    exec('npm link', (error, stdout) => {
-      console.log(`stdout: ${stdout}`);
-      process.chdir('../../projects/sample');
-      exec('pwd', (error, stdout) => {
+    // link mock-theme to node modules
+    if (linked === false) {
+      exec('npm link', (error, stdout) => {
+        if (error) {
+          console.log(`stdout: ${error.message}`)
+          running = false;
+          return;
+        }
+        linked = true;
         console.log(`stdout: ${stdout}`);
-      });
+        process.chdir('../../projects/sample');
+        exec('pwd', (error, stdout) => {
+          console.log(`stdout: ${stdout}`);
+        });
 
-      // link mock-api from node modules
-      exec('npm link @yunzhi/ng-theme', (error, stdout) => {
-        console.log(`stdout: ${stdout}`);
-        process.chdir('../../');
-        running = false;
+        // link mock-api from node modules
+        exec('npm link @yunzhi/ng-theme', (error, stdout) => {
+          console.log(`stdout: ${stdout}`);
+          process.chdir('../../');
+          running = false;
+        });
       });
-    });
+    } else {
+      running = false;
+    }
   });
 }
 
