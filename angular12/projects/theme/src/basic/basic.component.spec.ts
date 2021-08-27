@@ -7,7 +7,6 @@ import {MenuModule} from './menu/menu.module';
 import {NavModule} from './nav/nav.module';
 import {Router} from '@angular/router';
 import {of} from 'rxjs';
-import {ApiTestingModule} from '../../../api/api.testing.module';
 import {BasicMenuService} from './service/basic-menu.service';
 
 describe('BasicComponent', () => {
@@ -18,7 +17,6 @@ describe('BasicComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BasicComponent],
       imports: [
-        ApiTestingModule,
         RouterTestingModule,
         HeaderModule,
         MenuModule,
@@ -40,7 +38,7 @@ describe('BasicComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 
