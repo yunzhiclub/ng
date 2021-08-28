@@ -1,3 +1,56 @@
+## How to use it
+import the BasicModule in your module (eg: AppModule)
+```typescript
+    BasicModule.forRoot({
+      basicService: ThemeService
+    })
+```
+
+The ThemeService most link blow:
+```typescript
+
+```
+
+## 使用方法
+
+
+在模块下（通常是根AppModule)中引入BasicModule.
+```typescript
+    BasicModule.forRoot({
+      basicService: ThemeService
+    })
+```
+
+`ThemeService`示例如下：
+```typescript
+import {BasicService} from '../../theme/src/basic/service/basic.service';
+import {Injectable} from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ThemeService extends BasicService {
+
+  /**
+   * 标题
+   */
+  getTitle(): string {
+    return '标题重写测试';
+  }
+
+  /**
+   * 注销
+   */
+  logout(): void {
+    console.info('重写logout()实现注销');
+  }
+}
+```
+
+And you can see `BasicService` for override details.
+
+<hr>
+
 # Theme
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.0.
