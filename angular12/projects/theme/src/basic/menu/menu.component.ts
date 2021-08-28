@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router} from '@angular/router';
 import {BasicService} from '../service/basic.service';
 import {Menu} from '../entity/menu';
 
@@ -9,39 +8,38 @@ import {Menu} from '../entity/menu';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit, OnDestroy {
+export class MenuComponent implements OnInit, OnDestroy, AfterViewInit {
+
+
   menus = new Array<Menu>();
   private subscription: Subscription | undefined;
+  private color = {
+    active: {
+      background: '#EB595E',
+      color: '#fff',
+      leftBorder: '#fff',
+      rightBorder: '#0F66D4'
+    },
+    normal: {
+      background: '#fff',
+      color: '#000000',
+      leftBorder: '#EB595E',
+      rightBorder: '#fff'
+    }
+  };
 
-  constructor(private basicMenuService: BasicService,
-              private router: Router) {
+  constructor(private basicMenuService: BasicService) {
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
+    if (this.basicMenuService.getMenuColor() !== null && this.basicMenuService.getMenuColor() !== undefined) {
+      this.color = this.basicMenuService.getMenuColor();
+    }
     this.basicMenuService.getMenus().subscribe(menus =>
       this.menus = menus);
-  }
-
-  /**
-   * 判断当前菜单是否激活
-   * @param menu 菜单
-   */
-  active(menu: Menu): boolean {
-
-    // 定义主路由
-    let mainRoute: string;
-
-    // 根据是否有第2个/选择截取方式
-    // 从urlSegment[1]开始是因为urlSegment[0] === ""
-    const urlSegment = this.router.url.split('/');
-    // if (urlSegment[1] === 'teacher' || urlSegment[1] === 'student') {
-    //   mainRoute = urlSegment[1] + '/' + urlSegment[2];
-    // } else {
-    mainRoute = urlSegment[1];
-    // }
-
-    // 判断当前路由是否激活
-    return mainRoute === menu.url;
   }
 
   ngOnDestroy(): void {
@@ -49,5 +47,45 @@ export class MenuComponent implements OnInit, OnDestroy {
       /** 取消订阅 */
       this.subscription.unsubscribe();
     }
+  }
+
+  onMouseover(link: HTMLAnchorElement) {
+    if (!this.isActive(link)) {
+      link.style.borderRightColor = this.color.active.rightBorder;
+      link.style.borderLeftColor = this.color.active.leftBorder;
+      link.style.color = this.color.active.color;
+      link.style.backgroundColor = this.color.active.background;
+    }
+  }
+
+  onMouseleave(link: HTMLAnchorElement) {
+    if (!this.isActive(link)) {
+      link.style.borderRightColor = this.color.normal.rightBorder;
+      link.style.borderLeftColor = this.color.normal.leftBorder;
+      link.style.color = this.color.normal.color;
+      link.style.backgroundColor = this.color.normal.background;
+    }
+  }
+
+  getStyle(link: HTMLAnchorElement) {
+    if (this.isActive(link)) {
+      return {
+        'border-left-color': this.color.active.leftBorder,
+        'border-right-color': this.color.active.rightBorder,
+        'background-color': this.color.active.background,
+        'color': this.color.active.color
+      }
+    } else {
+      return {
+        'border-left-color': this.color.normal.leftBorder,
+        'border-right-color': this.color.normal.rightBorder,
+        'background-color': this.color.normal.background,
+        'color': this.color.normal.color
+      }
+    }
+  }
+
+  isActive(link: HTMLAnchorElement): boolean {
+    return link.className.split(' ').indexOf('active') > -1;
   }
 }

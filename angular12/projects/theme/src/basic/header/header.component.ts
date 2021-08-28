@@ -10,7 +10,7 @@ import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('#header', {static: true})
+  @ViewChild('header', {static: true})
   headerHtmlRef: ElementRef<HTMLElement>;
 
   // 当前用户
