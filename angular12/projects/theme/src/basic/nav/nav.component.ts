@@ -20,7 +20,7 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title = this.getTitle();
 
-    this.basicService.showBack()
+    this.basicService.isShowBack$()
       .subscribe(showBack => this.showBack = showBack);
 
     /** 订阅路由事件 */

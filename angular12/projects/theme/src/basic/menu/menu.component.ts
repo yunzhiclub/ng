@@ -30,8 +30,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.basicMenuService.getMenuColor() !== null && this.basicMenuService.getMenuColor() !== undefined) {
-      this.color = this.basicMenuService.getMenuColor();
+    const colors = this.basicMenuService.getColors();
+    if (colors && colors.menu) {
+      this.color = colors.menu;
     }
     this.basicMenuService.getMenus().subscribe(menus =>
       this.menus = menus);
