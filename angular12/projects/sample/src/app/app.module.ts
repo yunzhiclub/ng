@@ -8,6 +8,7 @@ import {AppInterceptor} from './app.interceptor';
 import {ApiModule} from './api/api.module';
 import {BasicModule} from '@yunzhi/ng-theme';
 import {ThemeComponent} from './theme/theme.component';
+import {ThemeService} from '../theme.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,9 @@ export class RootComponent {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BasicModule,
+    BasicModule.forRoot({
+      basicService: ThemeService
+    }),
     ApiModule
   ],
   providers: [

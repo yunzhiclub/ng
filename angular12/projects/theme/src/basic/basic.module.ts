@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule, Type} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BasicComponent} from './basic.component';
 import {RouterModule} from '@angular/router';
@@ -26,4 +26,12 @@ import {BasicService} from './service/basic.service';
   ]
 })
 export class BasicModule {
+  public static forRoot(config: { basicService: Type<BasicService> }): ModuleWithProviders<BasicModule> {
+    return {
+      ngModule: BasicModule,
+      providers: [
+        {provide: BasicService, useClass: config.basicService}
+      ]
+    }
+  }
 }

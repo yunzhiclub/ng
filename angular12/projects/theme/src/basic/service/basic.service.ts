@@ -89,6 +89,13 @@ export class BasicService {
   }
 
   /**
+   * 点击用户姓名的事件
+   */
+  onClickUserName(): void {
+    console.warn('重写onClickUserName()方法来订制点击用户姓名的事件');
+  }
+
+  /**
    * 注销
    */
   logout(): void {

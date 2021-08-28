@@ -15,7 +15,9 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // 当前用户
   currentUser: { name: string };
+  /**标题*/
   title: string;
+  /**颜色*/
   color = '#90111A';
 
   private subscription: Subscription | undefined;
@@ -34,6 +36,13 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(user => this.currentUser = user);
   }
 
+  /**
+   * 用户点击了用户名
+   */
+  onClickUserName() {
+    this.basicService.onClickUserName();
+  }
+
   onLogout(): void {
     /**
      * complete 时跳转
@@ -41,6 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.basicService.logout();
   }
 
+  /**
+   * 添加 header的背景图片、标题
+   */
   ngAfterViewInit(): void {
     const headerSrc = this.basicService.getHeaderImageSrc();
     this.headerHtmlRef.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
