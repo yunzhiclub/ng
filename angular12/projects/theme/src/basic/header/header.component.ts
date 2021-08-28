@@ -23,11 +23,6 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
               private basicService: BasicService) {
   }
 
-  ngAfterViewInit(): void {
-    const headerSrc = this.basicService.getHeaderImageSrc();
-    this.headerHtmlRef.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
-  }
-
   ngOnInit(): void {
     this.title = this.basicService.getTitle();
     this.subscription = this.basicService.getCurrentLoginUser$()
@@ -39,6 +34,13 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
      * complete 时跳转
      */
     this.basicService.logout();
+  }
+
+  ngAfterViewInit(): void {
+    const headerSrc = this.basicService.getHeaderImageSrc();
+    this.headerHtmlRef.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
+    const titleElement = this.headerHtmlRef.nativeElement.querySelector('.title') as HTMLElement;
+    titleElement.style.width = titleElement.innerText.length.toString() + 'em';
   }
 
   ngOnDestroy(): void {
