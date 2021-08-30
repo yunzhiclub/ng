@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BasicService} from '../service/basic.service';
 import {Menu} from '../entity/menu';
@@ -9,6 +9,9 @@ import {Menu} from '../entity/menu';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit, OnDestroy {
+  @ViewChildren('link')
+  links: QueryList<ElementRef<HTMLAnchorElement>>;
+
   menus = new Array<Menu>();
   private subscription: Subscription | undefined;
   private color = {
