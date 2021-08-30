@@ -139,19 +139,19 @@ new ApiInjector<HttpResponse<User>>(
 ## return Observable
 You also can return Observable with any data, such as call error() when login fail.
 ```typescript
-new ApiInjector<Observable<Http1ErrorResponse>>({
+new ApiInjector<Observable<HttpErrorResponse>>({
   method: 'GET',
   url: 'user/login',
   handler: (() => {
-    return new Observable<Http1ErrorResponse>(ob => {
-      ob.error(new Http1ErrorResponse({status: 401}));
+    return new Observable<HttpErrorResponse>(ob => {
+      ob.error(new HttpErrorResponse({status: 401}));
       ob.complete();
     });
   })
 })
 ```
 
-> note: The random delay will invalid when return Http1ErrorResponse, so you must mock delay time by your-self if you need.
+> note: The random delay will invalid when return HttpErrorResponse, so you must mock delay time by your-self if you need.
 
 ## Get request info
 You can get urlMatches with is the results of urlReg matching, and get full http request data in options. The urlMatches and options with pass to `handler`:
