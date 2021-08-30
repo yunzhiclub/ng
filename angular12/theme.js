@@ -3,6 +3,7 @@ const {exec} = require('child_process');
 // 调用 node-watch 监听模块，该模块在package.json中被定义
 const watch = require('node-watch');
 let running = false;
+let linked = false;
 
 // 初始化方法
 function init() {
@@ -29,20 +30,24 @@ function init() {
         running = false;
         return;
       }
-      linked = true;
-      console.log(`stdout: ${stdout}`);
-      process.chdir('../../projects/sample');
-      exec('pwd', (error, stdout) => {
-        console.log(`stdout: ${stdout}`);
-      });
 
-      // link mock-api from node modules
-      exec('npm link @yunzhi/ng-theme', (error, stdout) => {
+      if (!linked) {
+        // 初始化的时候link一次
+        linked = true;
         console.log(`stdout: ${stdout}`);
-        running = false;
-      });
+        process.chdir('../../projects/sample');
+        exec('pwd', (error, stdout) => {
+          console.log(`stdout: ${stdout}`);
+        });
 
-      process.chdir('../../');
+        // link mock-api from node modules
+        exec('npm link @yunzhi/ng-theme', (error, stdout) => {
+          console.log(`stdout: ${stdout}`);
+          running = false;
+        });
+
+        process.chdir('../../');
+      }
     });
 
   });

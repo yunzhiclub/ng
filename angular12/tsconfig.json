@@ -1,8 +1,6 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    /** 关闭对null与undefined的严格检查 */
     "strictNullChecks": false,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -23,6 +21,10 @@
       "theme": [
         "dist/theme/theme",
         "dist/theme"
+      ],
+      "common": [
+        "dist/common/common",
+        "dist/common"
       ]
     },
     "declaration": false,
