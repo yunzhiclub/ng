@@ -33,21 +33,22 @@ jobs:
         run: printenv
       - name: npm install
         run: |
+          cd angular12
           npm install --no-optional  --no-package-lock
           node_modules/@angular/cli/bin/ng --version
-      - name: ng lint
-        run: node_modules/@angular/cli/bin/ng lint
-      - name: ng build mock-api
-        run: node_modules/@angular/cli/bin/ng build mock-api --prod
-      - name: ng build router-testing
-        run: node_modules/@angular/cli/bin/ng build router-testing --prod
+          node_modules/@angular/cli/bin/ng lint
+          node_modules/@angular/cli/bin/ng build mock-api --prod
+          node_modules/@angular/cli/bin/ng build router-testing --prod
+          node_modules/@angular/cli/bin/ng build theme --prod
       - name: npm link
-        run: cd dist/mock-api && npm link
+        run: cd angular12/dist/mock-api && npm link
       - name: npm link
-        run: cd dist/router-testing && npm link
+        run: cd angular12/dist/router-testing && npm link
       - name: npm link
-        run: npm link @yunzhi/ng-mock-api && npm link @yunzhi/ng-router-testing
-      - name: ng test
-        run: node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless --sourceMap=false
-      - name: ng build
-        run: node_modules/@angular/cli/bin/ng build --prod
+        run: cd angular12/dist/theme && npm link
+      - name: npm link
+        run: |
+          cd angular12
+          npm link @yunzhi/ng-mock-api && npm link @yunzhi/ng-router-testing &&  npm link @yunzhi/ng-theme
+          node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless --sourceMap=false
+          node_modules/@angular/cli/bin/ng build --prod
