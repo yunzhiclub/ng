@@ -1,4 +1,3 @@
-
 /**
  * 菜单
  */
@@ -7,4 +6,5 @@ export interface Menu {
   url: string;
   icon: string;
   roles: { id?: number, key: string, name?: string }[];
+  children?: Menu[];
 }
