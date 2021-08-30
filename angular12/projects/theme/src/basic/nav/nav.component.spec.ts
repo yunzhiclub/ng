@@ -1,7 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NavComponent} from './nav.component';
-import {RouterTestingModule} from '@yunzhi/ng-router-testing';
+import {BasicService} from '../service/basic.service';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -12,6 +13,9 @@ describe('NavComponent', () => {
       declarations: [NavComponent],
       imports: [
         RouterTestingModule
+      ],
+      providers: [
+        BasicService
       ]
     })
       .compileComponents();

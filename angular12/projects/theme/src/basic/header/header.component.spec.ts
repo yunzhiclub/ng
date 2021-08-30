@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@yunzhi/ng-router-testing';
 import {Router} from '@angular/router';
 import {of} from 'rxjs';
 import {ApiModule} from '../api/api.module';
+import {BasicService} from '../service/basic.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -16,6 +17,9 @@ describe('HeaderComponent', () => {
       imports: [
         ApiModule,
         RouterTestingModule
+      ],
+      providers: [
+        BasicService
       ]
     })
       .compileComponents();
