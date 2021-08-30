@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "utils for yunzhi",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
