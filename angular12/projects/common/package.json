@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/ng-common",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^10.1.6 || ^12.1.0",
     "@angular/core": "^10.1.6 || ^12.1.0",

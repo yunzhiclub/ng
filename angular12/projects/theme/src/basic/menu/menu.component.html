@@ -1,6 +1,6 @@
 <ul class="menu">
   <li *ngFor="let menu of menus" class="border-bottom">
-    <a routerLink={{menu.url}} routerLinkActive="active" #link
+    <a routerLink='{{menu.url}}' routerLinkActive="active" #link
        [style]="getStyle(link)"
        (mouseover)="onMouseover(link)"
        (mouseleave)="onMouseleave(link)">
@@ -9,6 +9,19 @@
         <span>{{ menu.name }}</span>
       </div>
     </a>
+    <ul *ngIf="menu.children?.length > 0" class="submenu">
+      <li *ngFor="let childMenu of menu.children" class="border-bottom">
+        <a routerLink='{{menu.url}} / {{childMenu.url}}' routerLinkActive="active" #childLink
+           [style]="getStyle(childLink, 0.85)"
+           (mouseover)="onMouseover(childLink, 0.85)"
+           (mouseleave)="onMouseleave(childLink, 1)">
+          <div class="inner">
+            <i [className]="childMenu.icon"></i>
+            <span>{{ childMenu.name }}</span>
+          </div>
+        </a>
+      </li>
+    </ul>
   </li>
 </ul>
 

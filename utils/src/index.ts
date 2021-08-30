@@ -286,6 +286,24 @@ export function getDefaultWhenValueIsInValid<T>(value: T, defaultValue: T): T {
 }
 
 /**
+ * 16进制的颜色信息转换为rgba的颜色信息
+ * @param hex #abcdef
+ * @param opacity rbgb(xx,xx,xx,xx)
+ */
+export function hexToRgbA(hex: string, opacity = 1){
+  let color;
+  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+    color= hex.substring(1).split('');
+    if(color.length== 3){
+      color= [color[0], color[0], color[1], color[1], color[2], color[2]];
+    }
+    color= Number.parseInt(color.join(''), 16);
+    return 'rgba('+[(color>>16)&255, (color>>8)&255, color&255].join(',')+`,${opacity})`;
+  }
+  throw new Error('Bad Hex');
+}
+
+/**
  * 将字符串传换为整型,是合法的整型，则返回整型；否则如果设置了默认值，则返回默认值；否则返回null.
  * @param value 字符串
  * @param defaultValue 默认值

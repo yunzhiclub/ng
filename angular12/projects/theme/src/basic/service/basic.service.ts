@@ -65,6 +65,23 @@ export class BasicService {
         url: 'dashboard',
         icon: 'fa fa-tachometer-alt',
       }, {
+        name: '父子菜单',
+        url: '',
+        icon: 'fa fa-tachometer-alt',
+        children: [{
+          name: '首页',
+          url: 'sub/dashboard',
+          icon: 'fa fa-tachometer-alt',
+        }, {
+          name: '模板页',
+          url: 'sub/theme',
+          icon: 'fa fa-tachometer-alt',
+        }, {
+          name: '模板页',
+          url: 'sub/theme',
+          icon: 'fa fa-tachometer-alt',
+        }]
+      }, {
         name: '模板页',
         url: 'theme',
         icon: 'fa fa-tachometer-alt',

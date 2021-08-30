@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BasicService} from '../service/basic.service';
 import {Menu} from '../entity/menu';
@@ -9,7 +9,11 @@ import {Menu} from '../entity/menu';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit, OnDestroy {
+  @ViewChildren('link')
+  links: QueryList<ElementRef<HTMLAnchorElement>>;
+
   menus = new Array<Menu>();
+
   private subscription: Subscription | undefined;
   private color = {
     active: {
@@ -26,6 +30,25 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   };
 
+  /**
+   * 16进制的颜色信息转换为rgba的颜色信息
+   * @param hex #abcdef
+   * @param opacity rbgb(xx,xx,xx,xx)
+   */
+  public static hexToRgbA(hex: string, opacity = 1){
+    let color;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+      color= hex.substring(1).split('');
+      if(color.length== 3){
+        color= [color[0], color[0], color[1], color[1], color[2], color[2]];
+      }
+      color= Number.parseInt(color.join(''), 16);
+      return 'rgba('+[(color>>16)&255, (color>>8)&255, color&255].join(',')+`,${opacity})`;
+    }
+    throw new Error('Bad Hex');
+  }
+
+
   constructor(private basicMenuService: BasicService) {
   }
 
@@ -41,20 +64,20 @@ export class MenuComponent implements OnInit, OnDestroy {
   /**
    * 对当前菜单、非当前菜单设置不同的颜色
    */
-  getStyle(link: HTMLAnchorElement) {
+  getStyle(link: HTMLAnchorElement, opacity = 1) {
     if (this.isActive(link)) {
       return {
-        'border-left-color': this.color.active.leftBorder,
-        'border-right-color': this.color.active.rightBorder,
-        'background-color': this.color.active.background,
-        'color': this.color.active.color
+        'border-left-color': MenuComponent.hexToRgbA(this.color.active.leftBorder),
+        'border-right-color': MenuComponent.hexToRgbA(this.color.active.rightBorder),
+        'background-color': MenuComponent.hexToRgbA(this.color.active.background),
+        'color': MenuComponent.hexToRgbA(this.color.active.color)
       }
     } else {
       return {
-        'border-left-color': this.color.normal.leftBorder,
-        'border-right-color': this.color.normal.rightBorder,
-        'background-color': this.color.normal.background,
-        'color': this.color.normal.color
+        'border-left-color': MenuComponent.hexToRgbA(this.color.normal.leftBorder),
+        'border-right-color': MenuComponent.hexToRgbA(this.color.normal.rightBorder),
+        'background-color': MenuComponent.hexToRgbA(this.color.normal.background),
+        'color': MenuComponent.hexToRgbA(this.color.normal.color)
       }
     }
   }
@@ -69,24 +92,24 @@ export class MenuComponent implements OnInit, OnDestroy {
   /**
    * 鼠标移出时，还原对应的颜色
    */
-  onMouseleave(link: HTMLAnchorElement) {
+  onMouseleave(link: HTMLAnchorElement, opacity = 1) {
     if (!this.isActive(link)) {
-      link.style.borderRightColor = this.color.normal.rightBorder;
-      link.style.borderLeftColor = this.color.normal.leftBorder;
-      link.style.color = this.color.normal.color;
-      link.style.backgroundColor = this.color.normal.background;
+      link.style.borderRightColor = MenuComponent.hexToRgbA(this.color.normal.rightBorder, opacity);
+      link.style.borderLeftColor = MenuComponent.hexToRgbA(this.color.normal.leftBorder, opacity);
+      link.style.color = MenuComponent.hexToRgbA(this.color.normal.color, opacity);
+      link.style.backgroundColor = MenuComponent.hexToRgbA(this.color.normal.background, opacity);
     }
   }
 
   /**
    * 鼠标进入时，添加对应的颜色
    */
-  onMouseover(link: HTMLAnchorElement) {
+  onMouseover(link: HTMLAnchorElement, opacity = 1) {
     if (!this.isActive(link)) {
-      link.style.borderRightColor = this.color.active.rightBorder;
-      link.style.borderLeftColor = this.color.active.leftBorder;
-      link.style.color = this.color.active.color;
-      link.style.backgroundColor = this.color.active.background;
+      link.style.borderRightColor = MenuComponent.hexToRgbA(this.color.active.rightBorder, opacity);
+      link.style.borderLeftColor = MenuComponent.hexToRgbA(this.color.active.leftBorder, opacity);
+      link.style.color = MenuComponent.hexToRgbA(this.color.active.color);
+      link.style.backgroundColor = MenuComponent.hexToRgbA(this.color.active.background, opacity);
     }
   }
 
@@ -96,4 +119,5 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
 }
