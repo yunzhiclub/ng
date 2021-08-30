@@ -19,6 +19,10 @@
       "router-testing": [
         "dist/router-testing/router-testing",
         "dist/router-testing"
+      ],
+      "theme": [
+        "dist/theme/theme",
+        "dist/theme"
       ]
     },
     "declaration": false,

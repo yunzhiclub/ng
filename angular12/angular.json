@@ -65,6 +65,7 @@
               "projects/sample/src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
               "projects/sample/src/styles.sass"
             ],
             "scripts": []
@@ -167,6 +168,37 @@
             "main": "projects/router-testing/src/test.ts",
             "tsConfig": "projects/router-testing/tsconfig.spec.json",
             "karmaConfig": "projects/router-testing/karma.conf.js"
+          }
+        }
+      }
+    },
+    "theme": {
+      "projectType": "library",
+      "root": "projects/theme",
+      "sourceRoot": "projects/theme/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/theme/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/theme/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/theme/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/theme/src/test.ts",
+            "tsConfig": "projects/theme/tsconfig.spec.json",
+            "karmaConfig": "projects/theme/karma.conf.js"
           }
         }
       }
