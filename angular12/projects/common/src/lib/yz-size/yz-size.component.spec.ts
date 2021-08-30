@@ -1,17 +1,17 @@
 import {async, ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import {SizeComponent} from './size.component';
+import {YzSizeComponent} from './yz-size.component';
 import {CommonModule} from '@angular/common';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('SizeComponent', () => {
-  let component: SizeComponent;
-  let fixture: ComponentFixture<SizeComponent>;
+  let component: YzSizeComponent;
+  let fixture: ComponentFixture<YzSizeComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SizeComponent],
+      declarations: [YzSizeComponent],
       imports: [
         CommonModule,
         FormsModule
@@ -21,7 +21,7 @@ describe('SizeComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SizeComponent);
+    fixture = TestBed.createComponent(YzSizeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

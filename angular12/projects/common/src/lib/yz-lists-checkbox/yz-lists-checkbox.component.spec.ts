@@ -1,20 +1,19 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ListsCheckboxComponent} from './lists-checkbox.component';
+import {YzListsCheckboxComponent} from './yz-lists-checkbox.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {Component} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {Observable, of} from 'rxjs';
-import {randomNumber, randomString} from '../model/utils';
-import {ApiTestingModule} from "../../api/api.testing.module";
+import {randomNumber, randomString} from '@yunzhi/utils';
 
 @Component({
   template: `
-    <app-lists-checkbox
+    <yz-lists-checkbox
       [getFn]="getFn"
       subject="测试"
-      [formControl]="formControl"></app-lists-checkbox>`
+      [formControl]="formControl"></yz-lists-checkbox>`
 })
 class TestComponent {
 
@@ -32,17 +31,16 @@ class TestComponent {
 
 
 describe('ListsCheckboxComponent', () => {
-  let component: ListsCheckboxComponent;
+  let component: YzListsCheckboxComponent;
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ListsCheckboxComponent,
+      declarations: [YzListsCheckboxComponent,
         TestComponent],
       imports: [
-        ReactiveFormsModule,
-        ApiTestingModule
+        ReactiveFormsModule
       ]
     })
       .compileComponents();
@@ -52,7 +50,7 @@ describe('ListsCheckboxComponent', () => {
     fixture = TestBed.createComponent(TestComponent);
     testComponent = fixture.componentInstance;
     fixture.detectChanges();
-    component = fixture.debugElement.query(By.directive(ListsCheckboxComponent)).componentInstance;
+    component = fixture.debugElement.query(By.directive(YzListsCheckboxComponent)).componentInstance;
     fixture.detectChanges();
   });
 

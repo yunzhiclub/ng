@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+
 /**
  * 蒙板
  */
 @Component({
-  selector: 'app-yz-mask',
+  selector: 'yz-mask',
   templateUrl: './yz-mask.component.html',
   styleUrls: ['./yz-mask.component.scss']
 })
 export class YzMaskComponent {
 
-  constructor() { }
+  constructor() {
+  }
 }

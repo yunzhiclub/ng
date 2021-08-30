@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SizeComponent} from './size.component';
+import {YzSizeComponent} from './yz-size.component';
 import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
-  declarations: [SizeComponent],
+  declarations: [YzSizeComponent],
   imports: [
     CommonModule,
     FormsModule
   ],
   exports: [
-    SizeComponent
+    YzSizeComponent
   ]
 })
-export class SizeModule {
+export class YzSizeModule {
 }

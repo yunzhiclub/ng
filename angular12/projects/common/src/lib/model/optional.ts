@@ -1,9 +1,8 @@
+import {Assert} from '@yunzhi/utils';
+
 /**
  * 仿java Optional
  */
-import {Assert} from './utils';
-
-
 export class Optional<T> {
   private readonly value = null as unknown as T;
 

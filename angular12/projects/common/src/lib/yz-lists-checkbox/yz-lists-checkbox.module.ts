@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ListsCheckboxComponent} from './lists-checkbox.component';
+import {YzListsCheckboxComponent} from './yz-lists-checkbox.component';
 import {ReactiveFormsModule} from '@angular/forms';
 
 /**
@@ -9,14 +9,14 @@ import {ReactiveFormsModule} from '@angular/forms';
  * 使用方法见：AllClazzCheckboxComponent
  */
 @NgModule({
-  declarations: [ListsCheckboxComponent],
+  declarations: [YzListsCheckboxComponent],
   exports: [
-    ListsCheckboxComponent
+    YzListsCheckboxComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule
   ]
 })
-export class ListsCheckboxModule {
+export class YzListsCheckboxModule {
 }

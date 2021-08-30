@@ -1,24 +1,24 @@
 import {Component, forwardRef, Input, OnInit} from '@angular/core';
-import {Assert, randomNumber} from '../model/utils';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {IdAndName} from '../model/id-and-name.interface';
+import {Assert, randomNumber} from '@yunzhi/utils';
 
 /**
  * 将数组以checkbox列表的方式输出，并在改变会发送出新的数组.
  */
 @Component({
-  selector: 'app-lists-checkbox',
-  templateUrl: './lists-checkbox.component.html',
-  styleUrls: ['./lists-checkbox.component.scss'],
+  selector: 'yz-lists-checkbox',
+  templateUrl: './yz-lists-checkbox.component.html',
+  styleUrls: ['./yz-lists-checkbox.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR, multi: true,
-      useExisting: forwardRef(() => ListsCheckboxComponent)
+      useExisting: forwardRef(() => YzListsCheckboxComponent)
     }
   ]
 })
-export class ListsCheckboxComponent implements OnInit, ControlValueAccessor {
+export class YzListsCheckboxComponent implements OnInit, ControlValueAccessor {
   /**
    * 随着ID，用于前台使用id与for相结合，点击for时id点亮.
    */

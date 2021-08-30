@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 /**
  * 弹出框
  */
 @Component({
-  selector: 'app-yz-modal',
+  selector: 'yz-modal',
   templateUrl: './yz-modal.component.html',
   styleUrls: ['./yz-modal.component.scss']
 })

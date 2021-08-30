@@ -2,14 +2,14 @@ import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@ang
 import {Observable} from 'rxjs';
 import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import {concat} from 'rxjs';
-import {AttachmentService} from '../../service/attachment.service';
+import {AttachmentService} from '../attachment.service';
 
 /**
  * 上传组件
  * 参考：https://github.com/NetanelBasal/ng-file-uploa
  */
 @Component({
-  selector: 'app-yz-uploader',
+  selector: 'yz-uploader',
   templateUrl: './yz-uploader.component.html',
   styleUrls: ['./yz-uploader.component.scss']
 })

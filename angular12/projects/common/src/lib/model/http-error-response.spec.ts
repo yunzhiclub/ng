@@ -1,4 +1,4 @@
-import {HttpErrorResponse} from './Http-error-response';
+import {HttpErrorResponse} from './http-error-response';
 import {ErrorMessage} from './error-message';
 
 describe('HttpErrorResponse', () => {

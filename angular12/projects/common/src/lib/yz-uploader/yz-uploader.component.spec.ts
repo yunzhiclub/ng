@@ -5,9 +5,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {interval, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {HttpEvent, HttpEventType, HttpResponse, HttpUploadProgressEvent} from '@angular/common/http';
-import {randomNumber} from '../model/utils';
-import {ApiTestingModule} from '../../api/api.testing.module';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
+import {randomNumber} from '@yunzhi/utils';
+import {AttachmentService} from '../attachment.service';
 
 describe('YzUploaderComponent', () => {
   let component: YzUploaderComponent;
@@ -19,8 +19,10 @@ describe('YzUploaderComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        ApiTestingModule,
         YzModalModule
+      ],
+      providers: [
+        AttachmentService
       ]
     })
       .compileComponents();

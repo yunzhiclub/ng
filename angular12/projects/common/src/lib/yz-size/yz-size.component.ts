@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-size',
-  templateUrl: './size.component.html',
-  styleUrls: ['./size.component.scss']
+  selector: 'yz-size',
+  templateUrl: './yz-size.component.html',
+  styleUrls: ['./yz-size.component.scss']
 })
-export class SizeComponent {
+export class YzSizeComponent {
 
   @Input()
   size = 20;

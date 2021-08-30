@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {isNotNullOrUndefined} from '../model/utils';
+import {isNotNullOrUndefined} from '@yunzhi/utils';
 
 @Component({
-  selector: 'app-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.scss']
+  selector: 'yz-page',
+  templateUrl: './yz-page.component.html',
+  styleUrls: ['./yz-page.component.scss']
 })
-export class PageComponent implements OnInit {
+export class YzPageComponent implements OnInit {
 
   /**
    * pageLinkSize:显示的分页范围大小
