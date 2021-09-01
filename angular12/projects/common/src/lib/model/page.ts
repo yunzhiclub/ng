@@ -58,7 +58,6 @@ export class Page<T> extends Slice<T> {
     const content = allContent.slice(page * size,
       (page + 1) * size > numberOfElements ? numberOfElements : (page + 1) * size);
 
-    console.log(page);
     return new Page({
       number: page,
       size,

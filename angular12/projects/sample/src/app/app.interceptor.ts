@@ -21,7 +21,6 @@ export class AppInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('loading begin');
     return next.handle(request)
       .pipe(
         catchError((error: HttpErrorResponse) =>
