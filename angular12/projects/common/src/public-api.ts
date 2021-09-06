@@ -1,6 +1,7 @@
 /*
  * Public API Surface of common
  */
+export * from './lib/utils';
 export * from './lib/interceptor/api-prefix-and-merge-map.interceptor';
 export * from './lib/interceptor/null-or-undefined-or-empty.interceptor';
 export * from './lib/interceptor/prevent-401-popup';
