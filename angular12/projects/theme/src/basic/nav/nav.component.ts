@@ -27,7 +27,6 @@ export class NavComponent implements OnInit, OnDestroy {
     this.router.events
       /** 过滤：路由结束事件 */
       .pipe(filter((event) => {
-        console.log(event);
         return event instanceof NavigationEnd;
       }))
       /** 订阅路由结束后执行的方法 */

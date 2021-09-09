@@ -52,7 +52,6 @@ export class RouterStub {
   }
 
   navigateByUrl(url: string | UrlTree, extras?: NavigationExtras): Promise<boolean> {
-    console.log('接收到了跳转请求', url, extras);
     return Promise.resolve(true);
   }
 

@@ -20,7 +20,9 @@
     "@angular/platform-browser-dynamic": "~12.1.1",
     "@angular/router": "~12.1.1",
     "@yunzhi/ng-mock-api": "0.0.9",
+    "@yunzhi/utils": "0.0.3",
     "rxjs": "~6.6.0",
+    "ng-select2": "1.2.5",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4",
     "bootstrap": "^4.6.0"
