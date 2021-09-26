@@ -68,7 +68,8 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   resetTitleWidth(length: number): void {
     if (this.titleElement) {
-      this.titleElement.style.width = length.toString() + 'em';
+      // +1解决windows下长度不够的问题
+      this.titleElement.style.width = (length + 1).toString() + 'em';
     }
   }
 
