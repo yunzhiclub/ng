@@ -1,4 +1,4 @@
-## How to use it
+~~## How to use it
 import the BasicModule in your module (eg: AppModule)
 ```typescript
     BasicModule.forRoot({
@@ -25,6 +25,7 @@ The ThemeService most link blow:
 ```typescript
 import {BasicService} from '../../theme/src/basic/service/basic.service';
 import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,8 @@ export class ThemeService extends BasicService {
   /**
    * 标题
    */
-  getTitle(): string {
-    return '标题重写测试';
+  getTitle(): Observable<string> {
+    return of('标题重写测试');
   }
 
   /**
@@ -45,6 +46,7 @@ export class ThemeService extends BasicService {
     console.info('重写logout()实现注销');
   }
 }
+
 ```
 
 And you can see `BasicService` for override details.
@@ -74,4 +76,4 @@ Run `ng test theme` to execute the unit tests via [Karma](https://karma-runner.g
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.~~

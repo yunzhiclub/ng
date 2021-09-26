@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {BasicService} from '../service/basic.service';
 import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   // 当前用户
   currentUser: { name: string };
   /**标题*/
-  title: string;
+  title: Observable<string>;
   /**颜色*/
   color = '#90111A';
 

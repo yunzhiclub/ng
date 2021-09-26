@@ -93,8 +93,8 @@ export class BasicService {
   /**
    * 标题
    */
-  getTitle(): string {
-    return '改写getTitle()实现自定义标题';
+  getTitle(): Observable<string> {
+    return of('改写getTitle()实现自定义标题');
   }
 
   /**
