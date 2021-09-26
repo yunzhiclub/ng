@@ -3,6 +3,7 @@ import {Observable, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {BasicService} from '../service/basic.service';
 import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -21,13 +22,14 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   color = '#90111A';
 
   private subscription: Subscription | undefined;
+  private titleElement: HTMLElement;
 
   constructor(private router: Router,
               private basicService: BasicService) {
   }
 
   ngOnInit(): void {
-    this.title = this.basicService.getTitle();
+    this.title = this.basicService.getTitle().pipe(tap(title => this.resetTitleWidth(title.length)));
     const colors = this.basicService.getColors();
     if (colors && colors.title && colors.title.color) {
       this.color = colors.title.color;
@@ -56,9 +58,18 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     const headerSrc = this.basicService.getHeaderImageSrc();
     this.headerHtmlRef.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
-    const titleElement = this.headerHtmlRef.nativeElement.querySelector('.title') as HTMLElement;
-    titleElement.style.width = titleElement.innerText.length.toString() + 'em';
-    titleElement.style.color = this.color;
+    this.titleElement = this.headerHtmlRef.nativeElement.querySelector('.title') as HTMLElement;
+    this.titleElement.style.color = this.color;
+    this.resetTitleWidth(this.titleElement.innerText.length);
+  }
+
+  /**
+   * 重新设置标题的宽度
+   */
+  resetTitleWidth(length: number): void {
+    if (this.titleElement) {
+      this.titleElement.style.width = length.toString() + 'em';
+    }
   }
 
   ngOnDestroy(): void {
