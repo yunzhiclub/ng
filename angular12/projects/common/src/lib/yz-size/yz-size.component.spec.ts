@@ -29,4 +29,8 @@ describe('SizeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  afterEach(() => {
+    fixture.autoDetectChanges();
+  })
 });
