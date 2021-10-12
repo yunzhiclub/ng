@@ -18,12 +18,18 @@
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "scripts": {
+      "test": "jasmine"
+    }
   },
   "devDependencies": {
+    "@types/jasmine": "^3.9.1",
+    "@types/node": "^14.11.2",
     "gts": "^3.1.0",
-    "typescript": "^4.0.3",
-    "@types/node": "^14.11.2"
+    "jasmine": "^3.9.0",
+    "jasmine-ts-console-reporter": "^3.1.1",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "sweetalert2": "^11.0.19"
