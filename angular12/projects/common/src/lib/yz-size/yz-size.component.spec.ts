@@ -1,9 +1,8 @@
-import {async, ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {YzSizeComponent} from './yz-size.component';
 import {CommonModule} from '@angular/common';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 
 describe('SizeComponent', () => {
   let component: YzSizeComponent;
