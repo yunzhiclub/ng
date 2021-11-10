@@ -4,7 +4,7 @@
       <span class="fake-btn">{{(_multiple && fileList.length) ? '请继续上传文件' : '请选择上传文件'}}</span>
       <span class="file-msg" *ngIf="!fileList.length">或直接将文件托放到这里</span>
       <span class="file-msg file-block" *ngFor="let file of fileList">
-      <span *ngIf="_multiple" (click)="removeFile(file)">
+      <span *ngIf="_multiple" (click)="onRemoveFile(file)">
         <i class="fas fa-trash-alt"></i>
       </span>
         {{file.name}}&nbsp;&nbsp;</span>
@@ -12,9 +12,8 @@
     </div>
     <div class="row">
       <div class="col-12 text-right">
-        <button class="btn btn-warning btn-sm" type="button"
-                (click)="onCancel()"
-                [disabled]="uploading">
+        <button class="btn btn-warning btn-sm mr-2" type="button"
+                (click)="onCancel()">
           <i class="fas fa-ban"></i>取消
         </button>
         <button class="btn btn-primary btn-sm" type="button"
@@ -38,6 +37,5 @@
         </div>
       </div>
     </ng-container>
-
   </div>
 </yz-modal>

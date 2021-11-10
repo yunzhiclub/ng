@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {YzUploaderComponent} from './yz-uploader.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
-import {AttachmentService} from '../attachment.service';
+import {YzUploaderService} from './yz-uploader.service';
 
 
 @NgModule({
@@ -20,12 +20,12 @@ import {AttachmentService} from '../attachment.service';
 })
 export class YzUploaderModule {
   public static forRoot(config: {
-    attachmentService: Type<AttachmentService>
+    uploaderService: Type<YzUploaderService>
   }): ModuleWithProviders<YzUploaderModule> {
     return {
       ngModule: YzUploaderModule,
       providers: [
-        {provide: AttachmentService, useClass: config.attachmentService}
+        {provide: YzUploaderService, useClass: config.uploaderService}
       ]
     }
   }
