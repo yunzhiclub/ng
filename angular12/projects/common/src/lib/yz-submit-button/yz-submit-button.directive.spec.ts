@@ -40,7 +40,7 @@ describe('yz-submit-directive', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     fixture.autoDetectChanges();
   });
 

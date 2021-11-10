@@ -43,21 +43,24 @@ export class YzSubmitButtonDirective implements AfterViewInit {
 
   showLoading(submittingCount: number) {
     const iHtml = this.htmlButton.querySelector('i');
-    if (iHtml) {
-      if (submittingCount > 0 && !this.showing) {
-        this.showing = true;
-        this.htmlButton.disabled = true;
+
+    if (submittingCount > 0 && !this.showing) {
+      this.showing = true;
+      this.htmlButton.disabled = true;
+      if (iHtml) {
         this.cacheClassName = iHtml.classList.value;
         iHtml.className = YzSubmitButtonDirective.loadingClazz;
-      } else if (submittingCount === 0 && this.showing) {
-        this.showing = false;
-        setTimeout(() => {
-          if (!this.showing) {
-            this.htmlButton.disabled = false;
+      }
+    } else if (submittingCount === 0 && this.showing) {
+      this.showing = false;
+      setTimeout(() => {
+        if (!this.showing) {
+          this.htmlButton.disabled = false;
+          if (iHtml) {
             iHtml.className = this.cacheClassName;
           }
-        }, 500)
-      }
+        }
+      }, 500)
     }
   }
 
