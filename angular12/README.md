@@ -25,6 +25,11 @@
 3. 'node mock-api.js' 或 `node router-testing.js` 或 `node common.js` 或 `node theme.js`
 4. 编写代码,并同步在`project/sample`中完成相关集成测试。
 
+## 发布前测试
+1. 进入相关文件夹，执行`npm link`，比如：`cd dist/mock-api && npm link`
+2. 建立测试项目，执行`npm link xxx`，即相当于直接安装了`xxx`。
+3. 进行相关测试
+
 ## 发布
 发布前先登录：`npm login`
 

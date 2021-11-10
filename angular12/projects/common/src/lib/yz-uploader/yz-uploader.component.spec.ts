@@ -6,6 +6,7 @@ import {interval} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
 import {YzUploaderService} from './yz-uploader.service';
+import {YzUploaderModule} from './yz-uploader.module';
 
 describe('YzUploaderComponent', () => {
   let component: YzUploaderComponent;
@@ -13,14 +14,13 @@ describe('YzUploaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [YzUploaderComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        YzModalModule
-      ],
-      providers: [
-        YzUploaderService
+        YzModalModule,
+        YzUploaderModule.forRoot({
+          uploaderService: YzUploaderService
+        })
       ]
     })
       .compileComponents();
@@ -37,7 +37,7 @@ describe('YzUploaderComponent', () => {
     fixture.autoDetectChanges();
   });
 
-  fit('多文件上传', () => {
+  it('多文件上传', () => {
     expect(component).toBeTruthy();
     component.multiple = true;
     fixture.autoDetectChanges();

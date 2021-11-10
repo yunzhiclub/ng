@@ -16,6 +16,9 @@ import {YzUploaderService} from './yz-uploader.service';
     ReactiveFormsModule,
     FormsModule,
     YzModalModule
+  ],
+  providers: [
+    YzUploaderService
   ]
 })
 export class YzUploaderModule {
