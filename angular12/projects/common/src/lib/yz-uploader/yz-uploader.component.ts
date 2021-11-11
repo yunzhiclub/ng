@@ -1,8 +1,8 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import {concat} from 'rxjs';
-import {AttachmentService} from '../attachment.service';
+import {YzUploaderService} from './yz-uploader.service';
 
 /**
  * 上传组件
@@ -13,34 +13,32 @@ import {AttachmentService} from '../attachment.service';
   templateUrl: './yz-uploader.component.html',
   styleUrls: ['./yz-uploader.component.scss']
 })
-export class YzUploaderComponent implements OnInit {
+export class YzUploaderComponent {
+  @Input()
+  accept = '';
+  @Output()
+  beCancel = new EventEmitter<void>();
+  @Output()
+  beUpload = new EventEmitter<HttpResponse<any>>();
   fileList: Array<File> = [];
+  finishedTask = 0; // 已成功完成上传的任务
+  progress = 0;
+  uploading = false;
+
+  constructor(private yzUploaderService: YzUploaderService) {
+  }
 
   _multiple = false;  // 是否上传多个文件
 
-  finishedTask = 0; // 已成功完成上传的任务
-
-  @Input()
-  accept = '';
-
-  @Input()
-  uploadFun = null as (file: File) => Observable<HttpEvent<any>>;
-
+  /**
+   * 是否上传多个文件
+   * @param multiple 多个文件
+   */
   @Input()
   set multiple(multiple: boolean) {
     this._multiple = multiple;
     this.fileList = [];
   }
-
-  @Output()
-  beUpload = new EventEmitter<HttpResponse<any>[]>();
-
-  @Output()
-  beCancel = new EventEmitter<void>();
-
-  progress = 0;
-
-  uploading = false;
 
   @HostListener('change', ['$event.target.files'])
   emitFiles(event: FileList): void {
@@ -51,23 +49,19 @@ export class YzUploaderComponent implements OnInit {
       }
     } else {
       const file = event && event.item(0);
-      this.fileList = [file];
+      if (file) {
+        this.fileList = [file];
+      } else {
+        this.fileList = [];
+      }
     }
+
+    // 过滤文件
+    this.fileList = this.fileList.filter(file =>
+      this.yzUploaderService.filterUploadFile(file));
   }
 
-
-  constructor(private attachmentService: AttachmentService) {
-  }
-
-  ngOnInit(): void {
-    if (!this.uploadFun) {
-      this.uploadFun = file => {
-        return this.attachmentService.upload(file);
-      };
-    }
-  }
-
-  removeFile(file: File): void {
+  onRemoveFile(file: File): void {
     this.fileList = this.fileList.filter(f => f !== file);
   }
 
@@ -76,11 +70,10 @@ export class YzUploaderComponent implements OnInit {
       this.setProgress(0);
       this.uploading = true;
       this.finishedTask = 0;
-      const response: HttpResponse<object | null>[] = [];
 
-      let task: Observable<HttpEvent<object>> = this.uploadFun(this.fileList[0]);
+      let task: Observable<HttpEvent<object>> = this.yzUploaderService.upload(this.fileList[0]);
       for (let i = 1; i < this.fileList.length; i++) {
-        task = concat(task, this.uploadFun(this.fileList[i]));
+        task = concat(task, this.yzUploaderService.upload(this.fileList[i]));
       }
       task.subscribe((data) => {
         if (data.type === HttpEventType.UploadProgress) {
@@ -90,12 +83,12 @@ export class YzUploaderComponent implements OnInit {
             this.setProgress(progress);
           }
         } else if (data.type === HttpEventType.Response) {
-          response.push(data);
+          this.beUpload.emit(data);
           this.setProgress(0);
           this.finishedTask++;
           if (this.finishedTask === this.fileList.length) {
-            this.uploading = false;
-            this.beUpload.emit(response);
+            setTimeout(() => this.uploading = false, 500);
+            this.fileList = [];
           }
         }
       });

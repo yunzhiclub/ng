@@ -8,7 +8,6 @@ import {
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
-@Injectable()
 export class XAuthTokenInterceptor implements HttpInterceptor {
   /**
    * 由缓存中获取token，防止页面刷新后失效
@@ -16,6 +15,18 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
   private token = window.sessionStorage.getItem('x-auth-token');
 
   constructor() {
+  }
+
+  /**
+   * 设置token
+   * 如果接收到了新的token则更新，否则什么也不做
+   * @param xAuthToken token
+   */
+  private setToken(xAuthToken: string): void {
+    if (this.token !== xAuthToken) {
+      this.token = xAuthToken;
+      window.sessionStorage.setItem('x-auth-token', this.token);
+    }
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -32,17 +43,5 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
         }
       }
     }));
-  }
-
-  /**
-   * 设置token
-   * 如果接收到了新的token则更新，否则什么也不做
-   * @param xAuthToken token
-   */
-  private setToken(xAuthToken: string): void {
-    if (this.token !== xAuthToken) {
-      this.token = xAuthToken;
-      window.sessionStorage.setItem('x-auth-token', this.token);
-    }
   }
 }
