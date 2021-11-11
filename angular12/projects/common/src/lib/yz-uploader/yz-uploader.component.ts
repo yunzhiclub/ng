@@ -17,11 +17,13 @@ export class YzUploaderComponent {
   @Input()
   accept = '';
   @Output()
-  beCancel = new EventEmitter<void>();
+  beClose = new EventEmitter<void>();
   @Output()
-  beUpload = new EventEmitter<HttpResponse<any>>();
+  beUpload = new EventEmitter<{file: File, data: HttpResponse<any>}>();
   fileList: Array<File> = [];
   finishedTask = 0; // 已成功完成上传的任务
+  @Input()
+  maxSize = undefined as number;
   progress = 0;
   uploading = false;
 
@@ -40,25 +42,30 @@ export class YzUploaderComponent {
     this.fileList = [];
   }
 
+  /**
+   * 文件过滤器
+   * @param file 文件
+   */
+  @Input()
+  fileFilter = (file: File) => true;
+
   @HostListener('change', ['$event.target.files'])
   emitFiles(event: FileList): void {
     this.progress = 0;
-    if (this._multiple) {
-      for (let i = 0; i < event.length; i++) {
-        this.fileList.push(event.item(i));
-      }
-    } else {
-      const file = event && event.item(0);
-      if (file) {
-        this.fileList = [file];
-      } else {
-        this.fileList = [];
-      }
+    const files = [] as File[];
+    for (let i = 0; i < event.length; i++) {
+      files.push(event.item(i));
     }
 
     // 过滤文件
-    this.fileList = this.fileList.filter(file =>
-      this.yzUploaderService.filterUploadFile(file));
+    this.fileList = files.filter(file => {
+      if (typeof this.maxSize !== 'undefined') {
+        if (file.size > this.maxSize) {
+          return false;
+        }
+      }
+      return this.fileFilter(file);
+    });
   }
 
   onRemoveFile(file: File): void {
@@ -83,20 +90,21 @@ export class YzUploaderComponent {
             this.setProgress(progress);
           }
         } else if (data.type === HttpEventType.Response) {
-          this.beUpload.emit(data);
-          this.setProgress(0);
-          this.finishedTask++;
-          if (this.finishedTask === this.fileList.length) {
-            setTimeout(() => this.uploading = false, 500);
+          this.beUpload.emit({file: this.fileList[this.finishedTask], data});
+          if (this.finishedTask + 1 === this.fileList.length) {
+            this.uploading = false;
             this.fileList = [];
+          } else {
+            this.setProgress(0);
+            this.finishedTask++;
           }
         }
       });
     }
   }
 
-  onCancel(): void {
-    this.beCancel.emit();
+  onClose(): void {
+    this.beClose.emit();
   }
 
   setProgress(num: number): void {

@@ -30,6 +30,6 @@ export class YzUploaderModule {
       providers: [
         {provide: YzUploaderService, useClass: config.uploaderService}
       ]
-    }
+    };
   }
 }

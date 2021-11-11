@@ -7,13 +7,43 @@ import {take} from 'rxjs/operators';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
 import {YzUploaderService} from './yz-uploader.service';
 import {YzUploaderModule} from './yz-uploader.module';
+import {Component} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {By} from '@angular/platform-browser';
+
+@Component({
+  template: `
+    <img [src]="src">
+    <yz-uploader *ngIf="showUploader" [multiple]="multiple"
+                 accept="image/gif, image/jpeg, image/png"
+                 (beUpload)="onUpload($event)"
+                 (beClose)="onUploadClose()"></yz-uploader>
+  `
+})
+class TestComponent {
+  multiple = false;
+  showUploader = true;
+  src: any;
+
+  onUpload($event: {file: File, data: HttpResponse<any>}) {
+    const fileReader = new FileReader();
+    fileReader.addEventListener('load', event => this.src = event.target.result)
+    fileReader.readAsDataURL($event.file);
+  }
+
+  onUploadClose() {
+    console.log('关闭');
+  }
+}
 
 describe('YzUploaderComponent', () => {
-  let component: YzUploaderComponent;
-  let fixture: ComponentFixture<YzUploaderComponent>;
+  let component: TestComponent;
+  let upLoaderComponent: YzUploaderComponent;
+  let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [TestComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -27,7 +57,7 @@ describe('YzUploaderComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(YzUploaderComponent);
+    fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -44,13 +74,15 @@ describe('YzUploaderComponent', () => {
   });
 
   it('progress 进度条', (done) => {
+    fixture.detectChanges();
+    upLoaderComponent = fixture.debugElement.query(By.directive(YzUploaderComponent)).componentInstance;
     let i = 0;
     interval(10).pipe(
       take(10)
     ).subscribe(() => {
       i++;
-      component.progress = i * 10;
-      component.uploading = true;
+      upLoaderComponent.progress = i * 10;
+      upLoaderComponent.uploading = true;
       fixture.detectChanges();
     }, () => {
     }, () => done());

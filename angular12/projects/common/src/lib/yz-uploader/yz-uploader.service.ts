@@ -8,15 +8,6 @@ import {map, take} from 'rxjs/operators';
  */
 export class YzUploaderService {
   /**
-   * 过滤上传文件
-   * 比如过滤文件过大的
-   * @param file 文件
-   */
-  filterUploadFile(file: File) {
-    return true;
-  }
-
-  /**
    * 上传文件
    * <br>
    * 本方法的目的有二：
