@@ -19,7 +19,7 @@ export class YzUploaderComponent {
   @Output()
   beClose = new EventEmitter<void>();
   @Output()
-  beUpload = new EventEmitter<{file: File, data: HttpResponse<any>}>();
+  beUpload = new EventEmitter<{file: File, response: HttpResponse<any>}>();
   fileList: Array<File> = [];
   finishedTask = 0; // 已成功完成上传的任务
   @Input()
@@ -90,7 +90,7 @@ export class YzUploaderComponent {
             this.setProgress(progress);
           }
         } else if (data.type === HttpEventType.Response) {
-          this.beUpload.emit({file: this.fileList[this.finishedTask], data});
+          this.beUpload.emit({file: this.fileList[this.finishedTask], response: data});
           if (this.finishedTask + 1 === this.fileList.length) {
             this.uploading = false;
             this.fileList = [];

@@ -1,4 +1,4 @@
-import {interval, Observable} from 'rxjs';
+import {interval, Observable, Subscriber} from 'rxjs';
 import {HttpEvent, HttpEventType, HttpResponse, HttpUploadProgressEvent} from '@angular/common/http';
 import {randomNumber} from '@yunzhi/utils';
 import {map, take} from 'rxjs/operators';
@@ -12,7 +12,7 @@ export class YzUploaderService {
    * @param file 文件
    */
   public static readerImageFileToDataURL(file: File): Observable<string> {
-    return new Observable<string>(subscriber => {
+    const observable = new Observable<string>((subscriber: Subscriber<string>) => {
       const fileReader = new FileReader();
       fileReader.addEventListener('load', event => {
         subscriber.next(event.target.result as string);
@@ -20,6 +20,7 @@ export class YzUploaderService {
       })
       fileReader.readAsDataURL(file);
     });
+    return observable;
   }
 
   /**
