@@ -19,7 +19,7 @@ export class YzUploaderComponent {
   @Output()
   beCancel = new EventEmitter<void>();
   @Output()
-  beUpload = new EventEmitter<HttpResponse<any>[]>();
+  beUpload = new EventEmitter<HttpResponse<any>>();
   fileList: Array<File> = [];
   finishedTask = 0; // 已成功完成上传的任务
   progress = 0;
@@ -70,7 +70,6 @@ export class YzUploaderComponent {
       this.setProgress(0);
       this.uploading = true;
       this.finishedTask = 0;
-      const response: HttpResponse<object | null>[] = [];
 
       let task: Observable<HttpEvent<object>> = this.yzUploaderService.upload(this.fileList[0]);
       for (let i = 1; i < this.fileList.length; i++) {
@@ -84,13 +83,12 @@ export class YzUploaderComponent {
             this.setProgress(progress);
           }
         } else if (data.type === HttpEventType.Response) {
-          response.push(data);
+          this.beUpload.emit(data);
           this.setProgress(0);
           this.finishedTask++;
           if (this.finishedTask === this.fileList.length) {
             setTimeout(() => this.uploading = false, 500);
             this.fileList = [];
-            this.beUpload.emit(response);
           }
         }
       });

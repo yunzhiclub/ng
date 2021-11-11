@@ -1,4 +1,3 @@
-import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
@@ -9,9 +8,8 @@ import {mergeMap} from 'rxjs/operators';
  * 2. 添加loading
  * 3. 合并接收数据
  */
-@Injectable()
 export class ApiPrefixAndMergeMapInterceptor implements HttpInterceptor {
-  public static api: string;
+  public static api = 'api';
   public static DONT_INTERCEPT_HEADER_KEY = 'do_not_intercept';
 
   /**
