@@ -8,6 +8,21 @@ import {map, take} from 'rxjs/operators';
  */
 export class YzUploaderService {
   /**
+   * 将图片文件渲染为可用于img标签的url.
+   * @param file 文件
+   */
+  public static readerImageFileToDataURL(file: File): Observable<string> {
+    return new Observable<string>(subscriber => {
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', event => {
+        subscriber.next(event.target.result as string);
+        subscriber.complete();
+      })
+      fileReader.readAsDataURL(file);
+    });
+  }
+
+  /**
    * 上传文件
    * <br>
    * 本方法的目的有二：

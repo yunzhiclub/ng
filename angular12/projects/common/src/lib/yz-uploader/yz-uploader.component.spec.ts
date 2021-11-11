@@ -26,9 +26,8 @@ class TestComponent {
   src: any;
 
   onUpload($event: {file: File, data: HttpResponse<any>}) {
-    const fileReader = new FileReader();
-    fileReader.addEventListener('load', event => this.src = event.target.result)
-    fileReader.readAsDataURL($event.file);
+    YzUploaderService.readerImageFileToDataURL($event.file)
+      .subscribe(url => this.src = url);
   }
 
   onUploadClose() {
