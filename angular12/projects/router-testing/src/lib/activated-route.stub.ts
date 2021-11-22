@@ -9,16 +9,15 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class ActivatedRouteStub {
-  router: RouterStub;
-  paramsSubject = new Subject<Params>();
-  params: Observable<Params>;
-  paramMapSubject = new Subject<ParamMap>();
   paramMap: Observable<ParamMap>;
-  queryParamsSubject = new Subject<Params>();
-  queryParams: Observable<Params>;
+  paramMapSubject = new Subject<ParamMap>();
+  params: Observable<Params>;
+  paramsSubject = new Subject<Params>();
   queryParamMapSubject = new Subject<ParamMap>();
+  queryParams: Observable<Params>;
   queryParamsMap: Observable<ParamMap>
-
+  queryParamsSubject = new Subject<Params>();
+  router: RouterStub;
   snapshot = {
     paramMap: {
       get: () => {
@@ -45,13 +44,25 @@ export class ActivatedRouteStub {
     // 注册导航后的回调
     this.router.registerNavigateCallbackFn((queryParams: Params) => {
       this.queryParamsSubject.next(queryParams);
+      this.paramsSubject.next(queryParams);
     });
   }
 }
 
 export class ParamMapImpl implements ParamMap {
-  readonly keys: string[];
   readonly values: { [key: string]: string | string[] };
+
+  constructor(values: { [key: string]: string | string[] }) {
+    this.keys = [];
+    this.values = {};
+    for (const key in values) {
+      if (values[key] !== undefined) {
+        const value = values[key];
+        this.keys.push(key);
+        this.values[key] = value;
+      }
+    }
+  }
 
   get(name: string): string | null {
     return this.values[name] as string;
@@ -65,15 +76,5 @@ export class ParamMapImpl implements ParamMap {
     return this.keys.indexOf(name) >= 0;
   }
 
-  constructor(values: { [key: string]: string | string[] }) {
-    this.keys = [];
-    this.values = {};
-    for (const key in values) {
-      if (values[key] !== undefined) {
-        const value = values[key];
-        this.keys.push(key);
-        this.values[key] = value;
-      }
-    }
-  }
+  readonly keys: string[];
 }
