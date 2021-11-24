@@ -20,7 +20,7 @@ export class RouterStub {
    */
   private readonly eventsSubject = new Subject<Event>();
 
-  private navigateCallbackFns = [] as ((queryParams: Params) => void)[];
+  private navigateCallbackFns = [] as ((queryParams: Params, params?: Params) => void)[];
 
   constructor() {
     this.events = this.eventsSubject.asObservable();
@@ -61,7 +61,12 @@ export class RouterStub {
    * @param extras 扩展属性
    */
   navigate(commands: any[], extras?: NavigationExtras): Promise<boolean> {
-    this.navigateCallbackFns.forEach(callback => callback(extras.queryParams));
+    if (commands.length > 1) {
+      this.navigateCallbackFns.forEach(callback => callback(extras.queryParams, commands[1]));
+    } else {
+      this.navigateCallbackFns.forEach(callback => callback(extras.queryParams));
+    }
+
     return Promise.resolve(true);
   }
 
@@ -83,10 +88,10 @@ export class RouterStub {
 }
 
 interface UrlCreationOptions {
-  relativeTo?: ActivatedRoute | null;
-  queryParams?: Params | null;
   fragment?: string;
-  queryParamsHandling?: QueryParamsHandling | null;
   preserveFragment?: boolean;
+  queryParams?: Params | null;
+  queryParamsHandling?: QueryParamsHandling | null;
+  relativeTo?: ActivatedRoute | null;
 }
 
