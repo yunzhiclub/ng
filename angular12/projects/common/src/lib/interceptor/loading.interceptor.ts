@@ -11,11 +11,11 @@ export class LoadingInterceptor implements HttpInterceptor {
   private showLoadingSubscription = null as Subscription;
   private hideLoadingSubscription = null as Subscription;
 
-  public static hideLoading = () => {
+  public hideLoading = () => {
     console.warn('请重写LoadingInterceptor.hideLoading');
   }
 
-  public static showLoading = () => {
+  public showLoading = () => {
     console.warn('请重写LoadingInterceptor.showLoading方法');
   };
 
@@ -46,7 +46,7 @@ export class LoadingInterceptor implements HttpInterceptor {
       } else {
         this.showLoadingSubscription = of({}).pipe(delay(500)).subscribe(
           () => {
-            LoadingInterceptor.showLoading();
+            this.showLoading();
             this.showLoadingSubscription = null;
           });
       }
@@ -58,7 +58,7 @@ export class LoadingInterceptor implements HttpInterceptor {
         // 100MS后再选择隐藏，防止前台接连请求时loading频闪的问题
         this.hideLoadingSubscription = of({}).pipe(delay(100))
           .subscribe(() => {
-            LoadingInterceptor.hideLoading();
+            this.hideLoading();
             this.hideLoadingSubscription = null;
           });
       }
