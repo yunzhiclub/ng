@@ -40,7 +40,7 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (XAuthTokenInterceptor.token !== null) {
+    if (!request.headers.has('x-auth-token') && XAuthTokenInterceptor.token !== null) {
       request = request.clone({setHeaders: {'x-auth-token': XAuthTokenInterceptor.token}});
     }
     return next.handle(request).pipe(tap(input => {
