@@ -1,6 +1,6 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, of, Subscription} from 'rxjs';
-import {delay, finalize} from 'rxjs/operators';
+import {Observable, of, Subscription, throwError} from 'rxjs';
+import {catchError, delay, finalize} from 'rxjs/operators';
 
 /**
  * 加载中拦截器
@@ -15,7 +15,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     console.warn('请重写LoadingInterceptor.hideLoading');
   }
 
-  public static  showLoading = () => {
+  public static showLoading = () => {
     console.warn('请重写LoadingInterceptor.showLoading方法');
   };
 
@@ -24,7 +24,11 @@ export class LoadingInterceptor implements HttpInterceptor {
       return next.handle(req);
     } else {
       this.setLoading(true);
-      return next.handle(req).pipe(finalize(() => this.setLoading(false)));
+      return next.handle(req).pipe(finalize(() => this.setLoading(false)),
+        catchError(err => {
+          this.setLoading(false);
+          return throwError(err);
+        }));
     }
   }
 

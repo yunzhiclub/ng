@@ -3,6 +3,8 @@
  */
 export * from './lib/utils';
 export * from './lib/interceptor/api-prefix-and-merge-map.interceptor';
+export * from './lib/interceptor/http-error.interceptor';
+export * from './lib/interceptor/loading.interceptor';
 export * from './lib/interceptor/null-or-undefined-or-empty.interceptor';
 export * from './lib/interceptor/prevent-401-popup';
 export * from './lib/interceptor/x-auth-token.interceptor';
