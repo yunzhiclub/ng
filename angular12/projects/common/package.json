@@ -12,6 +12,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@tinymce/tinymce-angular": "^4.2.4",
     "tslib": "^2.0.0"
   }
 }

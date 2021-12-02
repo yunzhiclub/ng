@@ -1,4 +1,3 @@
-import {Injectable} from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -8,13 +7,24 @@ import {
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
+/**
+ * xAuthToken拦截器
+ */
 export class XAuthTokenInterceptor implements HttpInterceptor {
   /**
    * 由缓存中获取token，防止页面刷新后失效
    */
-  private token = window.sessionStorage.getItem('x-auth-token');
+  private static token = window.sessionStorage.getItem('x-auth-token');
 
   constructor() {
+  }
+
+  /**
+   * 清空token
+   */
+  public static clearToken() {
+    this.token = null;
+    window.sessionStorage.removeItem('x-auth-token');
   }
 
   /**
@@ -22,7 +32,7 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
    * 如果接收到了新的token则更新，否则什么也不做
    * @param xAuthToken token
    */
-  private setToken(xAuthToken: string): void {
+  public static setToken(xAuthToken: string): void {
     if (this.token !== xAuthToken) {
       this.token = xAuthToken;
       window.sessionStorage.setItem('x-auth-token', this.token);
@@ -30,8 +40,8 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.token !== null) {
-      request = request.clone({setHeaders: {'x-auth-token': this.token}});
+    if (XAuthTokenInterceptor.token !== null) {
+      request = request.clone({setHeaders: {'x-auth-token': XAuthTokenInterceptor.token}});
     }
     return next.handle(request).pipe(tap(input => {
       // 仅当input类型为HttpResponseBase，才尝试获取token并更新
@@ -39,7 +49,7 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
         const httpHeader = input.headers;
         const xAuthToken = httpHeader.get('x-auth-token');
         if (xAuthToken !== null) {
-          this.setToken(xAuthToken);
+          XAuthTokenInterceptor.setToken(xAuthToken);
         }
       }
     }));
