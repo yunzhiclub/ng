@@ -14,6 +14,9 @@ import {YzUploaderService} from './yz-uploader.service';
   styleUrls: ['./yz-uploader.component.scss']
 })
 export class YzUploaderComponent {
+  /**
+   * 允许上传的文件类型，同<input type="file" accept="image/png, image/jpeg" />
+   */
   @Input()
   accept = '';
   @Output()
