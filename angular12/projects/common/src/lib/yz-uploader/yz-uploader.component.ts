@@ -1,8 +1,10 @@
 import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import {concat} from 'rxjs';
 import {YzUploaderService} from './yz-uploader.service';
+import {Utils} from '@yunzhi/utils';
+import {delay} from 'rxjs/operators';
 
 /**
  * 上传组件
@@ -23,17 +25,31 @@ export class YzUploaderComponent {
   beClose = new EventEmitter<void>();
   @Output()
   beUpload = new EventEmitter<{file: File, response: HttpResponse<any>}>();
+  error = '';
   fileList: Array<File> = [];
   finishedTask = 0; // 已成功完成上传的任务
-  @Input()
-  maxSize = undefined as number;
+  info: string;
   progress = 0;
+  showError = false;
+  /**
+   * 上传附件最大值
+   * 是否上传多个文件
+   */
+  state = {
+    maxSize: 10 * 1024 * 1024,
+    multiple: false
+  }
   uploading = false;
 
   constructor(private yzUploaderService: YzUploaderService) {
+    this.info = this.getInfo(this.state.maxSize);
   }
 
-  _multiple = false;  // 是否上传多个文件
+  @Input()
+  set maxSize(size: number) {
+    this.state.maxSize = size;
+    this.info = this.getInfo(this.state.maxSize);
+  }
 
   /**
    * 是否上传多个文件
@@ -41,7 +57,7 @@ export class YzUploaderComponent {
    */
   @Input()
   set multiple(multiple: boolean) {
-    this._multiple = multiple;
+    this.state.multiple = multiple;
     this.fileList = [];
   }
 
@@ -64,11 +80,22 @@ export class YzUploaderComponent {
     this.fileList = files.filter(file => {
       if (typeof this.maxSize !== 'undefined') {
         if (file.size > this.maxSize) {
+          this.errorAppear('文件超出大小');
           return false;
         }
       }
       return this.fileFilter(file);
     });
+  }
+
+  errorAppear(message: string): void {
+    if (!this.showError) {
+      this.showError = true;
+      this.error = message;
+      of(null).pipe(delay(300)).subscribe(() => {
+        this.showError = false;
+      });
+    }
   }
 
   onRemoveFile(file: File): void {
@@ -108,6 +135,10 @@ export class YzUploaderComponent {
 
   onClose(): void {
     this.beClose.emit();
+  }
+
+  getInfo(size: number): string {
+    return '大小限制：' + Utils.fileSize(size);
   }
 
   setProgress(num: number): void {

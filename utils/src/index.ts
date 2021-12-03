@@ -28,6 +28,25 @@ export class Utils {
   }
 
   /**
+   * 文件大小
+   * 将以B为单位的文件大小，自动转换为KB\MB\GB
+   */
+  static fileSize(size: number): string {
+    if (size < 1024) {
+      return size + 'B';
+    } else if (size < 1024 * 1024) {
+      size = Math.floor((size * 100) / 1024);
+      return (size % 10 / 2) + 'KB';
+    } else if (size < 1024 * 1024 * 1024) {
+      size = Math.floor((size * 100) / (1024 * 1024));
+      return size / 100 + 'MB';
+    } else {
+      size = Math.floor((size * 100) / (1024 * 1024 * 1024));
+      return size / 100 + 'GB';
+    }
+  }
+
+  /**
    * 对字符串进行简单的加密
    * @param input 加密后的字符串
    */
