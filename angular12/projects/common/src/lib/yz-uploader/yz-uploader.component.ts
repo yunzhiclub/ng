@@ -45,6 +45,10 @@ export class YzUploaderComponent {
     this.info = this.getInfo(this.state.maxSize);
   }
 
+  get maxSize(): number {
+    return this.state.maxSize;
+  }
+
   @Input()
   set maxSize(size: number) {
     this.state.maxSize = size;
@@ -92,7 +96,7 @@ export class YzUploaderComponent {
     if (!this.showError) {
       this.showError = true;
       this.error = message;
-      of(null).pipe(delay(300)).subscribe(() => {
+      of(null).pipe(delay(3000)).subscribe(() => {
         this.showError = false;
       });
     }

@@ -12,7 +12,7 @@
     </div>
     <div class="row">
       <div class="col-6">
-        <span *ngIf="!showError">{{info}}</span><span *ngIf="showError"></span>
+        <span *ngIf="!showError">{{info}}</span><span class="text-danger" *ngIf="showError">{{error}}</span>
       </div>
       <div class="col-6 text-right">
         <button class="btn btn-warning btn-sm mr-2" type="button"

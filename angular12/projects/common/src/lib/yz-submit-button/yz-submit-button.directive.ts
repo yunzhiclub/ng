@@ -23,7 +23,6 @@ export class YzSubmitButtonDirective implements AfterViewInit {
 
   constructor(el: ElementRef) {
     this.htmlButton = el.nativeElement;
-
   }
 
   /**
