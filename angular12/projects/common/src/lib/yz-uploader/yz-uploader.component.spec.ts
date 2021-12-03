@@ -13,7 +13,7 @@ import {By} from '@angular/platform-browser';
 
 @Component({
   template: `
-    <img [src]="src">
+    <img [src]="src" alt="image">
     <yz-uploader *ngIf="showUploader" [multiple]="multiple"
                  accept="image/gif, image/jpeg, image/png"
                  (beUpload)="onUpload($event)"
@@ -25,7 +25,7 @@ class TestComponent {
   showUploader = true;
   src: any;
 
-  onUpload($event: {file: File, data: HttpResponse<any>}) {
+  onUpload($event: {file: File, response: HttpResponse<any>}) {
     YzUploaderService.readerImageFileToDataURL($event.file)
       .subscribe(url => this.src = url);
   }

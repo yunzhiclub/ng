@@ -3,32 +3,6 @@
  */
 export class Utils {
   /**
-   * 判断变量是否被定义
-   * @param value 被定义true,否则false
-   */
-  static isNotNull<T>(value: T | undefined | null): value is T {
-    return isNotNullOrUndefined(value);
-  }
-
-  /**
-   * 对字符串进行简单的加密
-   * @param input 加密后的字符串
-   */
-  static hash(input: string): number {
-    let hash = 0;
-    let i;
-    let chr;
-    for (i = 0; i < input.length; i++) {
-      chr = input.charCodeAt(i);
-      // tslint:disable-next-line:no-bitwise
-      hash = (hash << 5) - hash + chr;
-      // tslint:disable-next-line:no-bitwise
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-  }
-
-  /**
    * 转换为loading字样
    * @param target 目标字符串
    * @param suffix 后缀
@@ -51,6 +25,50 @@ export class Utils {
       target = strings[0];
     }
     return target;
+  }
+
+  /**
+   * 对字符串进行简单的加密
+   * @param input 加密后的字符串
+   */
+  static hash(input: string): number {
+    let hash = 0;
+    let i;
+    let chr;
+    for (i = 0; i < input.length; i++) {
+      chr = input.charCodeAt(i);
+      // tslint:disable-next-line:no-bitwise
+      hash = (hash << 5) - hash + chr;
+      // tslint:disable-next-line:no-bitwise
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
+
+  /**
+   * 判断变量是否被定义
+   * @param value 被定义true,否则false
+   */
+  static isNotNull<T>(value: T | undefined | null): value is T {
+    return isNotNullOrUndefined(value);
+  }
+
+  /**
+   * 将图片文件渲染为可用于img标签的url.
+   * @param file 文件
+   */
+  public static readerImageFileToDataURL(file: File): Promise<string> {
+    return new Promise<string>(((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', event => {
+        if (event.target !== null) {
+          resolve(event.target.result as string);
+        } else {
+          reject('将文件转换为图片url失败');
+        }
+      })
+      fileReader.readAsDataURL(file);
+    }));
   }
 }
 
@@ -87,10 +105,6 @@ export class Random {
 }
 
 export class Assert {
-  public static showError(message: string) {
-    console.warn('请重写当前方法以自定义错误提示信息');
-  }
-
   /**
    * 断言是数组
    * @param args value 断言的值 message 出错提示
@@ -100,6 +114,15 @@ export class Assert {
     args.forEach((value, index) => {
       if (!Array.isArray(value)) {
         this.showError(`${message}:${index}`);
+      }
+    });
+  }
+
+  static isDate(...args: any[]): void {
+    const message = this.validateArgs(args);
+    args.forEach(arg => {
+      if (!(arg instanceof Date)) {
+        this.showError(message);
       }
     });
   }
@@ -120,69 +143,26 @@ export class Assert {
     });
   }
 
-  static isDate(...args: any[]): void {
-    const message = this.validateArgs(args);
-    args.forEach(arg => {
-      if (!(arg instanceof Date)) {
-        this.showError(message);
-      }
-    });
-  }
-
-  static isObject(...args: any[]): void {
-    const message = this.validateArgs(args);
-    args.forEach(arg => {
-      const type = typeof arg;
-      const isObject = type === 'function' || (type === 'object' && !!arg);
-      if (!isObject) {
-        this.showError(message);
-      }
-    });
-  }
-
   /**
-   * 断言输入的值为字符串
-   * @param args 字符串1，字符串2...提示信息
+   * 断言有整型（不包含NaN)
+   * @param args
    */
-  static isString(...args: any[]): void {
+  static isInteger(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach(value => {
-      if (!(typeof value === 'string')) {
-        this.showError(message);
+    args.forEach((value, index) => {
+      if (!Number.isInteger(value)) {
+        this.showError(`${message}:${index}`);
       }
     });
   }
 
-  static notNull(...args: any[]): void {
+  static isNotNullOrUndefined(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach(value => {
+    args.forEach((value, index) => {
       if (!isNotNullOrUndefined(value)) {
-        this.showError(message);
+        this.showError(`${message}:${index}`);
       }
     });
-  }
-
-  /**
-   * 校验参考并返回参数的最后一项做为message提示消息返回
-   * @param args 多个参数
-   */
-  private static validateArgs(args: any[]): string {
-    if (args.length < 2) {
-      this.showError('最少输入两个参数');
-    }
-
-    if (!(typeof args[args.length - 1] === 'string')) {
-      this.showError('最后一个参数必须为字符串');
-    }
-
-    return args.pop();
-  }
-
-  static isUndefined(param: any): void {
-    if (typeof param !== 'undefined') {
-      const message = '变量已定义';
-      this.showError(message);
-    }
   }
 
   /**
@@ -212,24 +192,26 @@ export class Assert {
     });
   }
 
-  /**
-   * 断言有整型（不包含NaN)
-   * @param args
-   */
-  static isInteger(...args: any[]): void {
+  static isObject(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach((value, index) => {
-      if (!Number.isInteger(value)) {
-        this.showError(`${message}:${index}`);
+    args.forEach(arg => {
+      const type = typeof arg;
+      const isObject = type === 'function' || (type === 'object' && !!arg);
+      if (!isObject) {
+        this.showError(message);
       }
     });
   }
 
-  static isNotNullOrUndefined(...args: any[]): void {
+  /**
+   * 断言输入的值为字符串
+   * @param args 字符串1，字符串2...提示信息
+   */
+  static isString(...args: any[]): void {
     const message = this.validateArgs(args);
-    args.forEach((value, index) => {
-      if (!isNotNullOrUndefined(value)) {
-        this.showError(`${message}:${index}`);
+    args.forEach(value => {
+      if (!(typeof value === 'string')) {
+        this.showError(message);
       }
     });
   }
@@ -245,6 +227,26 @@ export class Assert {
         this.showError(`${message}:${index}`);
       }
     });
+  }
+
+  static isUndefined(param: any): void {
+    if (typeof param !== 'undefined') {
+      const message = '变量已定义';
+      this.showError(message);
+    }
+  }
+
+  static notNull(...args: any[]): void {
+    const message = this.validateArgs(args);
+    args.forEach(value => {
+      if (!isNotNullOrUndefined(value)) {
+        this.showError(message);
+      }
+    });
+  }
+
+  public static showError(message: string) {
+    console.warn('请重写当前方法以自定义错误提示信息');
   }
 
   /**
@@ -270,6 +272,22 @@ export class Assert {
     this.showError(message);
     throw new Error(message);
   }
+
+  /**
+   * 校验参考并返回参数的最后一项做为message提示消息返回
+   * @param args 多个参数
+   */
+  private static validateArgs(args: any[]): string {
+    if (args.length < 2) {
+      this.showError('最少输入两个参数');
+    }
+
+    if (!(typeof args[args.length - 1] === 'string')) {
+      this.showError('最后一个参数必须为字符串');
+    }
+
+    return args.pop();
+  }
 }
 
 /**
@@ -290,15 +308,15 @@ export function getDefaultWhenValueIsInValid<T>(value: T, defaultValue: T): T {
  * @param hex #abcdef
  * @param opacity rbgb(xx,xx,xx,xx)
  */
-export function hexToRgbA(hex: string, opacity = 1){
+export function hexToRgbA(hex: string, opacity = 1) {
   let color;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-    color= hex.substring(1).split('');
-    if(color.length== 3){
-      color= [color[0], color[0], color[1], color[1], color[2], color[2]];
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    color = hex.substring(1).split('');
+    if (color.length == 3) {
+      color = [color[0], color[0], color[1], color[1], color[2], color[2]];
     }
-    color= Number.parseInt(color.join(''), 16);
-    return 'rgba('+[(color>>16)&255, (color>>8)&255, color&255].join(',')+`,${opacity})`;
+    color = Number.parseInt(color.join(''), 16);
+    return 'rgba(' + [(color >> 16) & 255, (color >> 8) & 255, color & 255].join(',') + `,${opacity})`;
   }
   throw new Error('Bad Hex');
 }
