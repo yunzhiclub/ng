@@ -2,13 +2,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {YzUploaderComponent} from './yz-uploader.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {interval} from 'rxjs';
+import {interval, Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
 import {YzUploaderService} from './yz-uploader.service';
 import {YzUploaderModule} from './yz-uploader.module';
 import {Component} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
+import {HttpEvent, HttpResponse} from '@angular/common/http';
 import {By} from '@angular/platform-browser';
 
 @Component({
@@ -35,6 +35,13 @@ class TestComponent {
   }
 }
 
+class UploadServer {
+  upload(file: File): Observable<HttpEvent<any>> {
+    console.log('rewrite');
+    return null;
+  }
+}
+
 describe('YzUploaderComponent', () => {
   let component: TestComponent;
   let upLoaderComponent: YzUploaderComponent;
@@ -48,7 +55,7 @@ describe('YzUploaderComponent', () => {
         ReactiveFormsModule,
         YzModalModule,
         YzUploaderModule.forRoot({
-          uploaderService: YzUploaderService
+          uploaderService: UploadServer
         })
       ]
     })
@@ -61,7 +68,7 @@ describe('YzUploaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
     fixture.autoDetectChanges();
   });

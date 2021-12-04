@@ -29,9 +29,20 @@
 1. 进入相关文件夹，执行`npm link`，比如：`cd dist/mock-api && npm link`
 2. 建立测试项目，执行`npm link xxx`，即相当于直接安装了`xxx`。
 3. 进行相关测试
+4. 需要注意的是Angular中默认禁止了这种`npm link xxx`来直接链接本地库的操作，若要使用测试成功，则需要在`angular.json`添加如下配置：
 
+in your angular app that depends on your local library, set projects.projectName.architect.build.options.preserveSymlinks with true in angular.json will prevent the angular cli from updating linked local library
+
+```
+projects.projectName.architect.build.options.preserveSymlinks: true
+```
+
+相关设置说明请参考：
+[https://github.com/angular/angular/issues/35586](https://github.com/angular/angular/issues/35586)
 ## 发布
-发布前先登录：`npm login`
+使用`prod`选项来build项目，比如`ng build common --prod`.
+
+登录：`npm login`
 
 然后进入相关文件夹完成发布：
 `cd dist/mock-api && npm publish --access=public`
