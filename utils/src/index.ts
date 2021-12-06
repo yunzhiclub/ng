@@ -89,6 +89,18 @@ export class Utils {
       fileReader.readAsDataURL(file);
     }));
   }
+
+  /**
+   * 将时间戳转换为 yyyyMMdd
+   * @param timestamp
+   */
+  static timestampToIntDate(timestamp: number): number {
+    if (!timestamp) {
+      return 19700101;
+    }
+    const date = new Date(timestamp);
+    return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+  }
 }
 
 export class Random {
