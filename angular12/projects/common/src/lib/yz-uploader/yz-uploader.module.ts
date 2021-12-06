@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {YzModalModule} from '../yz-modal/yz-modal.module';
 import {YzUploaderService} from './yz-uploader.service';
 
-
 @NgModule({
   declarations: [YzUploaderComponent],
   exports: [
@@ -18,7 +17,8 @@ import {YzUploaderService} from './yz-uploader.service';
     YzModalModule
   ],
   providers: [
-    YzUploaderService
+    // 启用以下代码将导致forRoot()中配置的注入失效
+    // YzUploaderService
   ]
 })
 export class YzUploaderModule {
@@ -26,10 +26,10 @@ export class YzUploaderModule {
     uploaderService: Type<YzUploaderService>
   }): ModuleWithProviders<YzUploaderModule> {
     return {
-      ngModule: YzUploaderModule,
       providers: [
         {provide: YzUploaderService, useClass: config.uploaderService}
-      ]
+      ],
+      ngModule: YzUploaderModule
     };
   }
 }
