@@ -8,14 +8,31 @@ import {randomNumber} from '@yunzhi/ng-mock-api';
  */
 export class Page<T> extends Slice<T> {
   /**
+   * 总数据条数
+   */
+  totalElements: number;
+  /**
    * 总页数
    */
   totalPages: number;
 
-  /**
-   * 总数据条数
-   */
-  totalElements: number;
+  constructor(data = {} as {
+    number?: number,
+    size?: number,
+    numberOfElements?: number,
+    content?: T[],
+    first?: boolean,
+    last?: boolean,
+    pageable?: Pageable,
+    sort?: Sort
+    totalElements?: number
+    totalPages?: number,
+    convertObjectFn?: (d: T) => T
+  }) {
+    super(data);
+    this.totalPages = data.totalPages as number;
+    this.totalElements = data.totalElements as number;
+  }
 
   public static getPage<T>(data = {} as {
     number: number,
@@ -29,7 +46,7 @@ export class Page<T> extends Slice<T> {
     let last = false;
     let totalPages;
 
-    let allContent = [] as T[];
+    let allContent;
     if (data.filter) {
       allContent = data.allContent.filter(a => data.filter(a));
     } else {
@@ -71,24 +88,6 @@ export class Page<T> extends Slice<T> {
     });
   }
 
-  constructor(data = {} as {
-    number?: number,
-    size?: number,
-    numberOfElements?: number,
-    content?: T[],
-    first?: boolean,
-    last?: boolean,
-    pageable?: Pageable,
-    sort?: Sort
-    totalElements?: number
-    totalPages?: number,
-    convertObjectFn?: (d: T) => T
-  }) {
-    super(data);
-    this.totalPages = data.totalPages as number;
-    this.totalElements = data.totalElements as number;
-  }
-
   /**
    * 起始编号
    */
@@ -105,6 +104,20 @@ export class Page<T> extends Slice<T> {
     this.content.forEach(v => content.push(convertFn(v)));
     this.content = content;
     return this;
+  }
+
+  /**
+   * 对数组中的数据进行转换
+   * @param convertFn 转换函数
+   */
+  map<D>(convertFn: (t: T) => D): Page<D> {
+    const target = {...this};
+    target.content = [];
+    const page = target as unknown as Page<D>;
+    this.content.forEach(data => {
+      page.content.push(convertFn(data))
+    });
+    return page;
   }
 }
 
