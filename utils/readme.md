@@ -1,10 +1,13 @@
 ## Utils for yunzhi
 
+
 ## Installation
 `npm install @yunzhi/utils`
 
-## Usage
-
+## How To Test
+1. `tsc && npm pack`
+2. `npm link`
+3. to target project run: `npm link @yunzhi/utils`
 
 ## how to publish
 1. `tsc && npm pack`

@@ -1,17 +1,20 @@
-<yz-modal size="md" >
+<yz-modal size="md">
   <div class="yz-uploader">
     <div class="file-drop-area mb-2">
-      <span class="fake-btn">{{(_multiple && fileList.length) ? '请继续上传文件' : '请选择上传文件'}}</span>
+      <span class="fake-btn">{{(state.multiple && fileList.length) ? '请继续上传文件' : '请选择上传文件'}}</span>
       <span class="file-msg" *ngIf="!fileList.length">或直接将文件托放到这里</span>
       <span class="file-msg file-block" *ngFor="let file of fileList">
-      <span *ngIf="_multiple" (click)="onRemoveFile(file)">
+      <span *ngIf="state.multiple" (click)="onRemoveFile(file)">
         <i class="fas fa-trash-alt"></i>
       </span>
         {{file.name}}&nbsp;&nbsp;</span>
-      <input class="file-input" type="file" [multiple]="_multiple" [accept]="accept">
+      <input class="file-input" type="file" [multiple]="state.multiple" [accept]="accept">
     </div>
     <div class="row">
-      <div class="col-12 text-right">
+      <div class="col-6">
+        <span *ngIf="!showError">{{info}}</span><span class="text-danger" *ngIf="showError">{{error}}</span>
+      </div>
+      <div class="col-6 text-right">
         <button class="btn btn-warning btn-sm mr-2" type="button"
                 (click)="onClose()">
           <i class="fas fa-ban"></i>关闭

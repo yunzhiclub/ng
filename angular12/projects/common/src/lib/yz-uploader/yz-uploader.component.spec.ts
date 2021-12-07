@@ -15,6 +15,7 @@ import {By} from '@angular/platform-browser';
   template: `
     <img [src]="src" alt="image">
     <yz-uploader *ngIf="showUploader" [multiple]="multiple"
+                 [maxSize]="100"
                  accept="image/gif, image/jpeg, image/png"
                  (beUpload)="onUpload($event)"
                  (beClose)="onUploadClose()"></yz-uploader>
