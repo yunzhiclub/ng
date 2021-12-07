@@ -1,7 +1,7 @@
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {RouterStub} from './router.stub';
-import {ActivatedRouteSnapshot, ActivationEnd, ParamMap, Params, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, ActivationEnd, Data, ParamMap, Params, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 
 /**
@@ -9,6 +9,8 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class ActivatedRouteStub {
+  data: Observable<Data>;
+  dataSubject = new Subject<Data>();
   paramMap: Observable<ParamMap>;
   paramMapSubject = new Subject<ParamMap>();
   params: Observable<Params>;
@@ -36,6 +38,7 @@ export class ActivatedRouteStub {
     this.params = this.paramsSubject.asObservable();
     this.paramMap = this.paramMapSubject.asObservable();
     this.queryParams = this.queryParamsSubject.asObservable();
+    this.data = this.dataSubject.asObservable();
     this.paramsSubject.pipe(tap(params => {
       const activatedRouteSnapshot = new ActivatedRouteSnapshot();
       activatedRouteSnapshot.params = params;

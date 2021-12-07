@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/ng-router-testing",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^12.1.0",
     "@angular/core": "^12.1.0"
