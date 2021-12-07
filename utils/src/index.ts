@@ -65,6 +65,18 @@ export class Utils {
   }
 
   /**
+   * 将 yyyyMMdd 格式的日期转换为时间戳
+   * @param intDate
+   */
+  static intDateToTimestamp(intDate: number): number {
+    if (!intDate) {
+      return 0;
+    }
+    const date = new Date(Math.floor(intDate / 10000), (Math.floor(intDate / 100)) % 100, intDate % 100);
+    return date.getTime();
+  }
+
+  /**
    * 判断变量是否被定义
    * @param value 被定义true,否则false
    */
@@ -88,6 +100,18 @@ export class Utils {
       })
       fileReader.readAsDataURL(file);
     }));
+  }
+
+  /**
+   * 将时间戳转换为 yyyyMMdd
+   * @param timestamp
+   */
+  static timestampToIntDate(timestamp: number): number {
+    if (!timestamp) {
+      return 19700101;
+    }
+    const date = new Date(timestamp);
+    return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
   }
 }
 
