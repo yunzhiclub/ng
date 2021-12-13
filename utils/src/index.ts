@@ -103,6 +103,15 @@ export class Utils {
   }
 
   /**
+   * 时间字符串转换为int类型的日期
+   * 2021-12-08T17:33:14.406+08:00 -> 20211208
+   * @param timeString
+   */
+  static timeStringToIntDate(timeString: string): number {
+    return Utils.timestampToIntDate(new Date(timeString).getTime());
+  }
+
+  /**
    * 将时间戳转换为 yyyyMMdd
    * @param timestamp
    */
