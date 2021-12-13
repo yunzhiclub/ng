@@ -1,11 +1,15 @@
 /**
  * 菜单格式
  */
-export class Menu {
+export interface Menu {
+  /**
+   * 是否是抽象的（抽象的菜单的点击后只展开子页，不跳转路由）
+   */
+  beAbstract?: boolean;
   /**
    * 子菜单
    */
-  children?: Menu[] = [];
+  children?: Menu[];
   /**
    * 描述信息
    */

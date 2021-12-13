@@ -6,6 +6,7 @@ import {ApiModule} from '../api/api.module';
 import {BasicService} from '../service/basic.service';
 import {Observable} from 'rxjs';
 import {Menu} from '../entity/menu';
+import {MenuModule} from './menu.module';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -13,8 +14,8 @@ describe('MenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MenuComponent],
       imports: [
+        MenuModule,
         ApiModule,
         RouterTestingModule
       ], providers: [
@@ -30,7 +31,7 @@ describe('MenuComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
     console.log(component.links);
     component.links.get(1).nativeElement.className += 'active';
@@ -39,7 +40,11 @@ describe('MenuComponent', () => {
 
   it('getColorWithRadix', () => {
     expect('rgba(251,175,255,1)').toEqual(MenuComponent.hexToRgbA('#fbafff', 1));
-  })
+  });
+
+  afterEach(() => {
+    fixture.autoDetectChanges();
+  });
 });
 
 
@@ -75,6 +80,23 @@ class MyBasicService extends BasicService {
         name: '模板页',
         url: 'theme',
         icon: 'fa fa-tachometer-alt',
+      }, {
+        name: '父子菜单',
+        url: '',
+        icon: 'fa fa-tachometer-alt',
+        children: [{
+          name: '首页',
+          url: 'sub/dashboard',
+          icon: 'fa fa-tachometer-alt',
+        }, {
+          name: '模板页',
+          url: 'sub/theme',
+          icon: 'fa fa-tachometer-alt',
+        }, {
+          name: '模板页',
+          url: 'sub/theme',
+          icon: 'fa fa-tachometer-alt',
+        }]
       }]);
       subscribe.complete();
     });

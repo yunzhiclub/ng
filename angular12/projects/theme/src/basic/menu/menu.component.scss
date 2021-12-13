@@ -6,18 +6,16 @@ ul.menu {
   background-color: #F7F8FA;
   height: calc(100vh - 78px);
   overflow-y: auto;
-
 }
 
-li:hover .submenu {
-  display: block;
-  max-height: 400px;
-}
+//li:hover .submenu {
+//  display: block;
+//  max-height: 400px;
+//}
 
 ul .submenu {
   overflow: hidden;
-  max-height: 0;
-  -webkit-transition: all 0.5s ease-out;
+  //-webkit-transition: all 0.5s ease-out;
 }
 
 ul .submenu.active {
@@ -39,6 +37,7 @@ ul .submenu.active {
 
 li {
   list-style: none;
+  border-top: 1px solid #ffffff;
 
   a {
     display: block;
