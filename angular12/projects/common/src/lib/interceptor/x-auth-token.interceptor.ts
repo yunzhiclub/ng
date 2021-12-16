@@ -27,6 +27,10 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
     window.sessionStorage.removeItem('x-auth-token');
   }
 
+  static getToken() {
+    return this.token;
+  }
+
   /**
    * 设置token
    * 如果接收到了新的token则更新，否则什么也不做

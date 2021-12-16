@@ -6,6 +6,21 @@ import {YzHttpParams} from '../model/yz-http-params';
  * 过滤掉params中的null或undefined或空字符串
  */
 export class NullOrUndefinedOrEmptyInterceptor implements HttpInterceptor {
+  /**
+   * 获取去除NaN undefined null之后的其它参数
+   * @param params 参数
+   */
+  public static getCleanedParams(params: HttpParams): HttpParams {
+    let cleanedParams = new HttpParams();
+    params.keys().forEach(x => {
+      const value = params.get(x);
+      if (isNotNullOrUndefined(value) && value!.length > 0 && value !== 'NaN' && value !== 'undefined' && value !== 'null') {
+        cleanedParams = cleanedParams.append(x, params.get(x)!);
+      }
+    });
+    return cleanedParams;
+  }
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     /**
      * 过滤到null及undefined
