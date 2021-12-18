@@ -5,7 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {ApiModule} from '../api/api.module';
 import {BasicService} from '../service/basic.service';
 import {Observable} from 'rxjs';
-import {Menu} from '../entity/menu';
+import {YzMenu} from '../entity/yz-menu';
 import {MenuModule} from './menu.module';
 
 describe('MenuComponent', () => {
@@ -51,7 +51,7 @@ class MyBasicService extends BasicService {
   /**
    * 获取菜单
    */
-  getMenus(): Observable<Menu[]> {
+  getMenus(): Observable<YzMenu[]> {
     console.log('重此getMenus()实现自定义菜单');
     return new Observable(subscribe => {
       subscribe.next([{

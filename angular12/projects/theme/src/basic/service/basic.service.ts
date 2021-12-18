@@ -1,5 +1,5 @@
 import {Observable, of} from 'rxjs';
-import {Menu} from '../entity/menu';
+import {YzMenu} from '../entity/yz-menu';
 
 /**
  * 菜单服务
@@ -57,40 +57,34 @@ export class BasicService {
   /**
    * 获取菜单
    */
-  getMenus(): Observable<Menu[]> {
+  getMenus(): Observable<YzMenu[]> {
     console.log('重此getMenus()实现自定义菜单');
     return new Observable(subscribe => {
       subscribe.next([{
         name: '首页',
         url: 'dashboard',
         icon: 'fa fa-tachometer-alt',
-        roles: [],
       }, {
         name: '父子菜单',
         url: '',
         icon: 'fa fa-tachometer-alt',
-        roles: [],
         children: [{
           name: '首页',
           url: 'sub/dashboard',
           icon: 'fa fa-tachometer-alt',
-          roles: [],
         }, {
           name: '模板页',
           url: 'sub/theme',
           icon: 'fa fa-tachometer-alt',
-          roles: [],
         }, {
           name: '模板页',
           url: 'sub/theme',
           icon: 'fa fa-tachometer-alt',
-          roles: [],
         }]
       }, {
         name: '模板页',
         url: 'theme',
         icon: 'fa fa-tachometer-alt',
-        roles: [],
       }]);
       subscribe.complete();
     });

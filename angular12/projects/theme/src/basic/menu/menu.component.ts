@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BasicService} from '../service/basic.service';
-import {Menu} from '../entity/menu';
+import {YzMenu} from '../entity/yz-menu';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Router} from '@angular/router';
 
@@ -142,7 +142,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmenuClick(menu: MenuModel) {
+  onMenuClick(menu: MenuModel) {
     const showChildren = !menu.showChildren;
     this.menus.forEach(m => m.showChildren = false);
     if (menu.beParent) {
@@ -154,18 +154,26 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(menu.url).then();
     }
   }
+
+  onSubMenuClick(menu: MenuModel, childMenu: MenuModel) {
+    if (childMenu.beAbsolute) {
+      this.router.navigateByUrl(childMenu.url).then();
+    } else {
+      this.router.navigateByUrl(menu.url + '/' + childMenu.url).then();
+    }
+  }
 }
 
-class MenuModel implements Menu {
+class MenuModel implements YzMenu {
   /**
    * 是否被选中
    */
   active= false;
   showChildren = false;
-  private readonly menu: Menu;
+  private readonly menu: YzMenu;
   private readonly _children: MenuModel[];
 
-  constructor(menu: Menu) {
+  constructor(menu: YzMenu) {
     this.menu = menu;
     if (!Array.isArray(this.menu.children)) {
       this._children = [];
@@ -208,7 +216,7 @@ class MenuModel implements Menu {
     return this.menu.children && this.menu.children.length > 0;
   }
 
-  get roles() {
-    return this.menu.roles;
+  get beAbsolute() {
+    return this.menu.beAbsolute;
   }
 }
