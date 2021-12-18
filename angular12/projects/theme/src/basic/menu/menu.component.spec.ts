@@ -33,7 +33,6 @@ describe('MenuComponent', () => {
 
   fit('should create', () => {
     expect(component).toBeTruthy();
-    console.log(component.links);
     component.links.get(1).nativeElement.className += 'active';
     fixture.detectChanges();
   });
