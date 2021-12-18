@@ -7,6 +7,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
+  // 定义动画，但并没有生效
   animations: [
     trigger('openClose', [
       state('open', style({
