@@ -13,17 +13,10 @@ ul.menu {
 //  max-height: 400px;
 //}
 
-ul .submenu {
-  overflow: hidden;
-  -webkit-transition: all 0.5s ease-out;
-}
 
-ul .submenu.active {
-  display: block;
-}
 
 .inner {
-  padding: 0 35px 0 35px;
+  padding: 0 15px 0 35px;
   line-height: 50px;
   height: 50px;
 }
@@ -60,4 +53,18 @@ li {
     display: block;
     max-height: 400px;
   }
+}
+
+ul.submenu {
+  overflow: hidden;
+  -webkit-transition: all 0.5s ease-out;
+  .inner {
+    line-height: 40px;
+    height: 40px;
+  }
+}
+
+
+ul.submenu.active {
+  display: block;
 }
