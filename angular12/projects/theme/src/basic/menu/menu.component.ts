@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {BasicService} from '../service/basic.service';
 import {Menu} from '../entity/menu';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -61,7 +62,8 @@ export class MenuComponent implements OnInit, OnDestroy {
     'color': MenuComponent.hexToRgbA(this.color.normal.color)
   }
 
-  constructor(private basicMenuService: BasicService) {
+  constructor(private basicMenuService: BasicService,
+              private router: Router) {
   }
 
   /**
@@ -146,6 +148,11 @@ export class MenuComponent implements OnInit, OnDestroy {
     if (menu.beParent) {
       menu.showChildren = showChildren;
     }
+
+    if (!menu.beAbstract) {
+      // 非抽像，在弹出下拉菜单的同时完成跳转
+      this.router.navigateByUrl(menu.url).then();
+    }
   }
 }
 
@@ -199,5 +206,9 @@ class MenuModel implements Menu {
 
   get beParent() {
     return this.menu.children && this.menu.children.length > 0;
+  }
+
+  get roles() {
+    return this.menu.roles;
   }
 }

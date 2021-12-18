@@ -1,7 +1,6 @@
 <ul class="menu">
   <li *ngFor="let menu of menus" class="border-bottom">
     <a routerLinkActive="active" #link
-       routerLink='{{menu.url}}'
        (click)="onSubmenuClick(menu)"
        [style]="getStyle(menu, link)"
        (mouseover)="onMouseover(menu, link)"

@@ -64,27 +64,33 @@ export class BasicService {
         name: '首页',
         url: 'dashboard',
         icon: 'fa fa-tachometer-alt',
+        roles: [],
       }, {
         name: '父子菜单',
         url: '',
         icon: 'fa fa-tachometer-alt',
+        roles: [],
         children: [{
           name: '首页',
           url: 'sub/dashboard',
           icon: 'fa fa-tachometer-alt',
+          roles: [],
         }, {
           name: '模板页',
           url: 'sub/theme',
           icon: 'fa fa-tachometer-alt',
+          roles: [],
         }, {
           name: '模板页',
           url: 'sub/theme',
           icon: 'fa fa-tachometer-alt',
+          roles: [],
         }]
       }, {
         name: '模板页',
         url: 'theme',
         icon: 'fa fa-tachometer-alt',
+        roles: [],
       }]);
       subscribe.complete();
     });
