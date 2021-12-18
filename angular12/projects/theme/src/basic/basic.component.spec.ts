@@ -38,11 +38,12 @@ describe('BasicComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 
   afterEach((done) => {
     fixture.whenStable().then(() => done());
+    fixture.autoDetectChanges();
   });
 });
