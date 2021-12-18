@@ -44,5 +44,6 @@ describe('BasicComponent', () => {
 
   afterEach((done) => {
     fixture.whenStable().then(() => done());
+    fixture.autoDetectChanges();
   });
 });

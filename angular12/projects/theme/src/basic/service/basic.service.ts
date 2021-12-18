@@ -1,5 +1,5 @@
 import {Observable, of} from 'rxjs';
-import {Menu} from '../entity/menu';
+import {YzMenu} from '../entity/yz-menu';
 
 /**
  * 菜单服务
@@ -57,7 +57,7 @@ export class BasicService {
   /**
    * 获取菜单
    */
-  getMenus(): Observable<Menu[]> {
+  getMenus(): Observable<YzMenu[]> {
     console.log('重此getMenus()实现自定义菜单');
     return new Observable(subscribe => {
       subscribe.next([{
