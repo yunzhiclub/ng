@@ -1,6 +1,7 @@
 <ul class="menu">
   <li *ngFor="let menu of menus" class="border-bottom">
     <a routerLinkActive="active" #link
+       [routerLink]="getRouteLink(menu)"
        (click)="onMenuClick(menu)"
        [style]="getStyle(menu, link)"
        (mouseover)="onMouseover(menu, link)"
@@ -17,7 +18,7 @@
     <ul *ngIf="menu.children?.length > 0 && menu.showChildren" class="submenu">
       <li *ngFor="let childMenu of menu.children" class="border-bottom">
         <a routerLinkActive="active" #childLink
-           (click)="onSubMenuClick(menu, childMenu)"
+           [routerLink]="getSubRouteLink(menu, childMenu)"
            [style]="getStyle(childMenu, childLink, 0.85)"
            (mouseover)="onMouseover(childMenu, childLink, 0.85)"
            (mouseleave)="onMouseleave(childMenu, childLink, 1)">

@@ -155,11 +155,20 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubMenuClick(menu: MenuModel, childMenu: MenuModel) {
+  getRouteLink(menu: MenuModel): string {
+    // 不是父菜单的话，直接返回url
+    // 是父菜单的放在，如果是不是抽象菜单，返回url;
+    if (!menu.beParent || !menu.beAbsolute) {
+      return menu.url;
+    }
+    return null;
+  }
+
+  getSubRouteLink(menu: MenuModel, childMenu: MenuModel) {
     if (childMenu.beAbsolute) {
-      this.router.navigateByUrl(childMenu.url).then();
+      return childMenu.url;
     } else {
-      this.router.navigateByUrl(menu.url + '/' + childMenu.url).then();
+      return menu.url + '/' + childMenu.url;
     }
   }
 }
@@ -168,7 +177,7 @@ class MenuModel implements YzMenu {
   /**
    * 是否被选中
    */
-  active= false;
+  active = false;
   showChildren = false;
   private readonly menu: YzMenu;
   private readonly _children: MenuModel[];
@@ -180,6 +189,10 @@ class MenuModel implements YzMenu {
     } else {
       this._children = this.menu.children.map(menu => new MenuModel(menu));
     }
+  }
+
+  get beAbsolute() {
+    return this.menu.beAbsolute;
   }
 
   get beAbstract(): boolean {
@@ -214,9 +227,5 @@ class MenuModel implements YzMenu {
 
   get beParent() {
     return this.menu.children && this.menu.children.length > 0;
-  }
-
-  get beAbsolute() {
-    return this.menu.beAbsolute;
   }
 }
