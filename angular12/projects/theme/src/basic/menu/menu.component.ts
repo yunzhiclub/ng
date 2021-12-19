@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs';
 import {BasicService} from '../service/basic.service';
 import {YzMenu} from '../entity/yz-menu';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -62,8 +61,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     'color': MenuComponent.hexToRgbA(this.color.normal.color)
   }
 
-  constructor(private basicMenuService: BasicService,
-              private router: Router) {
+  constructor(private basicMenuService: BasicService) {
   }
 
   /**
@@ -148,20 +146,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     if (menu.beParent) {
       menu.showChildren = showChildren;
     }
-
-    if (!menu.beAbstract) {
-      // 非抽像，在弹出下拉菜单的同时完成跳转
-      this.router.navigateByUrl(menu.url).then();
-    }
-  }
-
-  getRouteLink(menu: MenuModel): string {
-    // 不是父菜单的话，直接返回url
-    // 是父菜单的放在，如果是不是抽象菜单，返回url;
-    if (!menu.beParent || !menu.beAbsolute) {
-      return menu.url;
-    }
-    return null;
   }
 
   getSubRouteLink(menu: MenuModel, childMenu: MenuModel) {
@@ -193,13 +177,6 @@ class MenuModel implements YzMenu {
 
   get beAbsolute() {
     return this.menu.beAbsolute;
-  }
-
-  get beAbstract(): boolean {
-    if (typeof this.menu.beAbstract === 'undefined') {
-      return false;
-    }
-    return this.menu.beAbstract;
   }
 
   /**

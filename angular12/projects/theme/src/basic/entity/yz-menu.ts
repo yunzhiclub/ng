@@ -14,16 +14,6 @@ export interface YzMenu {
   beAbsolute?: boolean;
 
   /**
-   * 是否是抽象的
-   * <p>
-   *   抽象的菜单的在点击后只展开子菜单，不跳转路由
-   *   <br>
-   *   非抽象的菜单点击后在展开子菜单的同时，进行路由的跳转
-   */
-  beAbstract?: boolean;
-
-
-  /**
    * 子菜单
    */
   children?: YzMenu[];
