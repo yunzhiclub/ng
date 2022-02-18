@@ -8,9 +8,9 @@ import {catchError} from 'rxjs/operators';
 export class HttpErrorInterceptor implements HttpInterceptor {
   public static phone = '13920618851';
 
-  error = (url: string, message: string) => {
+  error = (errorResponse: HttpErrorResponse, message: string) => {
     console.warn(HttpErrorInterceptor.name + ': 请重写error方法以自定义错误');
-    alert(url + ' ' + message);
+    alert(errorResponse.status + ' ' + message);
   }
 
   goToLoginPath = () => {
@@ -29,7 +29,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
    * @param error 异常
    */
   private handleHttpException(error: HttpErrorResponse): Observable<HttpEvent<any>> {
-    let url = error.url;
     let message = error.status.toString();
     switch (error.status) {
       case 401:
@@ -49,17 +48,15 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         message = '当前请求方法不允许';
         break;
       case 500:
-        url += error.message + '。请联系开发者(微信同号)：' + HttpErrorInterceptor.phone;
         message = '发生逻辑错误';
         break;
       case 0:
         message = '未知网络错误';
-        url += '。请联系开发者(微信同号)：' + HttpErrorInterceptor.phone;
         break;
       default:
         break;
     }
-    this.error(url, message);
+    this.error(error, message);
 
     // 最终将异常抛出来，便于组件个性化处理
     return throwError(error);
