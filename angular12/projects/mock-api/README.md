@@ -90,23 +90,7 @@ export class AppModule {}
 * `url` is a string regular expression.
 
 ## filter req
-If you don't want handler some req with actual http request when use MockApi, you can password filter to `forRoot` method, for example: req with actual http request with req.url is begin with icon: 
-
-```typescript
-@NgModule({
-  imports: [
-    HttpClientModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MockApiTestingInterceptor.forRoot([UserApi], {filter: (req)}),
-      multi: true
-    },
-  ]
-})
-export class AppModule {}
-```
+If you don't want handler some req with actual http request when use MockApi, you can password filter to `forRoot` method, for example: req with actual http request with req.url is begin with icon:
 
 ## return general data
 The blow code will return HttpResponse<number> with 100.
@@ -171,6 +155,27 @@ new ApiInjector<Observable<HttpErrorResponse>>({
 ```
 
 > note: The random delay will invalid when return HttpErrorResponse, so you must mock delay time by your-self if you need.
+
+## filter req
+If you don't want handler some req with actual http request when use MockApi, you can password filter to `forRoot` method, for example: req with actual http request with req.url is begin with icon:
+
+```typescript
+@NgModule({
+  imports: [
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MockApiTestingInterceptor.forRoot([UserApi],  {
+        filter: (req: HttpRequest<any>) => !req.url.startsWith('assets')
+      }),
+      multi: true
+    },
+  ]
+})
+export class AppModule {}
+```
 
 ## Get request info
 You can get urlMatches with is the results of urlReg matching, and get full http request data in options. The urlMatches and options with pass to `handler`:
