@@ -3,7 +3,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpRequest} from '@angular/common/http';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
@@ -22,7 +22,9 @@ describe('AppComponent', () => {
         {
           provide: HTTP_INTERCEPTORS,
           useClass: MockApiTestingInterceptor
-            .forRoot([UserApi]),
+            .forRoot([UserApi], {
+              filter: (req: HttpRequest<any>) => !req.url.startsWith('assets')
+            }),
           multi: true
         },
       ]

@@ -74,6 +74,13 @@ After building your library with `ng build theme`, go to the dist folder `cd dis
 
 Run `ng test theme` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Further help
+## Before Publish
+You should test the project before publish。
+After building your library with `ng build theme --prod`, go to the project root folder run `cd dist/theme` and then run `npm link` for test。
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.~~
+Then go to test project add `@yunzhi/ng-theme@version` to package.json，and run `npm link @yunzhi/ng-theme`。
+
+## Publishing
+
+After building your library with `ng build mock-api --prod`, go to the dist folder `cd dist/mock-api` and run `npm link` for test , at last run `npm publish`.
+If MockApiInterceptor be used, you can't tick the time anymore.

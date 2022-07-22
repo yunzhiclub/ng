@@ -25,20 +25,36 @@ export class MockApiTestingInterceptor implements HttpInterceptor {
   private static mockApiService = null as MockApiService;
 
   /**
+   * 配置信息
+   */
+  private static config = {} as {filter?: (req: HttpRequest<any>) => boolean};
+
+  /**
    * 启动时注册API
    * @param mockApis 模拟API
+   * @param config 配置信息
    */
-  static forRoot(mockApis: Type<MockApiInterface>[]): Type<HttpInterceptor> {
+  static forRoot(mockApis: Type<MockApiInterface>[], config?: {filter?: (req: HttpRequest<any>) => boolean}): Type<HttpInterceptor> {
     const mockApiService = MockApiService.getMockApiService(
       new DelayHandlerTesting()
     );
 
     mockApiService.registerMockApis(mockApis);
     MockApiTestingInterceptor.mockApiService = mockApiService;
+    MockApiTestingInterceptor.config = config ? config : {};
     return MockApiTestingInterceptor;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (MockApiTestingInterceptor.config && typeof MockApiTestingInterceptor.config.filter === 'function') {
+      try {
+        if (!MockApiTestingInterceptor.config.filter(req)) {
+          return next.handle(req);
+        }
+      } catch (e) {
+        console.warn("在调用过滤器时发生异常", e);
+      }
+    }
     return MockApiTestingInterceptor.mockApiService.request<HttpRequest<any>>(req);
   }
 }
