@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from './user.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-app',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   loginResult = '';
   networkErrorPass = false;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -46,5 +47,9 @@ export class AppComponent implements OnInit {
         console.log('网络错误', error);
       },
       () => console.log('complete error'));
+
+    this.httpClient.get(`assets/basic/image/header.png`,  {responseType: 'arraybuffer'}).subscribe(data => {
+      console.log('成功请求到以assets打头的图片信息', data);
+    })
   }
 }

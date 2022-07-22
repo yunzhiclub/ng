@@ -89,6 +89,25 @@ export class AppModule {}
 * `method` support: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH'
 * `url` is a string regular expression.
 
+## filter req
+If you don't want handler some req with actual http request when use MockApi, you can password filter to `forRoot` method, for example: req with actual http request with req.url is begin with icon: 
+
+```typescript
+@NgModule({
+  imports: [
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MockApiTestingInterceptor.forRoot([UserApi], {filter: (req)}),
+      multi: true
+    },
+  ]
+})
+export class AppModule {}
+```
+
 ## return general data
 The blow code will return HttpResponse<number> with 100.
 ```typescript
@@ -183,7 +202,7 @@ You can use MockApiTestingInterceptor or MockApiInterceptor in Unit test:
   });
 ```
 
-Please not we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly.
+Please note we imports the  HttpClientModule but not HttpClientTestingModule. And you can also use HttpClientTestingModule here, the MockApi with worked properly.
 
 If MockApiTestingInterceptor be used, then you can use  `getTestScheduler().flush();` to tick the time.
 
@@ -210,7 +229,7 @@ Run `ng generate component component-name --project mock-http-client` to generat
 
 ## Build
 
-Run `ng build mock-http-client` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build mock-api` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 
 ## Before Publish

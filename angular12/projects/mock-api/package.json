@@ -1,7 +1,7 @@
 {
   "name": "@yunzhi/ng-mock-api",
   "author": "panjie",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "keywords": ["angular", "mock", "api"],
   "peerDependencies": {
     "@angular/common": "^12.1.0 || ^10.1.6",
