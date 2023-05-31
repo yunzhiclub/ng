@@ -1,5 +1,5 @@
 {
-  "name": "theme",
+  "name": "@yunzhi/theme",
   "version": "15.0.0",
   "peerDependencies": {
     "@angular/common": "^15.2.0",

@@ -41,7 +41,7 @@ projects.projectName.architect.build.options.preserveSymlinks: true
 相关设置说明请参考：
 [https://github.com/angular/angular/issues/35586](https://github.com/angular/angular/issues/35586)
 ## 发布
-使用`prod`选项来build项目，比如`ng build common --prod`.
+build项目，比如`ng build common`.
 
 登录：`npm login`
 
