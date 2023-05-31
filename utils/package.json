@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/utils",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "utils for yunzhi",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
@@ -11,17 +11,14 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint",
-    "scripts": {
-      "test": "jasmine"
-    }
+    "posttest": "npm run lint"
   },
   "devDependencies": {
     "@types/jasmine": "^3.9.1",
