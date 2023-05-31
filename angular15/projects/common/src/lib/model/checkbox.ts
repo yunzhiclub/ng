@@ -18,13 +18,13 @@ export class Checkbox<T> {
    * @param allList 所有的列表
    * @param id 比较两个对应相等的关键字
    */
-  public static getCheckboxes<T>(checkedList: T[], allList: T[], id = 'id'): Checkbox<T>[] {
+  public static getCheckboxes<T extends {[key: string]: any}>(checkedList: T[], allList: T[], id = 'id'): Checkbox<T>[] {
     Assert.isArray(checkedList, '第一个参数必须为数组');
     Assert.isArray(allList, '第二个参数必须为数组');
     const result = new Array<Checkbox<T>>();
-    allList.forEach((v: { [key: string]: any }) => {
+    allList.forEach(v => {
       let found = false;
-      checkedList.forEach((u: { [key: string]: any }) => {
+      checkedList.forEach((u: {[key: string]: any}) => {
         if (!found && isNotNullOrUndefined(u) && isNotNullOrUndefined(v) && isNotNullOrUndefined(u[id])
           && isNotNullOrUndefined(v[id]) && u[id] === v[id]) {
           found = true;
