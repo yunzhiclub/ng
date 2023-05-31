@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {RouterTestingModule, RouterStub, ActivatedRouteStub} from '@yunzhi/ng-router-testing';
+import {RouterTestingModule, RouterStub, ActivatedRouteStub} from 'projects/router-testing/src/public-api';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 
@@ -19,10 +19,10 @@ describe('Router route测试', () => {
     route.queryParams.subscribe(p => {
       params = p;
     });
-    expect(params).toBeUndefined();
+    expect(params!).toBeUndefined();
 
     const queryParams = {page: '0'} as Params;
     router.navigate([''], {queryParams}).then();
-    expect(params).toBe(queryParams);
+    expect(params!).toBe(queryParams);
   });
 });

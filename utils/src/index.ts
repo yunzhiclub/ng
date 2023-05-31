@@ -394,6 +394,17 @@ export function stringToIntegerNumber(
 }
 
 /**
+ * 判断数据为null或undefined
+ * undefined -> true;
+ * null -> true;
+ * other -> false;
+ * @param value 值
+ */
+export function isNullOrUndefined<T>(value: T | undefined | null): value is T  {
+  return !isNotNullOrUndefined(value);
+}
+
+/**
  * 不为null同时也不为undefined
  * undefined -> false
  * null -> false

@@ -1,5 +1,5 @@
-import {MockApiInterface} from '@yunzhi/ng-mock-api';
-import {ApiInjector, RequestOptions} from '../../../mock-api/src/lib/mock-api.types';
+import {MockApiInterface} from 'projects/mock-api/src/public-api';
+import {ApiInjector, RequestOptions} from 'projects/mock-api/src/public-api';
 import {User} from './user';
 import {Observable} from 'rxjs';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
