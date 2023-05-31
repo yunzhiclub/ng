@@ -1,16 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterTestingComponent } from './router-testing.component';
-
+import {NgModule} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RouterTestingModule as AngularRouterTestingModule} from '@angular/router/testing';
+import {ActivatedRouteStub} from './activated-route.stub';
+import {RouterStub} from './router.stub';
 
 
 @NgModule({
-  declarations: [
-    RouterTestingComponent
+  imports: [AngularRouterTestingModule],
+  providers: [
+    {provide: ActivatedRoute, useClass: ActivatedRouteStub},
+    {provide: Router, useClass: RouterStub},
   ],
-  imports: [
-  ],
-  exports: [
-    RouterTestingComponent
-  ]
+  exports: [AngularRouterTestingModule]
 })
-export class RouterTestingModule { }
+export class RouterTestingModule {
+}
