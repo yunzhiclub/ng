@@ -1,6 +1,0 @@
-{
-  "ngPackage": {},
-  "peerDependencies": {
-    "@yunzhi/ng-mock-api": "latest"
-  }
-}
