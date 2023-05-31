@@ -30,7 +30,7 @@ export class YzHttpParams extends HttpParams {
     return this.records[key];
   }
 
-  append(key: string, value: string | number | boolean): HttpParams {
+  override append(key: string, value: string | number | boolean): HttpParams {
     this.records[key] = value;
     return super.append(key, value);
   }

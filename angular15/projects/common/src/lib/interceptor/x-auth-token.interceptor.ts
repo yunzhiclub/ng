@@ -36,10 +36,10 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
    * 如果接收到了新的token则更新，否则什么也不做
    * @param xAuthToken token
    */
-  public static setToken(xAuthToken: string): void {
+  public static setToken(xAuthToken: string | null): void {
     if (this.token !== xAuthToken) {
       this.token = xAuthToken;
-      window.sessionStorage.setItem('x-auth-token', this.token);
+      window.sessionStorage.setItem('x-auth-token', this.token ? this.token : '');
     }
   }
 

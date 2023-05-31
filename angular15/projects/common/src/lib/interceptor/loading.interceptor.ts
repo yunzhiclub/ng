@@ -8,8 +8,8 @@ import {catchError, delay, finalize} from 'rxjs/operators';
 export class LoadingInterceptor implements HttpInterceptor {
   public static ignoreKey = 'loading-ignore';
   private loading = 0;
-  private showLoadingSubscription = null as Subscription;
-  private hideLoadingSubscription = null as Subscription;
+  private showLoadingSubscription: Subscription | undefined | null;
+  private hideLoadingSubscription: Subscription | undefined | null;
 
   public hideLoading = () => {
     console.warn('请重写LoadingInterceptor.hideLoading');
