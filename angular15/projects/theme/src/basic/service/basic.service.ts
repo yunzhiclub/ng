@@ -33,7 +33,7 @@ export class BasicService {
     title: {
       color: string
     }
-  } {
+  } | null {
     console.info('预自定义颜色信息，请重写此getMenuColor()方法');
     return null;
   }
