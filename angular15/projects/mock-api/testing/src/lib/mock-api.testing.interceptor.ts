@@ -4,11 +4,7 @@ import {Observable} from 'rxjs';
 import {DelayHandlerTesting} from './delay-handler.testing';
 import {Type} from '@angular/core';
 
-// 集成测试请启用如下代码
-import {MockApiService, MockApiInterface} from '@yunzhi/ng-mock-api';
-// 开发时请启用如下代码
-// import {MockApiInterceptor} from '../../../src/lib/mock-api.interceptor';
-// import {MockApiService} from '../../../src/lib/mock-api.service';
+import {MockApiService, MockApiInterface} from 'projects/mock-api/src/public-api';
 
 
 /**
@@ -22,7 +18,7 @@ export class MockApiTestingInterceptor implements HttpInterceptor {
    * 1. 属性初始化：其它文件import本文件时执行
    * 2. 构造函数：实例化时执行
    */
-  private static mockApiService = null as MockApiService;
+  private static mockApiService: MockApiService | undefined;
 
   /**
    * 配置信息
@@ -55,6 +51,6 @@ export class MockApiTestingInterceptor implements HttpInterceptor {
         console.warn("在调用过滤器时发生异常", e);
       }
     }
-    return MockApiTestingInterceptor.mockApiService.request<HttpRequest<any>>(req);
+    return MockApiTestingInterceptor.mockApiService!.request<HttpRequest<any>>(req);
   }
 }

@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HeaderComponent} from './header.component';
-import {RouterTestingModule} from '@yunzhi/ng-router-testing';
+import {RouterTestingModule} from 'projects/router-testing/src/public-api';
 import {Router} from '@angular/router';
-import {of} from 'rxjs';
+import {firstValueFrom, of} from 'rxjs';
 import {ApiModule} from '../api/api.module';
 import {BasicService} from '../service/basic.service';
 
@@ -28,7 +28,7 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     const router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl')
-      .and.returnValue(of().toPromise<any>());
+      .and.returnValue(firstValueFrom(of(true)));
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

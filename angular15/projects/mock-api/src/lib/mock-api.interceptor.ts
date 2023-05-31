@@ -15,7 +15,7 @@ export class MockApiInterceptor implements HttpInterceptor {
    * 1. 属性初始化：其它文件import本文件时执行
    * 2. 构造函数：实例化时执行
    */
-  private static mockApiService = null as MockApiService;
+  private static mockApiService: MockApiService | undefined;
 
   /**
    * 配置信息
@@ -48,6 +48,6 @@ export class MockApiInterceptor implements HttpInterceptor {
         console.warn("在调用过滤器时发生异常", e);
       }
     }
-    return MockApiInterceptor.mockApiService.request<HttpRequest<any>>(req);
+    return MockApiInterceptor.mockApiService!.request<HttpRequest<any>>(req);
   }
 }

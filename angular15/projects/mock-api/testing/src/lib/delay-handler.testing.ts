@@ -3,8 +3,8 @@ import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Subscriber} from 'rxjs/internal/Subscriber';
-import {DelayHandlerInterface, isNullOrUndefined, randomNumber} from '@yunzhi/ng-mock-api';
-
+import {DelayHandlerInterface} from 'projects/mock-api/src/public-api';
+import {isNullOrUndefined, randomNumber} from '@yunzhi/utils';
 /**
  * 测试时用于模拟delay.
  */
@@ -59,6 +59,7 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
           callbackFn();
         });
     } catch (e) {
+      // @ts-ignore
       if (e.message === 'No test scheduler initialized') {
         of(null).pipe(delay(delayCount * delayCount * 100))
           .subscribe(() => {

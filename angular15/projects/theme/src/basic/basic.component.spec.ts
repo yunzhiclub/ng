@@ -6,7 +6,7 @@ import {HeaderModule} from './header/header.module';
 import {MenuModule} from './menu/menu.module';
 import {NavModule} from './nav/nav.module';
 import {Router} from '@angular/router';
-import {of} from 'rxjs';
+import {firstValueFrom, of} from 'rxjs';
 import {BasicService} from './service/basic.service';
 
 describe('BasicComponent', () => {
@@ -32,7 +32,7 @@ describe('BasicComponent', () => {
   beforeEach(() => {
     const router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl')
-      .and.returnValue(of().toPromise<any>());
+      .and.returnValue(firstValueFrom(of(true)));
     fixture = TestBed.createComponent(BasicComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

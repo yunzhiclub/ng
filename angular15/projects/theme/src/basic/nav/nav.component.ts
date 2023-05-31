@@ -10,7 +10,7 @@ import {filter} from 'rxjs/operators';
 })
 export class NavComponent implements OnInit, OnDestroy {
   title = '';
-  showBack: boolean;
+  showBack = false;
 
   constructor(private basicService: BasicService,
               private router: Router,
@@ -42,8 +42,8 @@ export class NavComponent implements OnInit, OnDestroy {
     let title = '';
     // 遍历路由并拼接
     while (route) {
-      if (route.snapshot.data.title && route.snapshot.component !== null) {
-        title += route.snapshot.data.title + ' -> ';
+      if (route.snapshot.data['title'] && route.snapshot.component !== null) {
+        title += route.snapshot.data['title'] + ' -> ';
       }
       route = route.firstChild!;
     }

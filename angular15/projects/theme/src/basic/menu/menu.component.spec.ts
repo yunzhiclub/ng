@@ -33,7 +33,7 @@ describe('MenuComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.links.get(1).nativeElement.className += 'active';
+    component.links!.get(1)!.nativeElement.className += 'active';
     fixture.detectChanges();
   });
 
@@ -51,7 +51,7 @@ class MyBasicService extends BasicService {
   /**
    * 获取菜单
    */
-  getMenus(): Observable<YzMenu[]> {
+  override getMenus(): Observable<YzMenu[]> {
     console.log('重此getMenus()实现自定义菜单');
     return new Observable(subscribe => {
       subscribe.next([{

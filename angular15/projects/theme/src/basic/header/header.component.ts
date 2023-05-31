@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {BasicService} from '../service/basic.service';
-import {isNotNullOrUndefined} from '@yunzhi/ng-mock-api';
+import {isNotNullOrUndefined} from '@yunzhi/utils';
 import {tap} from 'rxjs/operators';
 
 @Component({
@@ -12,17 +12,17 @@ import {tap} from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('header', {static: true})
-  headerHtmlRef: ElementRef<HTMLElement>;
+  headerHtmlRef: ElementRef<HTMLElement> | undefined;
 
   // 当前用户
-  currentUser: { name: string };
+  currentUser: { name: string } | undefined;
   /**标题*/
-  title: Observable<string>;
+  title = of('') as Observable<string>;
   /**颜色*/
   color = '#90111A';
 
   private subscription: Subscription | undefined;
-  private titleElement: HTMLElement;
+  private titleElement: HTMLElement | undefined;
 
   constructor(private router: Router,
               private basicService: BasicService) {
@@ -57,8 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   ngAfterViewInit(): void {
     const headerSrc = this.basicService.getHeaderImageSrc();
-    this.headerHtmlRef.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
-    this.titleElement = this.headerHtmlRef.nativeElement.querySelector('.title') as HTMLElement;
+    this.headerHtmlRef!.nativeElement.style.backgroundImage = `url("${headerSrc}")`;
+    this.titleElement = this.headerHtmlRef!.nativeElement.querySelector('.title') as HTMLElement;
     this.titleElement.style.color = this.color;
     this.resetTitleWidth(this.titleElement.innerText.length);
   }
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     if (isNotNullOrUndefined(this.subscription)) {
-      this.subscription.unsubscribe();
+      this.subscription!.unsubscribe();
     }
   }
 }

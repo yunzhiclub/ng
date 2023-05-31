@@ -17,7 +17,7 @@ export class ActivatedRouteStub {
   paramsSubject = new Subject<Params>();
   queryParamMapSubject = new Subject<ParamMap>();
   queryParams: Observable<Params>;
-  queryParamsMap: Observable<ParamMap>
+  queryParamsMap: Observable<ParamMap> | undefined;
   queryParamsSubject = new Subject<Params>();
   router: RouterStub;
   snapshot = {

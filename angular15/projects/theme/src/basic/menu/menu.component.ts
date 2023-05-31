@@ -28,7 +28,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class MenuComponent implements OnInit, OnDestroy {
   @ViewChildren('link')
-  links: QueryList<ElementRef<HTMLAnchorElement>>;
+  links: QueryList<ElementRef<HTMLAnchorElement>> | undefined;
 
   menus = new Array<MenuModel>();
 
@@ -187,7 +187,7 @@ class MenuModel implements YzMenu {
   }
 
   get description(): string {
-    return this.menu.description;
+    return this.menu.description ? this.menu.description : '';
   }
 
   get icon(): string {
