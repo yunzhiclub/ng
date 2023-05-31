@@ -1,3 +1,6 @@
+## version
+works with angular15
+
 ## How to use it
 import the BasicModule in your module (eg: AppModule)
 ```typescript
@@ -12,7 +15,6 @@ The ThemeService most link blow:
 ```
 
 ## 使用方法
-
 
 在模块下（通常是根AppModule)中引入BasicModule.
 ```typescript

@@ -1,6 +1,6 @@
 {
-  "name": "angular15",
-  "version": "0.0.0",
+  "name": "yunzhi",
+  "version": "15.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +21,7 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0",
-    "@yunzhi/utils": "0.0.6"
+    "@yunzhi/utils": "0.0.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.8",

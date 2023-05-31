@@ -1,0 +1,22 @@
+{
+  "name": "@yunzhi/ng-theme",
+  "version": "0.0.7",
+  "author": {
+    "email": "3792535@qq.com",
+    "name": "panjie"
+  },
+  "private": false,
+  "description": "the theme with bs4 for angular10+",
+  "peerDependencies": {
+    "@angular/common": "^12.1.0",
+    "@angular/core": "^12.1.0",
+    "bootstrap": "^4.6.0"
+  },
+  "dependencies": {
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@yunzhi/ng-mock-api": "0.0.9",
+    "@yunzhi/ng-router-testing": "0.0.2"
+  }
+}
