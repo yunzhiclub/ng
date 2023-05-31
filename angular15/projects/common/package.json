@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@yunzhi/ng-common",
   "version": "15.0.0",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
