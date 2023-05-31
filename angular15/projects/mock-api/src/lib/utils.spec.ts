@@ -16,7 +16,7 @@ describe('utils', () => {
   });
 
   it('getDefaultWhenValueIsInValid', () => {
-    const a = undefined as number;
+    const a = undefined as unknown as number;
     // NaN
     expect(getDefaultWhenValueIsInValid(+a, 0)).toBe(0);
   });

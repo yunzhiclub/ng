@@ -35,7 +35,7 @@ export class MockApiService {
       const instance = new clazz();
       const injectors = instance.getInjectors();
       injectors.forEach(injector => {
-        this.registerMockApi(injector.method, injector.url, injector.result);
+        this.registerMockApi(injector.method!, injector.url, injector.result);
       });
     });
   }
@@ -134,7 +134,7 @@ export class MockApiService {
     // 根据请求数据,查找注册的API
     const keys = [];
     let requestHandler = null as RequestHandler<R> | R;
-    let urlMatches = undefined as Array<string>;
+    let urlMatches;
     const urlRecord = this.routers[method] as Record<RequestMethodType, RequestHandler<R> | R>;
 
     for (const key in urlRecord) {
@@ -170,7 +170,7 @@ export class MockApiService {
     let result = null as Observable<HttpEvent<R>> | R;
     if (typeof requestHandler === 'function') {
       requestHandler = requestHandler as RequestHandler<R>;
-      result = requestHandler(urlMatches, options);
+      result = requestHandler(urlMatches as Array<string>, options);
     } else {
       requestHandler = requestHandler as R;
       result = requestHandler;
