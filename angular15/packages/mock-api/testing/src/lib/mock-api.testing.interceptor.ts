@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {DelayHandlerTesting} from './delay-handler.testing';
 import {Type} from '@angular/core';
 
-import {MockApiService, MockApiInterface} from 'projects/mock-api/src/public-api';
+import {MockApiService, MockApiInterface} from 'packages/mock-api/src/public-api';
 
 
 /**

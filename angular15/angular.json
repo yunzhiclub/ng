@@ -102,21 +102,21 @@
     },
     "theme": {
       "projectType": "library",
-      "root": "projects/theme",
-      "sourceRoot": "projects/theme/src",
+      "root": "packages/theme",
+      "sourceRoot": "packages/theme/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/theme/ng-package.json"
+            "project": "packages/theme/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/theme/tsconfig.lib.prod.json"
+              "tsConfig": "packages/theme/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/theme/tsconfig.lib.json"
+              "tsConfig": "packages/theme/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -124,7 +124,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/theme/tsconfig.spec.json",
+            "tsConfig": "packages/theme/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -135,21 +135,21 @@
     },
     "mock-api": {
       "projectType": "library",
-      "root": "projects/mock-api",
-      "sourceRoot": "projects/mock-api/src",
-      "prefix": "lib",
+      "root": "packages/mock-api",
+      "sourceRoot": "packages/mock-api/src",
+      "prefix": "ngz",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/mock-api/ng-package.json"
+            "project": "packages/mock-api/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/mock-api/tsconfig.lib.prod.json"
+              "tsConfig": "packages/mock-api/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/mock-api/tsconfig.lib.json"
+              "tsConfig": "packages/mock-api/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -157,7 +157,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/mock-api/tsconfig.spec.json",
+            "tsConfig": "packages/mock-api/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -168,21 +168,21 @@
     },
     "common": {
       "projectType": "library",
-      "root": "projects/common",
-      "sourceRoot": "projects/common/src",
+      "root": "packages/common",
+      "sourceRoot": "packages/common/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/common/ng-package.json"
+            "project": "packages/common/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/common/tsconfig.lib.prod.json"
+              "tsConfig": "packages/common/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/common/tsconfig.lib.json"
+              "tsConfig": "packages/common/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -190,7 +190,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/common/tsconfig.spec.json",
+            "tsConfig": "packages/common/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -201,21 +201,21 @@
     },
     "router-testing": {
       "projectType": "library",
-      "root": "projects/router-testing",
-      "sourceRoot": "projects/router-testing/src",
+      "root": "packages/router-testing",
+      "sourceRoot": "packages/router-testing/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/router-testing/ng-package.json"
+            "project": "packages/router-testing/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/router-testing/tsconfig.lib.prod.json"
+              "tsConfig": "packages/router-testing/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/router-testing/tsconfig.lib.json"
+              "tsConfig": "packages/router-testing/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -223,7 +223,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/router-testing/tsconfig.spec.json",
+            "tsConfig": "packages/router-testing/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"

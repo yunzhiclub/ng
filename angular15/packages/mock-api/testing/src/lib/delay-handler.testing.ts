@@ -3,7 +3,7 @@ import {delay} from 'rxjs/operators';
 import {cold} from 'jasmine-marbles';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Subscriber} from 'rxjs/internal/Subscriber';
-import {DelayHandlerInterface} from 'projects/mock-api/src/public-api';
+import {DelayHandlerInterface} from 'packages/mock-api/src/public-api';
 import {isNullOrUndefined, randomNumber} from '@yunzhi/utils';
 /**
  * 测试时用于模拟delay.

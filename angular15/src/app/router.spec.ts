@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {RouterTestingModule, RouterStub, ActivatedRouteStub} from 'projects/router-testing/src/public-api';
+import {RouterTestingModule, RouterStub, ActivatedRouteStub} from 'packages/router-testing/src/public-api';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 

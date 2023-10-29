@@ -41,6 +41,37 @@ export class MockApiService {
   }
 
   /**
+   * 获取url中匹配path后的参数，未匹配成功返回null
+   * @param url URL 比如：
+   * @param path 路径
+   */
+  getHttpParams(url: string, path: string): { [key: string]: string } | null {
+    url = url.startsWith('/') ? url : '/' + url;
+    path = path.startsWith('/') ? path : '/' + path;
+    const urlParts = url.split('/');
+    const pathParts = path.split('/');
+
+    if (urlParts.length !== pathParts.length) {
+      return null;
+    }
+
+    const params: { [key: string]: string } = {};
+
+    for (let i = 0; i < pathParts.length; i++) {
+      const pathPart = pathParts[i];
+      if (pathPart.startsWith(':')) {
+        const paramName = pathPart.slice(1);
+        const paramValue = urlParts[i];
+        params[paramName] = paramValue;
+      } else if (pathPart !== urlParts[i]) {
+        return {};
+      }
+    }
+
+    return params;
+  }
+
+  /**
    * 循环调用从而完成所有的接口注册
    */
   private constructor(private delayHandler: DelayHandlerInterface) {
@@ -139,6 +170,7 @@ export class MockApiService {
 
     for (const key in urlRecord) {
       if (urlRecord.hasOwnProperty(key)) {
+
         const reg = new RegExp(`^${key}$`);
         if (reg.test(url)) {
           urlMatches = url.match(reg);

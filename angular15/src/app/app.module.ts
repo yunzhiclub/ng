@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppInterceptor} from './app.interceptor';
 import {ApiModule} from './api/api.module';
-import {BasicModule} from 'projects/theme/src/public-api';
+import {BasicModule} from 'packages/theme/src/public-api';
 import {ThemeComponent} from './theme/theme.component';
 import {ThemeService} from '../theme.service';
 

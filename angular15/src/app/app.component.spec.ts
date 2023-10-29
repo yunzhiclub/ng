@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {getTestScheduler} from 'jasmine-marbles';
 import {UserApi} from './user.api';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpRequest} from '@angular/common/http';
-import {MockApiTestingInterceptor} from 'projects/mock-api/testing/src/public-api';
+import {MockApiTestingInterceptor} from 'packages/mock-api/testing/src/public-api';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

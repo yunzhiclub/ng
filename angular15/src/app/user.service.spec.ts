@@ -4,7 +4,7 @@ import {UserService} from './user.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {UserApi} from './user.api';
 import {getTestScheduler} from 'jasmine-marbles';
-import {MockApiTestingInterceptor} from 'projects/mock-api/testing/src/public-api';
+import {MockApiTestingInterceptor} from 'packages/mock-api/testing/src/public-api';
 
 describe('UserService', () => {
   let service: UserService;
