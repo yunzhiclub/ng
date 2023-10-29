@@ -8,8 +8,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "*",
-    "@angular/core": "*",
-    "@yunzhi/utils": ">=0.0.7"
+    "@angular/core": "*"
   },
   "dependencies": {
     "tslib": "^2.3.0"

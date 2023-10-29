@@ -18,7 +18,7 @@ export class UserApi implements MockApiInterface {
       new ApiInjector(
         {
           method: 'DELETE',
-          url: 'user/(\\d+)',
+          url: 'user/:id',
           description: '删除用户',
           result: new HttpResponse<void>()
         }
@@ -42,10 +42,10 @@ export class UserApi implements MockApiInterface {
       new ApiInjector (
         {
           method: 'PUT',
-          url: `user/(\\d+)`,
+          url: `user/:id`,
           result:
-            (urlMatches: string[], options: RequestOptions) => {
-              const id = +urlMatches[1];
+            (params: {id: string}, options: RequestOptions) => {
+              const id = +params.id;
               const body = options.body as User;
               body.id = id;
               return new HttpResponse<User>({body});

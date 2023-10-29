@@ -4,7 +4,7 @@ import {cold} from 'jasmine-marbles';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Subscriber} from 'rxjs/internal/Subscriber';
 import {DelayHandlerInterface} from 'packages/mock-api/src/public-api';
-import {isNullOrUndefined, randomNumber} from '@yunzhi/utils';
+
 /**
  * 测试时用于模拟delay.
  */
@@ -38,7 +38,7 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
    */
   next<T>(data: T, subject: Subscriber<HttpResponse<T>>): void {
     this.randomDelayCallback(() => {
-      isNullOrUndefined(data) ? subject.next(new HttpResponse()) : subject.next(new HttpResponse({body: data}));
+      !!data ? subject.next(new HttpResponse({body: data})) : subject.next(new HttpResponse());
       subject.complete();
     });
   }
@@ -48,7 +48,7 @@ export class DelayHandlerTesting implements DelayHandlerInterface {
    * @param callbackFn 回调函数
    */
   private randomDelayCallback(callbackFn: () => void): void {
-    const delayCount = randomNumber() % 6;
+    const delayCount =  Math.floor(Math.random() * 1000) % 6;
     try {
       let interval = '';
       for (let i = 0; i < delayCount; i++) {
