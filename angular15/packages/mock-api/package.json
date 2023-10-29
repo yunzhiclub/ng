@@ -1,6 +1,6 @@
 {
   "name": "@yunzhi/ng-mock-api",
-  "version": "15.0.1",
+  "version": "15.0.2",
   "description": "A mock api for Angular Dev and Angular Unit Test",
   "private": false,
   "repository": "https://github.com/yunzhiclub/ng",

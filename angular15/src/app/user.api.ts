@@ -28,6 +28,13 @@ export class UserApi implements MockApiInterface {
       }),
       new ApiInjector({
         method: 'GET',
+        url: `user/:id`,
+        result: (params: {id: string}) => {
+          return {id: +params.id};
+        }
+      }),
+      new ApiInjector({
+        method: 'GET',
         url: 'user/login',
         description: '用户登录',
         result: () => {
@@ -37,7 +44,7 @@ export class UserApi implements MockApiInterface {
           });
         }
       }),
-      new ApiInjector (
+      new ApiInjector(
         {
           method: 'PUT',
           url: `user/:id`,
