@@ -1,6 +1,4 @@
-import {MockApiInterface} from 'packages/mock-api/src/public-api';
-import {ApiInjector, RequestOptions} from 'packages/mock-api/src/public-api';
-import {User} from './user';
+import {MockApiInterface, ApiInjector, RequestOptions} from '@yunzhi/ng-mock-api'
 import {Observable} from 'rxjs';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
@@ -46,9 +44,9 @@ export class UserApi implements MockApiInterface {
           result:
             (params: {id: string}, options: RequestOptions) => {
               const id = +params.id;
-              const body = options.body as User;
+              const body = options.body;
               body.id = id;
-              return new HttpResponse<User>({body});
+              return new HttpResponse<any>({body});
             }
         })
     ];
