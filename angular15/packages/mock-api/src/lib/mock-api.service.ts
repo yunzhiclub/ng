@@ -176,31 +176,23 @@ export class MockApiService {
     }
 
     // 根据请求数据,查找注册的API
-    const keys = [];
     let requestHandler = null as RequestHandler<R> | R;
     const pathRecord = this.routers[method] as Record<string, RequestHandler<R> | R>;
 
+    let found = false;
     let httpParams = undefined;
     for (const path in pathRecord) {
-      if (pathRecord.hasOwnProperty(path)) {
+      if (pathRecord.hasOwnProperty(path) && !found) {
         httpParams = this.getHttpParams(url, path);
         if (!!httpParams) {
-          keys.push(path);
           requestHandler = pathRecord[path];
+          found = true;
         }
       }
     }
 
-    if (keys.length > 1) {
-      const message = 'yzMockApi Error: conflict, matched multiple routes';
-      console.error(message, method, url, keys);
-      return new Observable<HttpErrorResponse>(subscriber => {
-        this.delayHandler.error(message, subscriber);
-      });
-    }
-
     // 未找到API则报错
-    if (keys.length === 0) {
+    if (!found) {
       return new Observable<HttpErrorResponse>(subscriber => {
         const message = `yzMockApi Error: can't find mock result data: \n` +
           `1. pls make sure the request's url '${url}' and method '${method}' is right. \n` +

@@ -27,8 +27,23 @@ export class AppComponent implements OnInit {
     });
 
     this.userService.getCurrentUsername()
-      .subscribe(d => this.username = d);
+      .subscribe(d => {
+        this.username = d;
+        if (this.username === 'yunzhi') {
+          console.log('getCurrentUsername 路由正确');
+        } else {
+          console.error('getCurrentUsername 路由错误');
+        }
+      });
 
+    this.httpClient.get<{id: number}>('/user/123')
+      .subscribe(user => {
+        if (user.id !== 123) {
+          console.error('路由错误');
+        } else {
+          console.log('路由正确');
+        }
+      });
     this.userService.login()
       .subscribe(() => {
         this.loginResult = 'success';
@@ -48,7 +63,7 @@ export class AppComponent implements OnInit {
       },
       () => console.log('complete error'));
 
-    this.httpClient.get(`assets/basic/image/header.png`,  {responseType: 'arraybuffer'}).subscribe(data => {
+    this.httpClient.get(`assets/basic/image/header.png`, {responseType: 'arraybuffer'}).subscribe(data => {
       console.log('成功请求到以assets打头的图片信息', data);
     })
   }
