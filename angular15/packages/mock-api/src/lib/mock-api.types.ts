@@ -13,7 +13,7 @@ export  type RequestMethodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
  * @param options 其它请求选项
  */
 export type RequestHandler<T>
-  = (urlMatches: Array<string>,
+  = (urlMatches: {[key: string]: string},
      options: RequestOptions) => Observable<HttpEvent<T>> | T;
 /**
  * 请求选项

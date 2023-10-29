@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpRequest} from '@angular/common/http';
 import {apis} from '../apis';
-import {MockApiInterceptor} from 'projects/mock-api/src/public-api';
+import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 
 
 @NgModule({

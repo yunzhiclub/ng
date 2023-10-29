@@ -1,6 +1,4 @@
-import {MockApiInterface} from 'projects/mock-api/src/public-api';
-import {ApiInjector, RequestOptions} from 'projects/mock-api/src/public-api';
-import {User} from './user';
+import {MockApiInterface, ApiInjector, RequestOptions} from '@yunzhi/ng-mock-api'
 import {Observable} from 'rxjs';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
@@ -18,7 +16,7 @@ export class UserApi implements MockApiInterface {
       new ApiInjector(
         {
           method: 'DELETE',
-          url: 'user/(\\d+)',
+          url: 'user/:id',
           description: '删除用户',
           result: new HttpResponse<void>()
         }
@@ -42,13 +40,13 @@ export class UserApi implements MockApiInterface {
       new ApiInjector (
         {
           method: 'PUT',
-          url: `user/(\\d+)`,
+          url: `user/:id`,
           result:
-            (urlMatches: string[], options: RequestOptions) => {
-              const id = +urlMatches[1];
-              const body = options.body as User;
+            (params: {id: string}, options: RequestOptions) => {
+              const id = +params.id;
+              const body = options.body;
               body.id = id;
-              return new HttpResponse<User>({body});
+              return new HttpResponse<any>({body});
             }
         })
     ];

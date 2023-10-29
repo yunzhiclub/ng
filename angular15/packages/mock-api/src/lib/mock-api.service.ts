@@ -19,7 +19,7 @@ export class MockApiService {
    * 路由信息
    * Record<请求方法, Record<请求地址（正则表达式）, 回调函数<模拟返回的实体类型>>>
    */
-  routers = {} as Record<RequestMethodType, Record<any, any | RequestHandler<any>>>;
+  routers = {} as Record<RequestMethodType, Record<string, any | RequestHandler<any>>>;
 
   public static getMockApiService(mockObservable: DelayHandlerInterface): MockApiService {
     return new MockApiService(mockObservable);
@@ -38,6 +38,50 @@ export class MockApiService {
         this.registerMockApi(injector.method!, injector.url, injector.result);
       });
     });
+  }
+
+  /**
+   * 获取url中匹配path后的参数，未匹配成功返回null
+   * @param url URL 比如：
+   * @param path 路径
+   */
+  getHttpParams(url: string, path: string): { [key: string]: string } | null {
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+
+    if (!url.startsWith('/')) {
+      url = '/' + url;
+    }
+
+    if (path.endsWith('/')) {
+      path = path.slice(0, path.length - 1);
+    }
+
+    if (url.endsWith('/')) {
+      url = url.slice(0, url.length - 1);
+    }
+
+    const urlParts = url.split('/');
+    const pathParts = path.split('/');
+
+    if (urlParts.length !== pathParts.length) {
+      return null;
+    }
+
+    const params: { [key: string]: string } = {};
+
+    for (let i = 0; i < pathParts.length; i++) {
+      const pathPart = pathParts[i];
+      if (pathPart.startsWith(':')) {
+        const paramName = pathPart.slice(1);
+        params[paramName] = urlParts[i];
+      } else if (pathPart !== urlParts[i]) {
+        return null;
+      }
+    }
+
+    return params;
   }
 
   /**
@@ -134,25 +178,25 @@ export class MockApiService {
     // 根据请求数据,查找注册的API
     const keys = [];
     let requestHandler = null as RequestHandler<R> | R;
-    let urlMatches;
-    const urlRecord = this.routers[method] as Record<RequestMethodType, RequestHandler<R> | R>;
+    const pathRecord = this.routers[method] as Record<string, RequestHandler<R> | R>;
 
-    for (const key in urlRecord) {
-      if (urlRecord.hasOwnProperty(key)) {
-        const reg = new RegExp(`^${key}$`);
-        if (reg.test(url)) {
-          urlMatches = url.match(reg);
-          requestHandler = urlRecord[key as RequestMethodType];
-          keys.push(key);
-          if (keys.length > 1) {
-            const message = 'yzMockApi Error: conflict, matched multiple routes';
-            console.error(message, method, url, keys);
-            return new Observable<HttpErrorResponse>(subscriber => {
-              this.delayHandler.error(message, subscriber);
-            });
-          }
+    let httpParams = undefined;
+    for (const path in pathRecord) {
+      if (pathRecord.hasOwnProperty(path)) {
+        httpParams = this.getHttpParams(url, path);
+        if (!!httpParams) {
+          keys.push(path);
+          requestHandler = pathRecord[path];
         }
       }
+    }
+
+    if (keys.length > 1) {
+      const message = 'yzMockApi Error: conflict, matched multiple routes';
+      console.error(message, method, url, keys);
+      return new Observable<HttpErrorResponse>(subscriber => {
+        this.delayHandler.error(message, subscriber);
+      });
     }
 
     // 未找到API则报错
@@ -170,7 +214,7 @@ export class MockApiService {
     let result = null as Observable<HttpEvent<R>> | R;
     if (typeof requestHandler === 'function') {
       requestHandler = requestHandler as RequestHandler<R>;
-      result = requestHandler(urlMatches as Array<string>, options);
+      result = requestHandler(httpParams as {[key: string]: string}, options);
     } else {
       requestHandler = requestHandler as R;
       result = requestHandler;

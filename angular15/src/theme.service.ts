@@ -1,4 +1,4 @@
-import {BasicService} from 'projects/theme/src/public-api';
+import {BasicService} from 'packages/theme/src/public-api';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {randomString} from '@yunzhi/utils';

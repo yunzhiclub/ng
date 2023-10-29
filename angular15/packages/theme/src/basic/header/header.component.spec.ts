@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HeaderComponent} from './header.component';
-import {RouterTestingModule} from 'projects/router-testing/src/public-api';
+import {RouterTestingModule} from 'packages/router-testing/src/public-api';
 import {Router} from '@angular/router';
 import {firstValueFrom, of} from 'rxjs';
 import {ApiModule} from '../api/api.module';

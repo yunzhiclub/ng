@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {BasicComponent} from 'projects/theme/src/public-api';
+import {BasicComponent} from 'packages/theme/src/public-api';
 import {ThemeComponent} from './theme/theme.component';
 import {AppComponent} from './app.component';
 
