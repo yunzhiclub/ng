@@ -6,6 +6,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrls: ['./yz-size.component.scss']
 })
 export class YzSizeComponent {
+  @Input()
+  sizes = [10, 20, 50];
 
   @Input()
   size = 20;
