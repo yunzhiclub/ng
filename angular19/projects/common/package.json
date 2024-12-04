@@ -1,0 +1,17 @@
+{
+  "name": "@yunzhi/ng-common",
+  "version": "19.0.0",
+  "description": "A common lib for angular 19",
+  "private": false,
+  "repository": "https://github.com/yunzhiclub/ng/angular19",
+  "author": "panjie <3792535@qq.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

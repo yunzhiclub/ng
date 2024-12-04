@@ -31,9 +31,6 @@ describe('BasicComponent', () => {
         TestComponent,
         RouterTestingModule,
       ],
-      providers: [
-        ThemeService
-      ],
       teardown: {
         destroyAfterEach: false
       }

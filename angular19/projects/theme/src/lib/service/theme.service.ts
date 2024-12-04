@@ -1,9 +1,13 @@
 import {Observable, of} from 'rxjs';
 import {YzMenu} from '../entity/yz-menu';
+import { Injectable } from '@angular/core';
 
 /**
  * 菜单服务
  */
+@Injectable({
+  providedIn: 'root' // 默认提供到全局 DI 容器
+})
 export class ThemeService {
   /**
    * 回退

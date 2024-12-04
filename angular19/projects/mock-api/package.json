@@ -1,0 +1,17 @@
+{
+  "name": "@yunzhi/ng-mock-api",
+  "version": "19.0.0",
+  "description": "A mock api for Angular Dev and Angular Unit Test",
+  "private": false,
+  "repository": "https://github.com/yunzhiclub/ng/angular19",
+  "author": "panjie <3792535@qq.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "*",
+    "@angular/core": "*"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

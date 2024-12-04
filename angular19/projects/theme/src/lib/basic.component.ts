@@ -3,7 +3,6 @@ import { MenuComponent } from './menu/menu.component';
 import { NavComponent } from './nav/nav.component';
 import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '../public-api';
 
 @Component({
   standalone: true,
@@ -15,9 +14,6 @@ import { ThemeService } from '../public-api';
     HeaderComponent,
     CommonModule,
     NavComponent
-  ],
-  providers: [
-    ThemeService
   ]
 })
 export class BasicComponent {
