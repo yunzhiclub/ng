@@ -1,6 +1,6 @@
 {
-  "name": "theme",
-  "version": "0.0.1",
+  "name": "@yunzhi/ng-theme",
+  "version": "19.0.0",
   "peerDependencies": {
     "@angular/common": "^19.0.0",
     "@angular/core": "^19.0.0",
