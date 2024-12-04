@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, Injectable } from '@angular/core';
 import { BasicComponent, ThemeService, YzMenu } from '../../projects/theme/src/public-api';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
+@Injectable()
 export class MyThemeService extends ThemeService {
-  public constructor() {
+  public constructor(private httpClient: HttpClient) {
     super();
-    console.log('hello');
+  }
+
+  /**
+   * 获取当前登录用户
+   */
+  override getCurrentLoginUser$(): Observable<{ name: string }> {
+    return this.httpClient.get<string>('/user/getCurrentUsername').pipe(map(v => {return {name: v};}))
   }
 
   /**

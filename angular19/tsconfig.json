@@ -21,6 +21,12 @@
       "mock-api": [
         "./dist/mock-api"
       ],
+      "mock-api-testing": [
+        "./dist/mock-api-testing"
+      ],
+      "mock-api/testing": [
+        "./dist/mock-api/testing"
+      ],
       "theme": [
         "./dist/theme"
       ]

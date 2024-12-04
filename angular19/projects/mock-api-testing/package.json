@@ -1,14 +1,16 @@
 {
-  "name": "@yunzhi/ng-mock-api",
+  "name": "@yunzhi/ng-mock-api-testing",
   "version": "19.0.0",
-  "description": "A mock api for Angular Dev and Angular Unit Test",
+  "description": "A mock api for Angular Unit Test",
   "private": false,
   "repository": "https://github.com/yunzhiclub/ng/angular19",
   "author": "panjie <3792535@qq.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "*",
-    "@angular/core": "*"
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@yunzhi/ng-mock-api": "^19.0.0",
+    "jasmine-marbles": "^0.9.2"
   },
   "dependencies": {
     "tslib": "^2.3.0"

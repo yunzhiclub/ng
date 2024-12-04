@@ -1,22 +1,6 @@
-# Yunzhi NgMockApi
-
-An embedded mock REST service for Angular development and Unit test. 
-
-## install
-
-```shell
-$ npm install -s @yunzhi/ng-mock-api
-```
-
-## Quick Start
-
-1. Create a mock api file, for example: `user.api`
-
-```typescript
-import {MockApiInterface, ApiInjector, RequestOptions} from '@yunzhi/ng-mock-api'
-import {Observable} from 'rxjs';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-
+import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { ApiInjector, MockApiInterface, RequestOptions } from "../../projects/mock-api/src/public-api";
+import { Observable } from "rxjs";
 
 export class UserApi implements MockApiInterface {
 
@@ -70,55 +54,3 @@ export class UserApi implements MockApiInterface {
     ];
   }
 }
-```
-
-### Development
-2. Set UserApi to MockApiInterceptor.forRoot function, and set HTTP_INTERCEPTORS
-
-```typescript
-export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(
-      withInterceptorsFromDi()
-    ),
-    {
-      provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptor.forRoot([UserApi]), multi: true
-    }
-  ]
-};
-```
-
-Filter request example:
-
-```typescript
-useClass: MockApiInterceptor.forRoot([UserApi], {
-   // only enable Interceptor when url not startsWith 'assets'
-  filter: (req: HttpRequest<any>) => !req.url.startsWith('assets')
-})
-```
-
-3. Use HttpClient for http request:
-
-```typescript
-  // get current user name
-  this.httpClient.get<string>(`user/getCurrentUsername`)
-    .subscribe(user => {
-      console.log(user);
-    });
-```
-
-## unit test
-
-[https://www.npmjs.com/package/@yunzhi/ng-mock-api-testing](https://www.npmjs.com/package/@yunzhi/ng-mock-api-testing)
-
-
-## dev
-
-```shell
-nvm use 20
-ng build mock-api
-cd ../../dist/mock-api
-npm login
-npm publish
-```
