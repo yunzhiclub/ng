@@ -46,7 +46,7 @@ describe('TestComponent', () => {
         }).compileComponents();
     });
 
-    fit('should render title', () => {
+    it('should render title', () => {
         // 初始化组件，并手动调用ngOnInit()方法
         const fixture = TestBed.createComponent(TestComponent);
         const component = fixture.componentInstance;
