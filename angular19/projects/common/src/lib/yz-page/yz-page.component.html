@@ -8,14 +8,15 @@
   <div class="col-md-6" *ngIf="paginatorRange.length > 1">
     <nav aria-label="_page navigation" class="float-right">
       <ul class="pagination pagination-sm">
-        <li [ngClass]="{'page-item':true, 'disabled': page === 0}">
-          <a class="page-link" (click)="onChange(0)">
-            <span aria-hidden="true">首页</span>
-          </a>
-        </li>
         <li [ngClass]="{'page-item':true, 'disabled': page === paginatorRange[0]}">
           <a class="page-link" (click)="onChange(page - 1)">
             <span aria-hidden="true">上一页</span>
+          </a>
+        </li>
+
+        <li *ngIf="page > 0"  [ngClass]="{'active': page === 0, 'page-item':true, 'disabled': page === 0}">
+          <a class="page-link" (click)="onChange(0)">
+            <span aria-hidden="true">首页</span>
           </a>
         </li>
 
@@ -25,14 +26,15 @@
           </a>
         </li>
 
+        <li *ngIf="page < totalPage - 1" [ngClass]="{'active': page === totalPage - 1, 'page-item':true}">
+          <a class="page-link" (click)="onChange(totalPage - 1)">
+            <span aria-hidden="true">尾页</span>
+          </a>
+        </li>
+
         <li [ngClass]="{'page-item':true, 'disabled': page === paginatorRange[paginatorRange.length - 1]}">
           <a class="page-link" (click)="onChange(page + 1)">
             <span aria-hidden="true">下一页</span>
-          </a>
-        </li>
-        <li [ngClass]="{'page-item':true, 'disabled': page === paginatorRange[paginatorRange.length - 1]}">
-          <a class="page-link" (click)="onChange(totalPage - 1)">
-            <span aria-hidden="true">尾页</span>
           </a>
         </li>
       </ul>
