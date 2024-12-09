@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <img [src]="src" alt="image">
     <yz-uploader *ngIf="showUploader" [multiple]="multiple"
-                 [maxSize]="100"
+                 [maxSize]="10 * 1024 * 1024"
                  accept="image/gif, image/jpeg, image/png"
                  (beUpload)="onUpload($event)"
                  (beClose)="onUploadClose()"></yz-uploader>
@@ -86,7 +86,7 @@ describe('YzUploaderComponent', () => {
   });
 
   it('progress 进度条', (done) => {
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     upLoaderComponent = fixture.debugElement.query(By.directive(YzUploaderComponent)).componentInstance;
     let i = 0;
     interval(10).pipe(

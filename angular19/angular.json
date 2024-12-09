@@ -218,6 +218,10 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/common/tsconfig.spec.json",
+            "styles": [
+              "test.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.css"
+            ],
             "polyfills": [
               "zone.js",
               "zone.js/testing"

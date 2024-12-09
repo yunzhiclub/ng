@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, input} from '@angular/core';
 
 /**
  * 弹出框
@@ -14,11 +14,9 @@ import {Component, Input} from '@angular/core';
   ]
 })
 export class YzModalComponent {
-  @Input()
-  size = 'md';
+  size = input('md');
 
-  @Input()
-  width = '30%';
+  width = input('30%');
 
   constructor() {
   }

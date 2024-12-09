@@ -1,21 +1,22 @@
 <yz-modal size="md">
   <div class="yz-uploader">
     <div class="file-drop-area mb-2">
-      <span class="fake-btn">{{(state.multiple && fileList.length) ? '请继续上传文件' : '请选择上传文件'}}</span>
+      <span class="fake-btn btn" [ngClass]="{'disabled': uploading}" >{{ (multiple() && fileList.length) ? '请继续上传文件' : '请选择上传文件' }}</span>
       <span class="file-msg" *ngIf="!fileList.length">或直接将文件托放到这里</span>
       <span class="file-msg file-block" *ngFor="let file of fileList">
-      <span *ngIf="state.multiple" (click)="onRemoveFile(file)">
+      <span *ngIf="multiple()" (click)="onRemoveFile(file)">
         <i class="fas fa-trash-alt"></i>
       </span>
-        {{file.name}}&nbsp;&nbsp;</span>
-      <input class="file-input" type="file" [multiple]="state.multiple" [accept]="accept">
+        {{ file.name }}&nbsp;&nbsp;</span>
+      <input class="file-input" type="file" [disabled]="uploading" [multiple]="multiple()" [accept]="accept()">
     </div>
     <div class="row">
       <div class="col-6">
-        <span *ngIf="!showError">{{info}}</span><span class="text-danger" *ngIf="showError">{{error}}</span>
+        <span *ngIf="!showError">{{ info() }}</span><span class="text-danger" *ngIf="showError">{{ error() }}</span>
       </div>
       <div class="col-6 text-right">
         <button class="btn btn-warning btn-sm mr-2" type="button"
+                [disabled]="uploading"
                 (click)="onClose()">
           <i class="fas fa-ban"></i>关闭
         </button>
@@ -30,13 +31,13 @@
     <ng-container *ngIf="uploading">
       <div class="row">
         <div class="col-12">
-          <span class="file-msg">正在上传:{{ finishedTask + 1}}/{{fileList.length}}</span>
+          <span class="file-msg">正在上传:{{ finishedTask + 1 }}/{{ fileList.length }}</span>
         </div>
       </div>
       <div class="progress m-2">
         <div class="progress-bar" role="progressbar"
              [ngStyle]="{'width': progress + '%'}" attr.aria-valuenow="{{progress}}"
-             attr.aria-valuemin="0" attr.aria-valuemax="100">{{progress}}%
+             attr.aria-valuemin="0" attr.aria-valuemax="100">{{ progress }}%
         </div>
       </div>
     </ng-container>
