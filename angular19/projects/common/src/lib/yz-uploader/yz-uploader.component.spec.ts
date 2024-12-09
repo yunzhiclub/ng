@@ -85,7 +85,7 @@ describe('YzUploaderComponent', () => {
     fixture.autoDetectChanges();
   });
 
-  fit('progress 进度条', (done) => {
+  it('progress 进度条', (done) => {
     fixture.autoDetectChanges();
     upLoaderComponent = fixture.debugElement.query(By.directive(YzUploaderComponent)).componentInstance;
     let i = 0;

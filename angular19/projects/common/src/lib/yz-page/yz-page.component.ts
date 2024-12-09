@@ -78,7 +78,10 @@ export class YzPageComponent implements OnInit {
     return {start, end};
   });
 
-  onChange(page: number): void {
+  onChange(page: number, active?: boolean): void {
+    if (active) {
+      return;
+    }
     if (page < 0) {
       page = 0;
     } else if (page >= this.totalPage()) {

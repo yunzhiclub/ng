@@ -1,8 +1,20 @@
-import { Component, Injectable } from '@angular/core';
-import { BasicComponent, ThemeService, YzMenu } from '../../projects/theme/src/public-api';
-import { map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import {YzPageComponent, YzSizeComponent} from '../../projects/common/src/public-api';
+import {Component, Injectable, signal} from '@angular/core';
+import {BasicComponent, ThemeService, YzMenu} from '../../projects/theme/src/public-api';
+import {map, Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {
+  YzPageComponent,
+  YzSizeComponent,
+  YzUploaderComponent,
+  YzUploaderService
+} from '../../projects/common/src/public-api';
+import {delay} from 'rxjs/operators';
+
+@Injectable()
+class UploaderService extends YzUploaderService {
+
+}
+
 
 @Injectable()
 export class MyThemeService extends ThemeService {
@@ -13,8 +25,10 @@ export class MyThemeService extends ThemeService {
   /**
    * 获取当前登录用户
    */
-  override getCurrentLoginUser$(): Observable<{ name: string }> {
-    return this.httpClient.get<string>('/user/getCurrentUsername').pipe(map(v => {return {name: v};}))
+  override getCurrentLoginUser$(): Observable<{name: string}> {
+    return this.httpClient.get<string>('/user/getCurrentUsername').pipe(map(v => {
+      return {name: v};
+    }))
   }
 
   /**
@@ -56,27 +70,58 @@ export class MyThemeService extends ThemeService {
 
 @Component({
   selector: 'app-root',
-  imports: [BasicComponent, YzPageComponent, YzSizeComponent],
+  imports: [BasicComponent, YzPageComponent, YzSizeComponent, YzUploaderComponent],
   template: `
     <theme-basic>
-      <yz-size [size]="20" (beChange)="onSizeChange($event)"></yz-size>
-      <h1>hello {{page}}</h1>
-     <yz-page [totalElements]="200" [page]="9" (changePage)="onPageChange($event)"></yz-page>
-    </theme-basic>`,
-    providers: [
-      {
-        provide: ThemeService, useClass: MyThemeService
+      <div class="row text-center">
+        <button type="button" class="btn btn-sm btn-primary" (click)="onToggleShowUploader()">toggle上传组件</button>
+      </div>
+
+      @if (showUploader()) {
+        <yz-uploader
+          (beUpload)="onUploaded()"
+          (beClose)="onUploaderClose()"></yz-uploader>
       }
-    ]
+      <yz-size [size]="20" (beChange)="onSizeChange($event)"></yz-size>
+      <h1>hello {{ page }}</h1>
+
+      <yz-page [totalElements]="200" [page]="page" (changePage)="onPageChange($event)"></yz-page>
+    </theme-basic>`,
+  providers: [
+    {
+      provide: ThemeService, useClass: MyThemeService
+    }, {
+      provide: YzUploaderService, useClass: UploaderService
+    }
+  ]
 })
 export class AppComponent {
   title = 'angular19';
   page = 0;
+
+  showUploader = signal(false);
+
+  onUploaderClose() {
+    this.showUploader.set(false);
+  }
+
+  onUploaded() {
+    this.showUploader.set(false);
+  }
+
   onPageChange(page: number) {
     this.page = page;
+    of(null).pipe(delay(500)).subscribe(() => {
+    });
   }
 
   onSizeChange(size: number): void {
     console.log('size change', size);
   }
+
+  onToggleShowUploader() {
+    this.showUploader.update(v => !v);
+  }
 }
+
+

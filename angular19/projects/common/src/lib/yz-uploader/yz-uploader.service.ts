@@ -32,7 +32,7 @@ export class YzUploaderService {
    * @param file 上传的文件
    */
   upload(file: File): Observable<HttpEvent<any>> {
-    console.warn('请调用YzUploaderModule.forRoot()方法来重写YzUploaderService.upload方法');
+    console.warn('请重写YzUploaderService.upload方法来实现真正的上传');
     return new Observable<HttpEvent<object>>(subscriber => {
       let i = 0;
       const total = randomNumber(10000);
