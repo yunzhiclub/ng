@@ -1,28 +1,30 @@
-import { CommonModule } from '@angular/common';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {Component, effect, input, OnInit, output} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'yz-size',
   templateUrl: './yz-size.component.html',
   styleUrls: ['./yz-size.component.scss'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, ReactiveFormsModule]
 })
-export class YzSizeComponent {
-  @Input()
-  sizes = [10, 20, 50];
+export class YzSizeComponent implements OnInit {
+  sizes = input([10, 20, 50]);
 
-  @Input()
-  size = 20;
+  size = input(20);
 
-  @Output()
-  changeSize: EventEmitter<number> = new EventEmitter();
+  sizeControl = new FormControl<number>(this.size());
+
+  changeSize = output<number>();
 
   constructor() {
+    effect(() => {
+      this.sizeControl.setValue(this.size());
+    });
   }
 
-  sizeChange(size: number): void {
-    this.changeSize.emit(size);
+  ngOnInit(): void {
+    this.sizeControl.valueChanges.subscribe(size => this.changeSize.emit(size as number));
   }
 }
