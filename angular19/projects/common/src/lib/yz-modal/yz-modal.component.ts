@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, input, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 
 /**
  * 弹出框
