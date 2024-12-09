@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 
 /**
+ * @deprecated 请使用 YzModal
  * 蒙板
  */
 @Component({
