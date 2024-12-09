@@ -15,6 +15,7 @@ import {of} from 'rxjs';
 })
 export class YzPageComponent implements OnInit {
   /**
+   * @Deprecated
    * 本组件引自 yunzhiclub/platform 项目
    * https://github.com/yunzhiclub/platform/blob/master/src/app/share/component/paginator/paginator.component.ts
    */
