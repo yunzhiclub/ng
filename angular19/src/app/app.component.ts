@@ -59,7 +59,7 @@ export class MyThemeService extends ThemeService {
   imports: [BasicComponent, YzPageComponent, YzSizeComponent],
   template: `
     <theme-basic>
-      <yz-size [size]="20" (changeSize)="onSizeChange($event)"></yz-size>
+      <yz-size [size]="20" (beChange)="onSizeChange($event)"></yz-size>
       <h1>hello {{page}}</h1>
      <yz-page [totalElements]="200" [page]="9" (changePage)="onPageChange($event)"></yz-page>
     </theme-basic>`,

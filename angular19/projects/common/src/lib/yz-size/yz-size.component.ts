@@ -16,7 +16,14 @@ export class YzSizeComponent implements OnInit {
 
   sizeControl = new FormControl<number>(this.size());
 
+  /**
+   * 此方法将在 >19 的版本中移除
+   * @Deprecated
+   * 请使用 beChange
+   */
   changeSize = output<number>();
+
+  beChange = output<number>();
 
   constructor() {
     effect(() => {
@@ -25,6 +32,9 @@ export class YzSizeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sizeControl.valueChanges.subscribe(size => this.changeSize.emit(size as number));
+    this.sizeControl.valueChanges.subscribe(size => {
+      this.changeSize.emit(size as number);
+      this.beChange.emit(size as number);
+    });
   }
 }
