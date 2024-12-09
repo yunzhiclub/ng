@@ -1,22 +1,37 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 
-import { YzPageComponent } from './yz-page.component';
-import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component } from '@angular/core';
+import {YzPageComponent} from './yz-page.component';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Component, ViewChild} from '@angular/core';
 
 @Component({
-  template: `<yz-page [totalElements]="200" [page]="9" (changePage)="onPageChange($event)"></yz-page>`,
+  template: `
+    <yz-page [totalElements]="totalElements" [pageLinkSize]="5" [page]="page"
+             (changePage)="onPageChange($event)"></yz-page>`,
   imports: [YzPageComponent],
   styles: `
-  :host ::ng-deep .active > a {color: red}
-  :host ::ng-deep .disabled > a {font-size: 2em}
+    :host ::ng-deep .active > a {
+      color: red
+    }
+
+    :host ::ng-deep .disabled > a {
+      font-size: 2em
+    }
   `
 })
 class TestComponent {
+  @ViewChild(YzPageComponent)
+  pageComponent: YzPageComponent | undefined;
+
+  page = 0;
+  totalElements = 200;
+
   public onPageChange(page: number) {
-    console.log(page);
+    setTimeout(() => {
+      // mock request
+      this.page = page;
+    }, 500)
   }
 }
 
@@ -30,7 +45,6 @@ describe('PageComponent', () => {
       imports: [
         TestComponent,
         CommonModule,
-        HttpClientTestingModule,
         ReactiveFormsModule,
         FormsModule
       ],
@@ -51,4 +65,145 @@ describe('PageComponent', () => {
     expect(component).toBeTruthy();
     fixture.autoDetectChanges();
   });
+
+  it('[1] 2 3 4', () => {
+    component.totalElements = 73;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(4);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(0);
+    expect(component.pageComponent!.paginatorRange()[3]).toBe(3);
+    expect(component.pageComponent!.totalPage()).toBe(4);
+    expect(component.pageComponent!.page()).toBe(0);
+  });
+
+  it('[1] 2 3 4 5', () => {
+    component.totalElements = 83;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(0);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(4);
+    expect(component.pageComponent!.totalPage()).toBe(5);
+    expect(component.pageComponent!.page()).toBe(0);
+  });
+
+  it('1 2 [3] 4 5', () => {
+    component.totalElements = 103;
+    component.page = 2;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(0);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(4);
+    expect(component.pageComponent!.totalPage()).toBe(6);
+    expect(component.pageComponent!.page()).toBe(2);
+  });
+
+  it('1 2 3 [4] 5', () => {
+    component.totalElements = 83;
+    component.page = 3;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(0);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(4);
+    expect(component.pageComponent!.totalPage()).toBe(5);
+    expect(component.pageComponent!.page()).toBe(3);
+  });
+
+  it('1 2 3 4 [5]', () => {
+    component.totalElements = 83;
+    component.page = 4;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(0);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(4);
+    expect(component.pageComponent!.totalPage()).toBe(5);
+    expect(component.pageComponent!.page()).toBe(4);
+  });
+
+  it(`2 3 4 [5] 6`, () => {
+    component.totalElements = 20 * 6 - 3;
+    component.page = 4;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(1);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(5);
+    expect(component.pageComponent!.totalPage()).toBe(6);
+    expect(component.pageComponent!.page()).toBe(4);
+  });
+
+  it(`2 3 [4] 5 6`, () => {
+    component.totalElements = 20 * 6 - 3;
+    component.page = 3;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(1);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(5);
+    expect(component.pageComponent!.totalPage()).toBe(6);
+    expect(component.pageComponent!.page()).toBe(3);
+  });
+
+  it(`6 7 [8] 9 10`, () => {
+    component.totalElements = 20 * 10 - 3;
+    component.page = 7;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(9);
+    expect(component.pageComponent!.totalPage()).toBe(10);
+    expect(component.pageComponent!.page()).toBe(7);
+  });
+
+  it(`6 7 8 9 [10]`, () => {
+    component.totalElements = 20 * 10 - 3;
+    component.page = 9;
+    fixture.detectChanges();
+    expect(component.pageComponent!.paginatorRange().length).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[0]).toBe(5);
+    expect(component.pageComponent!.paginatorRange()[4]).toBe(9);
+    expect(component.pageComponent!.totalPage()).toBe(10);
+    expect(component.pageComponent!.page()).toBe(9);
+  });
+
+  it('当前页超出最大页数', () => {
+    spyOn(component, 'onPageChange');
+    component.totalElements = 20 * 10 - 3;
+    component.page = 20;
+    fixture.detectChanges();
+    expect(component.onPageChange).toHaveBeenCalledWith(9);
+  });
+
+  it('测试频繁点击', fakeAsync(() => {
+    component.totalElements = 20 * 10 - 3;
+    component.page = 2;
+    fixture.detectChanges();
+    spyOn(component, 'onPageChange');
+    // 500ms 内连续点击，只有首次点击的生效
+    component.pageComponent!.onChange(3);
+    tick(200);
+    component.pageComponent!.onChange(4);
+    expect(component.onPageChange).toHaveBeenCalledOnceWith(3);
+
+    // 500ms后点击的，同样只首次点击生效
+    tick(310);
+    component.pageComponent!.onChange(4);
+    expect(component.onPageChange).toHaveBeenCalledWith(4);
+    component.pageComponent!.onChange(5);
+    expect(component.onPageChange).toHaveBeenCalledWith(4);
+  }));
+
+  it('点击分页后马上接收到新的值', fakeAsync(() => {
+    component.totalElements = 20 * 10 - 3;
+    component.page = 2;
+    fixture.detectChanges();
+    spyOn(component, 'onPageChange');
+    // 500ms 内连续点击，只有首次点击的生效
+    component.pageComponent!.onChange(3);
+    tick(200);
+    component.pageComponent!.onChange(4);
+    expect(component.onPageChange).toHaveBeenCalledOnceWith(3);
+
+    component.page = 3;
+    fixture.detectChanges();
+    component.pageComponent!.onChange(5);
+    expect(component.onPageChange).toHaveBeenCalledWith(5);
+  }));
 });
