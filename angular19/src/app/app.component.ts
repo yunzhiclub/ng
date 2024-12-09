@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { BasicComponent, ThemeService, YzMenu } from '../../projects/theme/src/public-api';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { YzPageComponent } from '../../projects/common/src/public-api';
+import {YzPageComponent, YzSizeComponent} from '../../projects/common/src/public-api';
 
 @Injectable()
 export class MyThemeService extends ThemeService {
@@ -56,9 +56,10 @@ export class MyThemeService extends ThemeService {
 
 @Component({
   selector: 'app-root',
-  imports: [BasicComponent, YzPageComponent],
+  imports: [BasicComponent, YzPageComponent, YzSizeComponent],
   template: `
     <theme-basic>
+      <yz-size [size]="20" (changeSize)="onSizeChange($event)"></yz-size>
       <h1>hello {{page}}</h1>
      <yz-page [totalElements]="200" [page]="9" (changePage)="onPageChange($event)"></yz-page>
     </theme-basic>`,
@@ -73,5 +74,9 @@ export class AppComponent {
   page = 0;
   onPageChange(page: number) {
     this.page = page;
-  } 
+  }
+
+  onSizeChange(size: number): void {
+    console.log('size change', size);
+  }
 }

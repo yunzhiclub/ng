@@ -1,6 +1,6 @@
 <small>
   显示
-  <select class="border-0 bg-white ml-2 mr-2" [formControl]="sizeControl">
+  <select class="rounded pl-1 pr-1" [formControl]="sizeControl">
     <option *ngFor="let _size of sizes()" [ngValue]="_size">{{_size}}</option>
   </select>
   条
