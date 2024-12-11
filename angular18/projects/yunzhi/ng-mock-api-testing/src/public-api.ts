@@ -1,6 +1,5 @@
 /*
- * Public API Surface of ng-mock-api-testing
+ * Public API Surface of mock-http-client testing
  */
-
-export * from './lib/ng-mock-api-testing.service';
-export * from './lib/ng-mock-api-testing.component';
+export * from './lib/mock-api.testing.interceptor';
+export * from './utils-test';
