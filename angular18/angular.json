@@ -223,39 +223,6 @@
           }
         }
       }
-    },
-    "@yunzhi/ng-router-testing": {
-      "projectType": "library",
-      "root": "projects/yunzhi/ng-router-testing",
-      "sourceRoot": "projects/yunzhi/ng-router-testing/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/yunzhi/ng-router-testing/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/yunzhi/ng-router-testing/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/yunzhi/ng-router-testing/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/yunzhi/ng-router-testing/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
     }
   }
 }
