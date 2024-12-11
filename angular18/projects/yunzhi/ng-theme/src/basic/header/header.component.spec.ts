@@ -1,11 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HeaderComponent} from './header.component';
-import {RouterTestingModule} from 'packages/router-testing/src/public-api';
 import {Router} from '@angular/router';
 import {firstValueFrom, of} from 'rxjs';
 import {ApiModule} from '../api/api.module';
 import {BasicService} from '../service/basic.service';
+import {RouterTestingModule} from '../../../../ng-router-testing/src/public-api';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
