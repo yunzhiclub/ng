@@ -1,0 +1,7 @@
+<small>
+  显示
+  <select class="rounded pl-1 pr-1" [formControl]="sizeControl">
+    <option *ngFor="let _size of sizes()" [ngValue]="_size">{{_size}}</option>
+  </select>
+  条
+</small>
