@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@yunzhi/ng-mock-api": "^18.0.0",
     "@yunzhi/utils": "^0.0.7",
     "bootstrap": "^4.6.0",
     "bootstrap-icons": "^1.10.5",

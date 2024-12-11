@@ -3,10 +3,12 @@ import {Observable} from 'rxjs';
 
 import {DelayHandlerTesting} from './delay-handler.testing';
 import {Type} from '@angular/core';
-import {MockApiInterface, MockApiService} from '../../../ng-mock-api/src/public-api';
+import {MockApiInterface, MockApiService} from "@yunzhi/ng-mock-api";
 
 
 /**
+ * 20版本移除
+ * @deprecated
  * 测试专用模拟API拦截器.
  */
 export class MockApiTestingInterceptor implements HttpInterceptor {
