@@ -12,6 +12,9 @@
       "@yunzhi/ng-mock-api-testing": [
         "./dist/yunzhi/ng-mock-api-testing"
       ],
+      "@yunzhi/ng-router-testing": [
+        "./dist/yunzhi/ng-router-testing"
+      ],
       "@yunzhi/ng-theme": [
         "./dist/yunzhi/ng-theme"
       ]

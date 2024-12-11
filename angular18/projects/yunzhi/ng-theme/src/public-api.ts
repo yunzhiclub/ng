@@ -1,6 +1,7 @@
 /*
- * Public API Surface of ng-theme
+ * Public API Surface of theme
  */
-
-export * from './lib/ng-theme.service';
-export * from './lib/ng-theme.component';
+export * from './basic/basic.module';
+export * from './basic/basic.component';
+export * from './basic/service/basic.service';
+export * from './basic/entity/yz-menu';
