@@ -1,17 +1,17 @@
 <div class="container-fluid">
   <div class="row header">
     <div class="col-md-12 p-0">
-      <app-header></app-header>
+      <theme-header></theme-header>
     </div>
   </div>
   <div class="row">
     <div class="menu border-right">
-      <app-menu></app-menu>
+      <theme-menu></theme-menu>
     </div>
     <div class="content">
-      <app-nav></app-nav>
+      <theme-nav></theme-nav>
       <div class="ml-4 mr-4">
-        <router-outlet></router-outlet>
+        <ng-content></ng-content>
       </div>
     </div>
   </div>

@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NavComponent} from './nav.component';
-import {BasicService} from '../service/basic.service';
-import {RouterTestingModule} from '@angular/router/testing';
+import {ThemeService} from '../service/theme.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -10,12 +10,12 @@ describe('NavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NavComponent],
       imports: [
+        NavComponent,
         RouterTestingModule
       ],
       providers: [
-        BasicService
+        ThemeService
       ]
     })
       .compileComponents();

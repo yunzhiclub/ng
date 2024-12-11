@@ -1,14 +1,17 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {BasicService} from '../service/basic.service';
+import {ThemeService} from '../service/theme.service';
 import {isNotNullOrUndefined} from '@yunzhi/utils';
 import {tap} from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-header',
+  standalone: true,
+  selector: 'theme-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  imports: [AsyncPipe]
 })
 export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('header', {static: true})
@@ -25,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   private titleElement: HTMLElement | undefined;
 
   constructor(private router: Router,
-              private basicService: BasicService) {
+              private basicService: ThemeService) {
   }
 
   ngOnInit(): void {

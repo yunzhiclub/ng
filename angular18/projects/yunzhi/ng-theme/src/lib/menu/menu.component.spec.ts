@@ -1,12 +1,23 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MenuComponent} from './menu.component';
-import {RouterTestingModule} from '@angular/router/testing';
-import {ApiModule} from '../api/api.module';
-import {BasicService} from '../service/basic.service';
+import {ThemeService} from '../service/theme.service';
 import {Observable} from 'rxjs';
 import {YzMenu} from '../entity/yz-menu';
-import {MenuModule} from './menu.module';
+import { Component, ViewChild } from '@angular/core';
+import { provideLocationMocks } from '@angular/common/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+
+@Component({
+  standalone: true,
+  template: '<theme-menu #child></theme-menu>',
+  imports: [MenuComponent]
+})
+class TestComponent {
+  @ViewChild('child')
+  menuComponent: MenuComponent | undefined;
+}
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -15,12 +26,14 @@ describe('MenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MenuModule,
-        ApiModule,
+        MenuComponent,
         RouterTestingModule
       ], providers: [
-        {provide: BasicService, useClass: MyBasicService}
-      ]
+        {provide: ThemeService, useClass: MyBasicService}
+      ],
+      teardown: {
+        destroyAfterEach: false
+      }
     })
       .compileComponents();
   });
@@ -47,7 +60,7 @@ describe('MenuComponent', () => {
 });
 
 
-class MyBasicService extends BasicService {
+class MyBasicService extends ThemeService {
   /**
    * 获取菜单
    */

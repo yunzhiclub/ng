@@ -1,10 +1,14 @@
 import {Observable, of} from 'rxjs';
 import {YzMenu} from '../entity/yz-menu';
+import { Injectable } from '@angular/core';
 
 /**
  * 菜单服务
  */
-export class BasicService {
+@Injectable({
+  providedIn: 'root' // 默认提供到全局 DI 容器
+})
+export class ThemeService {
   /**
    * 回退
    */
@@ -51,7 +55,7 @@ export class BasicService {
    */
   getHeaderImageSrc(): string {
     console.warn('重写getHeaderImageSrc()自定义头部图片');
-    return '/assets/basic/image/header.png';
+    return '/assets/header.png';
   }
 
   /**

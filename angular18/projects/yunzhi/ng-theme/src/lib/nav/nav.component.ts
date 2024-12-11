@@ -1,18 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BasicService} from '../service/basic.service';
-import {NavigationEnd, Router, ActivatedRoute} from '@angular/router';
+import {ThemeService} from '../service/theme.service';
+import {NavigationEnd, Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {filter} from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-nav',
+  standalone: true,
+  selector: 'theme-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
+  imports: [CommonModule]
 })
 export class NavComponent implements OnInit, OnDestroy {
   title = '';
   showBack = false;
 
-  constructor(private basicService: BasicService,
+  constructor(private basicService: ThemeService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
   }

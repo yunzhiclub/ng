@@ -1,11 +1,14 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {BasicService} from '../service/basic.service';
+import {ThemeService} from '../service/theme.service';
 import {YzMenu} from '../entity/yz-menu';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-menu',
+  standalone: true,
+  selector: 'theme-menu',
   templateUrl: './menu.component.html',
   // 定义动画，但并没有生效
   animations: [
@@ -23,6 +26,9 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         animate('0.1s ease-in-out')
       ])
     ])
+  ],
+  imports: [
+    CommonModule, RouterLink, RouterLinkActive
   ],
   styleUrls: ['./menu.component.scss']
 })
@@ -61,7 +67,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     'color': MenuComponent.hexToRgbA(this.color.normal.color)
   }
 
-  constructor(private basicMenuService: BasicService) {
+  constructor(private basicMenuService: ThemeService) {
   }
 
   /**
