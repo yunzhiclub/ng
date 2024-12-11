@@ -4,18 +4,25 @@ import {YzUploaderComponent} from './yz-uploader.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {interval, Observable, of} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {YzModalModule} from '../yz-modal/yz-modal.module';
 import {YzUploaderService} from './yz-uploader.service';
-import {YzUploaderModule} from './yz-uploader.module';
 import {Component} from '@angular/core';
 import {HttpEvent, HttpResponse} from '@angular/common/http';
 import {By} from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
+  imports: [
+    YzUploaderComponent,
+    CommonModule
+  ],
+  providers: [
+    {provide: YzUploaderService, useClass: YzUploaderService}
+  ],
   template: `
     <img [src]="src" alt="image">
     <yz-uploader *ngIf="showUploader" [multiple]="multiple"
-                 [maxSize]="100"
+                 [maxSize]="10 * 1024 * 1024"
                  accept="image/gif, image/jpeg, image/png"
                  (beUpload)="onUpload($event)"
                  (beClose)="onUploadClose()"></yz-uploader>
@@ -50,15 +57,14 @@ describe('YzUploaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
       imports: [
+        TestComponent,
         FormsModule,
-        ReactiveFormsModule,
-        YzModalModule,
-        YzUploaderModule.forRoot({
-          uploaderService: UploadServer
-        })
-      ]
+        ReactiveFormsModule
+      ],
+      teardown: {
+        destroyAfterEach: false
+      }
     })
       .compileComponents();
   });
@@ -81,7 +87,7 @@ describe('YzUploaderComponent', () => {
   });
 
   it('progress 进度条', (done) => {
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     upLoaderComponent = fixture.debugElement.query(By.directive(YzUploaderComponent)).componentInstance;
     let i = 0;
     interval(10).pipe(

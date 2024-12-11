@@ -8,7 +8,7 @@ describe('YzMaskComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ YzMaskComponent ]
+      imports: [ YzMaskComponent ]
     })
     .compileComponents();
   }));
