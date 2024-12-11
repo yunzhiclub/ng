@@ -1,24 +1,65 @@
-# NgMockApiTesting
+# MockApiTesting
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+For angular httpClient reqeust test! The lib base on  [https://www.npmjs.com/package/@yunzhi/ng-mock-api](https://www.npmjs.com/package/@yunzhi/ng-mock-api)
 
-## Code scaffolding
+### Unit Test
+1. install jasmine-marbles
 
-Run `ng generate component component-name --project ng-mock-api-testing` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-mock-api-testing`.
-> Note: Don't forget to add `--project ng-mock-api-testing` or else it will be added to the default project in your `angular.json` file. 
+```shell
+npm install jasmine-marbles@0.9.2 --save-dev 
+```
 
-## Build
+2. Set UserApi to DynamicTestingModule
 
-Run `ng build ng-mock-api-testing` to build the project. The build artifacts will be stored in the `dist/` directory.
+```typescript
+@Component({
+  template: '<h1>hello {{username}}</h1>'
+})
+class AppComponent implements OnInit {
+  username = '';
+  
+  constructor(private httpClient: HttpClient) {
+  }
+  
+  ngOnInit(): void { 
+    this.httpClient.get<string>(`user/getCurrentUsername`)
+      .subscribe(username => this.username = username);
+  }
+}
 
-## Publishing
+describe('AppComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        // action: Use the HttpClientModule but not HttpClientTestingModule
+        HttpClientModule
+      ],
+      declarations: [
+        AppComponent
+      ],
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: MockApiTestingInterceptor
+            .forRoot([UserApi]),
+          multi: true
+        },
+      ]
+    }).compileComponents();
+  });
 
-After building your library with `ng build ng-mock-api-testing`, go to the dist folder `cd dist/ng-mock-api-testing` and run `npm publish`.
+  it('should render title', () => {
+    // 初始化组件，并手动调用ngOnInit()方法
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
 
-## Running unit tests
-
-Run `ng test ng-mock-api-testing` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+    expect(app.username).toEqual('');
+    console.log('flush data by hand');
+    getTestScheduler().flush();
+    console.log('The mock api data will return immediate');
+    expect(app.username).toEqual('yunzhi');
+  });
+});
+```

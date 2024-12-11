@@ -1,24 +1,124 @@
-# NgMockApi
+# Yunzhi NgMockApi
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+An embedded mock REST service for Angular development and Unit test. 
 
-## Code scaffolding
+## install
 
-Run `ng generate component component-name --project ng-mock-api` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-mock-api`.
-> Note: Don't forget to add `--project ng-mock-api` or else it will be added to the default project in your `angular.json` file. 
+```shell
+$ npm install -s @yunzhi/ng-mock-api
+```
 
-## Build
+## Quick Start
 
-Run `ng build ng-mock-api` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Create a mock api file, for example: `user.api`
 
-## Publishing
+```typescript
+import {MockApiInterface, ApiInjector, RequestOptions} from '@yunzhi/ng-mock-api'
+import {Observable} from 'rxjs';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
-After building your library with `ng build ng-mock-api`, go to the dist folder `cd dist/ng-mock-api` and run `npm publish`.
 
-## Running unit tests
+export class UserApi implements MockApiInterface {
 
-Run `ng test ng-mock-api` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  /**
+   * implement getInjectors() function and return ApiInjector Array.
+   */
+  getInjectors(): ApiInjector[] {
+    return [
+      new ApiInjector(
+        {
+          method: 'DELETE',
+          url: 'user/:id',
+          description: 'delete user with id',
+          // when result type is HttpResponse, the NgMockApi will return the HttpResponse immediate.
+          result: new HttpResponse<void>()
+        }
+      ),
+      new ApiInjector({
+        method: 'GET',
+        url: `user/getCurrentUsername`,
+        // when result type is string | number | Object | ... the NgMockApi will return a HttpResponse which contains the result with a 0.5S - 3.0S's delay. 
+        result: 'mock user'
+      }),
+      new ApiInjector({
+        method: 'GET',
+        url: 'user/login',
+        description: '用户登录',
+        // the result type is also can be function
+        result: () => {
+          // can return an Observable<HttpErrorResponse> in the function. 
+          return new Observable<HttpErrorResponse>(ob => {
+            ob.error(new HttpErrorResponse({status: 401}));
+            ob.complete();
+          });
+        }
+      }),
+      new ApiInjector (
+        {
+          method: 'PUT',
+          url: `user/:id`,
+          // can set params with result's function, the first params type is `{[key: string]: string}`, and the second is RequestOptions. 
+          result: (params: {id: string}, options: RequestOptions) => {
+              const id = +params.id;          // get path param with params.
+              const body = options.body;      // get request body with options.
+              body.id = id;
+              return new HttpResponse<any>({body});  
+              // can return body directly also.
+              // return body;
+            }
+        })
+    ];
+  }
+}
+```
 
-## Further help
+### Development
+2. Set UserApi to MockApiInterceptor.forRoot function, and set HTTP_INTERCEPTORS
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
+    {
+      provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptor.forRoot([UserApi]), multi: true
+    }
+  ]
+};
+```
+
+Filter request example:
+
+```typescript
+useClass: MockApiInterceptor.forRoot([UserApi], {
+   // only enable Interceptor when url not startsWith 'assets'
+  filter: (req: HttpRequest<any>) => !req.url.startsWith('assets')
+})
+```
+
+3. Use HttpClient for http request:
+
+```typescript
+  // get current user name
+  this.httpClient.get<string>(`user/getCurrentUsername`)
+    .subscribe(user => {
+      console.log(user);
+    });
+```
+
+## unit test
+
+[https://www.npmjs.com/package/@yunzhi/ng-mock-api-testing](https://www.npmjs.com/package/@yunzhi/ng-mock-api-testing)
+
+
+## dev
+
+```shell
+nvm use 20
+ng build mock-api
+cd ../../dist/mock-api
+npm login
+npm publish
+```

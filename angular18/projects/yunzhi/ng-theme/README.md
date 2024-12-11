@@ -1,24 +1,52 @@
-# NgTheme
+基于bootstrap4的蓝色主题
+-----
+## 说明
+该模板由本文件夹中的代码以及asset中的basic共同组成。
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+## 依赖
+```bash
+npm install -s bootstrap@4.6.0
+npm install -s @fortawesome/fontawesome-free@5.15.3
+```
 
-## Code scaffolding
+## 使用步骤
+1. 引入样式表
+```json
+"styles": [
+  "./node_modules/bootstrap/dist/css/bootstrap.css",
+  "./node_modules/@fortawesome/fontawesome-free/css/all.css",
+  "src/styles.scss"
+]
+```
+1. add header
 
-Run `ng generate component component-name --project ng-theme` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-theme`.
-> Note: Don't forget to add `--project ng-theme` or else it will be added to the default project in your `angular.json` file. 
 
-## Build
+3. 使用方法
+```typescript
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { BasicComponent, ThemeService } from '../../projects/theme/src/public-api';
 
-Run `ng build ng-theme` to build the project. The build artifacts will be stored in the `dist/` directory.
+export class MyThemeService extends ThemeService {
+  // 在此复写
+}
 
-## Publishing
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [BasicComponent],
+  template: `
+    <theme-basic>
+      <h1>hello</h1>
+    </theme-basic>`,
+    providers: [
+      {
+        provide: ThemeService, useClass: MyThemeService
+      }
+    ]
+})
+export class AppComponent {
+  title = 'angular19';
+}
 
-After building your library with `ng build ng-theme`, go to the dist folder `cd dist/ng-theme` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test ng-theme` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
