@@ -21,7 +21,7 @@ describe('yzSortComponent', () => {
   });
 
   it('on click', () => {
-    let sort = {} as YzSorts;
+    let sort = {} as YzSorts<{id: number}>;
     component.beChange.asObservable().subscribe(v => {
       sort = v;
     });
@@ -33,6 +33,6 @@ describe('yzSortComponent', () => {
     expect(sort).toEqual({id: 'desc'});
 
     component.onClick();
-    expect(sort).toEqual({});
+    expect(sort).toEqual({} as {id: 'asc' | 'desc'});
   });
 })

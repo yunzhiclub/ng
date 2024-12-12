@@ -24,9 +24,9 @@ class TestComponent {
   sorts = {
     name: 'asc',
     username: 'desc'
-  } as YzSorts;
+  } as YzSorts<{name: string, username: string}>;
 
-  onSortsChange(sorts: YzSorts): void {
+  onSortsChange(sorts: YzSorts<any>): void {
     console.log(sorts);
     this.sorts = sorts;
   }

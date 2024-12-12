@@ -7,9 +7,9 @@ import {YzSortComponent, YzSorts} from "./yz-sort.component";
 })
 export class YzSortDirective implements OnInit {
   @Input() yzSort!: string;
-  @Input() yzSorts!: YzSorts;
+  @Input() yzSorts!: YzSorts<any>;
   @Output()
-  beYzSortChange = new EventEmitter<YzSorts>();
+  beYzSortChange = new EventEmitter<YzSorts<any>>();
 
   constructor(private viewContainerRef: ViewContainerRef,
               private elementRef: ElementRef,

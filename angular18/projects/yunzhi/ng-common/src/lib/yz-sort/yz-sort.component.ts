@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 
-export type YzSorts = { [key in string]: 'asc' | 'desc' };
+export type YzSorts<T> = { [key in keyof T]: 'asc' | 'desc' };
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,10 +21,10 @@ export class YzSortComponent {
   key!: string;
 
   @Input()
-  sorts = {} as YzSorts;
+  sorts = {} as YzSorts<any>;
 
   @Output()
-  beChange = new EventEmitter<YzSorts>;
+  beChange = new EventEmitter<YzSorts<any>>;
 
   getSort(): 'asc' | 'desc' | undefined | null {
     return this.sorts[this.key];
