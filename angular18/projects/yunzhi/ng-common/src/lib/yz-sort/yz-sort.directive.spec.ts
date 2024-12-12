@@ -1,8 +1,9 @@
 import {YzSortDirective} from './yz-sort.directive';
 import {Component} from "@angular/core";
-import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
+import {ComponentFixture, inject, TestBed, waitForAsync} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
-import {YzSorts} from "./yz-sort.component";
+import {YzSortComponent, YzSorts} from "./yz-sort.component";
+import {By} from "@angular/platform-browser";
 
 @Component({
   standalone: true,
@@ -56,8 +57,24 @@ describe('YzSortDirective', () => {
     fixture.detectChanges();
   });
 
-  fit('should create an instance', () => {
+  it('should create an instance', () => {
     expect(component).toBeTruthy();
     fixture.autoDetectChanges();
+  });
+
+  it('测试输出', () => {
+    const sortComponentRefs = fixture.debugElement.queryAll(By.directive(YzSortComponent));
+    expect(sortComponentRefs[0].componentInstance).toBeTruthy();
+    spyOn(component, 'onSortsChange');
+    const result = {};
+    (sortComponentRefs[0].componentInstance as YzSortComponent).beChange.emit(result);
+    expect(component.onSortsChange).toHaveBeenCalledWith(result);
+  });
+
+  it('测试输入', () => {
+    const sortComponentRefs = fixture.debugElement.queryAll(By.directive(YzSortComponent));
+    expect(sortComponentRefs[0].componentInstance).toBeTruthy();
+    expect((sortComponentRefs[0].componentInstance as YzSortComponent).sorts).toBe(component.sorts);
+    expect((sortComponentRefs[0].componentInstance as YzSortComponent).key).toBe('id');
   });
 });

@@ -29,7 +29,7 @@ export class YzSortComponent {
 
   onClick() {
     const sort = this.sorts[this.key];
-    let result = undefined as undefined | 'asc' | 'desc';
+    let result;
     switch (sort) {
       case 'asc':
         result = 'desc';
@@ -41,8 +41,7 @@ export class YzSortComponent {
         result = 'asc';
         break;
     }
-    this.sorts[this.key] = result;
-    console.log(this.sorts);
+    this.sorts[this.key] = result as undefined | 'asc' | 'desc';
     this.beChange.emit(this.sorts);
   }
 }
