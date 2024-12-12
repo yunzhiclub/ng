@@ -2,14 +2,17 @@ import {YzSortDirective} from './yz-sort.directive';
 import {Component} from "@angular/core";
 import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
+import {YzSorts} from "./yz-sort.component";
 
 @Component({
   standalone: true,
   template: `
-    <table>
+    <table class="table">
       <tr>
-        <th yzSort>123</th>
-        <th>456</th>
+        <th [yzSort]="'id'" [yzSorts]="sorts" (beYzSortChange)="onSortsChange($event)">ID</th>
+        <th [yzSort]="'name'" [yzSorts]="sorts" (beYzSortChange)="onSortsChange($event)">name</th>
+        <th [yzSort]="'username'" [yzSorts]="sorts" (beYzSortChange)="onSortsChange($event)">username</th>
+        <th [yzSort]="'other'" [yzSorts]="sorts" (beYzSortChange)="onSortsChange($event)">other</th>
       </tr>
     </table>`,
   imports: [
@@ -17,6 +20,16 @@ import {CommonModule} from "@angular/common";
   ]
 })
 class TestComponent {
+  sorts = {
+    id: null,
+    name: 'asc',
+    username: 'desc'
+  } as YzSorts;
+
+  onSortsChange(sorts: YzSorts): void {
+    console.log(sorts);
+    this.sorts = sorts;
+  }
 }
 
 describe('YzSortDirective', () => {
@@ -45,5 +58,6 @@ describe('YzSortDirective', () => {
 
   fit('should create an instance', () => {
     expect(component).toBeTruthy();
+    fixture.autoDetectChanges();
   });
 });
