@@ -1,24 +1,27 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 
-export type YzSorts = { [key in string]: 'asc' | 'desc' | undefined | null };
+export type YzSorts = { [key in string]: 'asc' | 'desc' };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   templateUrl: './yz-sort.component.html',
   styles: `span {
-    margin-left: 0.25em;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
   }`,
   imports: [
     CommonModule
   ]
 })
 export class YzSortComponent {
+
   @Input()
   key!: string;
 
   @Input()
-  sorts!: YzSorts;
+  sorts = {} as YzSorts;
 
   @Output()
   beChange = new EventEmitter<YzSorts>;
@@ -41,7 +44,12 @@ export class YzSortComponent {
         result = 'asc';
         break;
     }
-    this.sorts[this.key] = result as undefined | 'asc' | 'desc';
+    if (typeof result === 'undefined') {
+      delete this.sorts[this.key];
+    } else {
+      this.sorts[this.key] = result as 'asc' | 'desc';
+    }
+
     this.beChange.emit(this.sorts);
   }
 }

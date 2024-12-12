@@ -1,6 +1,6 @@
 import {YzSortDirective} from './yz-sort.directive';
 import {Component} from "@angular/core";
-import {ComponentFixture, inject, TestBed, waitForAsync} from "@angular/core/testing";
+import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
 import {YzSortComponent, YzSorts} from "./yz-sort.component";
 import {By} from "@angular/platform-browser";
@@ -22,7 +22,6 @@ import {By} from "@angular/platform-browser";
 })
 class TestComponent {
   sorts = {
-    id: null,
     name: 'asc',
     username: 'desc'
   } as YzSorts;
