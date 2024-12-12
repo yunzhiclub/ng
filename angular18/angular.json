@@ -118,6 +118,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "styles": [
+              "src/test.scss"
+            ],
             "tsConfig": "projects/yunzhi/ng-theme/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
@@ -152,6 +155,9 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/yunzhi/ng-common/tsconfig.spec.json",
+            "styles": [
+              "src/test.scss"
+            ],
             "polyfills": [
               "zone.js",
               "zone.js/testing"
