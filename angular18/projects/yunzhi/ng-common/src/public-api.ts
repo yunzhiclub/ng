@@ -24,7 +24,6 @@ export * from './lib/yz-page/yz-page.component';
 export * from './lib/yz-size/yz-size.component';
 export * from './lib/yz-mask/yz-mask.component';
 export * from './lib/yz-modal/yz-modal.component';
-export * from './lib/yz-sort/yz-sort.component';
 export * from './lib/yz-sort/yz-sort.directive';
 export * from './lib/yz-uploader/yz-uploader.component';
 export * from './lib/yz-uploader/yz-uploader.service';

@@ -400,7 +400,7 @@ export function stringToIntegerNumber(
  * other -> false;
  * @param value 值
  */
-export function isNullOrUndefined<T>(value: T | undefined | null): value is T  {
+export function isNullOrUndefined<T>(value: T | undefined | null): value is T {
   return !isNotNullOrUndefined(value);
 }
 
@@ -499,3 +499,22 @@ export const randomTimestamp = (day = 7, baseDate = new Date()) => {
   const range = 1000 * 60 * 60 * 24 * day * 2;
   return baseDate.getTime() + randomNumber(range) - range / 2;
 };
+
+export type Sorts<T> = { [key in keyof T]: 'asc' | 'desc' };
+
+/**
+ * 将排序对象转换为排序数组，该方法引自 @yunzhi/ng-commom 中
+ *
+ * 使用示例：
+ * const httpParam = new HttpParams().appendAll(Utils.sortsToParams({id: 'asc', name: 'desc'}));
+ * @param sorts
+ * @param key 声明排序数组时的key
+ */
+export const sortsToParams = (sorts: Sorts<any>, key = 'sort') => {
+  const params = {} as {[key: string]: ReadonlyArray<string>};
+  params[key] = Object.entries(sorts)
+    .map(([key, value]) => {
+      return (!!value && ['asc', 'desc'].includes(value.toLowerCase())) ? `${key},${value}` : null;
+    }).filter(v => !!v) as ReadonlyArray<string>;
+  return params;
+}

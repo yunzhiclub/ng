@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
-
-export type YzSorts<T> = { [key in keyof T]: 'asc' | 'desc' };
+import {YzSorts} from "./yz-sort.directive";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

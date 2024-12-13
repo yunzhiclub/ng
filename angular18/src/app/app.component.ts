@@ -2,14 +2,15 @@ import {Component, Injectable, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {
   YzPageComponent,
-  YzSizeComponent,
+  YzSizeComponent, YzSortDirective, YzSorts,
   YzUploaderComponent,
   YzUploaderService
 } from '../../projects/yunzhi/ng-common/src/public-api';
 import {BasicComponent, ThemeService, YzMenu} from '../../projects/yunzhi/ng-theme/src/public-api';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {delay, map} from "rxjs/operators";
+import {Utils} from "@yunzhi/utils";
 
 
 @Injectable()
@@ -70,10 +71,16 @@ export class MyThemeService extends ThemeService {
   }
 }
 
+interface User {
+  id: number,
+  name: string,
+  username: string;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, BasicComponent, YzPageComponent, YzSizeComponent, YzUploaderComponent],
+  imports: [RouterOutlet, BasicComponent, YzPageComponent, YzSizeComponent, YzUploaderComponent, YzSortDirective],
   template: `
     <theme-basic>
       <div class="row text-center">
@@ -89,6 +96,16 @@ export class MyThemeService extends ThemeService {
       <h1>hello {{ page }}</h1>
 
       <yz-page [totalElements]="200" [page]="page" (changePage)="onPageChange($event)"></yz-page>
+
+
+      <table class="table">
+        <tr>
+          <th>序号</th>
+          <th [yzSort]="'id'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">ID</th>
+          <th [yzSort]="'name'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">姓名</th>
+          <th>用户名</th>
+        </tr>
+      </table>
     </theme-basic>`,
   providers: [
     {
@@ -101,10 +118,17 @@ export class MyThemeService extends ThemeService {
 export class AppComponent {
   page = 0;
 
+  sorts = {id: 'desc'} as YzSorts<User>;
+
   showUploader = signal(false);
 
   onUploaderClose() {
     this.showUploader.set(false);
+  }
+
+  onSortChange(sorts: YzSorts<User>) {
+    this.sorts = sorts;
+    const httpParams = new HttpParams().appendAll(Utils.)
   }
 
   onUploaded() {

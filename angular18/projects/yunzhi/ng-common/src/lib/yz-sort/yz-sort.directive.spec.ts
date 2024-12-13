@@ -1,8 +1,8 @@
-import {YzSortDirective} from './yz-sort.directive';
+import {YzSortDirective, YzSorts} from './yz-sort.directive';
 import {Component} from "@angular/core";
 import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
-import {YzSortComponent, YzSorts} from "./yz-sort.component";
+import {YzSortComponent} from "./yz-sort.component";
 import {By} from "@angular/platform-browser";
 
 @Component({
@@ -26,9 +26,9 @@ class TestComponent {
     username: 'desc'
   } as YzSorts<{name: string, username: string}>;
 
-  onSortsChange(sorts: YzSorts<any>): void {
-    console.log(sorts);
-    this.sorts = sorts;
+  onSortsChange(sort: {sorts: YzSorts<any>, sortParams: ReadonlyArray<string>}): void {
+    console.log(sort.sorts);
+    this.sorts = sort.sorts;
   }
 }
 
@@ -64,10 +64,11 @@ describe('YzSortDirective', () => {
   it('测试输出', () => {
     const sortComponentRefs = fixture.debugElement.queryAll(By.directive(YzSortComponent));
     expect(sortComponentRefs[0].componentInstance).toBeTruthy();
-    spyOn(component, 'onSortsChange');
+    const spy = spyOn(component, 'onSortsChange');
     const result = {};
     (sortComponentRefs[0].componentInstance as YzSortComponent).beChange.emit(result);
-    expect(component.onSortsChange).toHaveBeenCalledWith(result);
+    const args = spy.calls.mostRecent().args;
+    expect(args[0].sorts).toBe(result);
   });
 
   it('测试输入', () => {

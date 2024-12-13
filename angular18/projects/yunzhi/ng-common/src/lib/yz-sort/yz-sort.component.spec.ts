@@ -1,5 +1,6 @@
 import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
-import {YzSortComponent, YzSorts} from "./yz-sort.component";
+import {YzSortComponent} from "./yz-sort.component";
+import {YzSorts} from "./yz-sort.directive";
 
 describe('yzSortComponent', () => {
   let component: YzSortComponent;
