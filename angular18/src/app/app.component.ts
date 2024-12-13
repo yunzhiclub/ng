@@ -129,6 +129,7 @@ export class AppComponent {
 
   onSortChange(sorts: YzSortsAndParams<User>) {
     this.sorts = sorts.sorts;
+    console.log(this.sorts);
     const httpParams = new HttpParams().appendAll({sort: sorts.params});
     this.httpClient.get('test', {params: httpParams}).subscribe();
   }
