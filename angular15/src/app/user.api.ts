@@ -1,6 +1,6 @@
-import {MockApiInterface, ApiInjector, RequestOptions} from '@yunzhi/ng-mock-api'
 import {Observable} from 'rxjs';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {ApiInjector, MockApiInterface, RequestOptions} from 'packages/mock-api/src/public-api';
 
 /**
  * user模拟接口.

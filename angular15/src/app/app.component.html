@@ -5,5 +5,13 @@
 
   <h3 *ngIf="networkErrorPass">模拟网络请求错误通过</h3>
   <h3 *ngIf="!networkErrorPass">模拟网络请求错误测试</h3>
+  <table class="table">
+    <tr>
+      <th>序号</th>
+      <th [yzSort]="'id'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">ID</th>
+      <th [yzSort]="'name'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">姓名</th>
+      <th>用户名</th>
+    </tr>
+  </table>
 </div>
 

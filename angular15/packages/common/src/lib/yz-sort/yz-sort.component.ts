@@ -6,10 +6,10 @@ import {YzSorts} from "./yz-sort.directive";
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   templateUrl: './yz-sort.component.html',
-  styles: `span {
+  styles: [`span {
     padding-left: 0.25em;
     padding-right: 0.25em;
-  }`,
+  }`],
   imports: [
     CommonModule
   ]
