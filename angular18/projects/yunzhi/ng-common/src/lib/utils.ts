@@ -28,6 +28,6 @@ export class Utils {
     return Object.entries(sorts)
       .map(([key, value]) => {
         return (!!value && ['asc', 'desc'].includes(value.toLowerCase())) ? `${key},${value}` : null;
-      }).filter(v => !!v) as ReadonlyArray<string>;
+      }).filter(v => !!v).reverse() as ReadonlyArray<string>;
   }
 }

@@ -46,6 +46,7 @@ export class YzSortComponent {
     if (typeof result === 'undefined') {
       delete this.sorts[this.key];
     } else {
+      delete this.sorts[this.key];
       this.sorts[this.key] = result as 'asc' | 'desc';
     }
 

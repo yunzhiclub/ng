@@ -11,8 +11,5 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptorsFromDi()
     ),
-    {
-      provide: HTTP_INTERCEPTORS, useClass: MockApiInterceptor.forRoot([UserApi]), multi: true
-    }
   ]
 };

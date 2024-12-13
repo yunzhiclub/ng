@@ -2,7 +2,7 @@ import {Component, Injectable, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {
   YzPageComponent,
-  YzSizeComponent, YzSortDirective, YzSorts,
+  YzSizeComponent, YzSortDirective, YzSorts, YzSortsAndParams,
   YzUploaderComponent,
   YzUploaderService
 } from '../../projects/yunzhi/ng-common/src/public-api';
@@ -10,8 +10,6 @@ import {BasicComponent, ThemeService, YzMenu} from '../../projects/yunzhi/ng-the
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {delay, map} from "rxjs/operators";
-import {Utils} from "@yunzhi/utils";
-
 
 @Injectable()
 class UploaderService extends YzUploaderService {
@@ -122,13 +120,17 @@ export class AppComponent {
 
   showUploader = signal(false);
 
+  constructor(private httpClient: HttpClient) {
+  }
+
   onUploaderClose() {
     this.showUploader.set(false);
   }
 
-  onSortChange(sorts: YzSorts<User>) {
-    this.sorts = sorts;
-    const httpParams = new HttpParams().appendAll(Utils.)
+  onSortChange(sorts: YzSortsAndParams<User>) {
+    this.sorts = sorts.sorts;
+    const httpParams = new HttpParams().appendAll({sort: sorts.params});
+    this.httpClient.get('test', {params: httpParams}).subscribe();
   }
 
   onUploaded() {
