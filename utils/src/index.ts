@@ -400,7 +400,7 @@ export function stringToIntegerNumber(
  * other -> false;
  * @param value 值
  */
-export function isNullOrUndefined<T>(value: T | undefined | null): value is T  {
+export function isNullOrUndefined<T>(value: T | undefined | null): value is T {
   return !isNotNullOrUndefined(value);
 }
 

@@ -9,6 +9,7 @@ import {ApiModule} from './api/api.module';
 import {BasicModule} from 'packages/theme/src/public-api';
 import {ThemeComponent} from './theme/theme.component';
 import {ThemeService} from '../theme.service';
+import {YzSortDirective} from "../../packages/common/src/lib/yz-sort/yz-sort.directive";
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class RootComponent {
     RootComponent
   ],
   imports: [
+    YzSortDirective,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

@@ -1,6 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from './user.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import { YzSorts, YzSortsAndParams } from 'packages/common/src/public-api';
+
+
+interface User {
+  id: number,
+  name: string,
+  username: string;
+}
 
 @Component({
   selector: 'app-app',
@@ -12,8 +20,16 @@ export class AppComponent implements OnInit {
   title = 'Loading';
   loginResult = '';
   networkErrorPass = false;
+  sorts = {id: 'desc'} as YzSorts<User>;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
+  }
+
+  onSortChange(sorts: YzSortsAndParams<User>) {
+    this.sorts = sorts.sorts;
+    console.log(this.sorts);
+    const httpParams = new HttpParams().appendAll({sort: sorts.params});
+    this.httpClient.get('test', {params: httpParams}).subscribe();
   }
 
   ngOnInit(): void {
