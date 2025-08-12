@@ -35,10 +35,7 @@ export class MyThemeService extends ThemeService {
   selector: 'app-root',
   standalone: true,
   imports: [BasicComponent],
-  template: `
-    <theme-basic>
-      <h1>hello</h1>
-    </theme-basic>`,
+  template: `<theme-basic><router-outlet></router-outlet></theme-basic>`,
     providers: [
       {
         provide: ThemeService, useClass: MyThemeService
@@ -46,7 +43,7 @@ export class MyThemeService extends ThemeService {
     ]
 })
 export class AppComponent {
-  title = 'angular19';
+  title = 'yzTheme for angular18';
 }
 
 ```

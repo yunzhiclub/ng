@@ -33,5 +33,5 @@ export interface YzMenu {
   /**
    * 跳转的URL地址
    */
-  url: string;
+  url?: string;
 }
