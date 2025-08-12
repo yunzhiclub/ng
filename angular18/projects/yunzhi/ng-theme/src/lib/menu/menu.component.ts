@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, signal, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ThemeService} from '../service/theme.service';
 import {YzMenu} from '../entity/yz-menu';
@@ -36,7 +36,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   @ViewChildren('link')
   links: QueryList<ElementRef<HTMLAnchorElement>> | undefined;
 
-  menus = new Array<MenuModel>();
+  menus = signal<Array<MenuModel>>([]);
 
   private subscription: Subscription | undefined;
   private color = {
@@ -53,14 +53,14 @@ export class MenuComponent implements OnInit, OnDestroy {
       rightBorder: '#fff'
     }
   };
-  private activeStyle = {
+  public activeStyle = {
     'border-left-color': MenuComponent.hexToRgbA(this.color.active.leftBorder),
     'border-right-color': MenuComponent.hexToRgbA(this.color.active.rightBorder),
     'background-color': MenuComponent.hexToRgbA(this.color.active.background),
     'color': MenuComponent.hexToRgbA(this.color.active.color)
   }
 
-  private normalStyle = {
+  public normalStyle = {
     'border-left-color': MenuComponent.hexToRgbA(this.color.normal.leftBorder),
     'border-right-color': MenuComponent.hexToRgbA(this.color.normal.rightBorder),
     'background-color': MenuComponent.hexToRgbA(this.color.normal.background),
@@ -94,7 +94,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.color = colors.menu;
     }
     this.basicMenuService.getMenus().subscribe(menus =>
-      this.menus = menus.map(menu => new MenuModel(menu)));
+      this.menus.set(menus.map(menu => new MenuModel(menu))));
   }
 
   /**
@@ -112,7 +112,7 @@ export class MenuComponent implements OnInit, OnDestroy {
    * 判断当前菜单是否激活
    */
   isActive(menu: MenuModel, link: HTMLAnchorElement): boolean {
-    return menu.showChildren || (link.className.split(' ').indexOf('active') > -1);
+    return link.className.split(' ').indexOf('active') > -1;
   }
 
   /**
@@ -148,7 +148,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   onMenuClick(menu: MenuModel) {
     const showChildren = !menu.showChildren;
-    this.menus.forEach(m => m.showChildren = false);
+    this.menus().forEach(m => m.showChildren = false);
     if (menu.beParent) {
       menu.showChildren = showChildren;
     }
@@ -204,7 +204,7 @@ class MenuModel implements YzMenu {
     return this.menu.name;
   }
 
-  get url(): string {
+  get url(): string | undefined {
     return this.menu.url;
   }
 

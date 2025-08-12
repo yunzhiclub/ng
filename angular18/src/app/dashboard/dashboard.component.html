@@ -1,0 +1,22 @@
+<div class="row text-center">
+  <button type="button" class="btn btn-sm btn-primary" (click)="onToggleShowUploader()">toggle上传组件</button>
+</div>
+
+@if (showUploader()) {
+  <yz-uploader
+    (beUpload)="onUploaded()"
+    (beClose)="onUploaderClose()"></yz-uploader>
+}
+<yz-size [size]="20" (beChange)="onSizeChange($event)"></yz-size>
+<h1>hello {{ page }}</h1>
+
+<yz-page [totalElements]="200" [page]="page" (changePage)="onPageChange($event)"></yz-page>
+
+<table class="table">
+  <tr>
+    <th>序号</th>
+    <th [yzSort]="'id'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">ID</th>
+    <th [yzSort]="'name'" [yzSorts]="sorts" (beYzSortChange)="onSortChange($event)">姓名</th>
+    <th>用户名</th>
+  </tr>
+</table>
